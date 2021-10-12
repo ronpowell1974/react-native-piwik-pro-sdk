@@ -1,7 +1,7 @@
 {
   "name": "react-native-piwik-pro-sdk",
   "version": "0.1.0",
-  "description": "Pwiki Pro SDK for React Native",
+  "description": "Piwik Pro SDK for React Native",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/index.d.ts",
@@ -36,13 +36,13 @@
     "ios",
     "android"
   ],
-  "repository": "https://github.com",
-  "author": "Filip Bogatko <f.bogatko@clearcode.cc> (https://www.clearcode.pl)",
+  "repository": "https://github.com/PiwikPRO/react-native-piwik-pro-sdk",
+  "author": "Piwik PRO <example@mail.com> (https://www.piwik.pro)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/issues"
+    "url": "https://github.com/PiwikPRO/react-native-piwik-pro-sdk/issues"
   },
-  "homepage": "https://github.com#readme",
+  "homepage": "https://github.com/PiwikPRO/react-native-piwik-pro-sdk#readme",
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
