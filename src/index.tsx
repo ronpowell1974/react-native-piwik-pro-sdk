@@ -6,7 +6,34 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-const PiwikProSdk = NativeModules.PiwikProSdk
+type PiwikProSdkType = {
+  /**
+   * Initialize Piwik Pro SDK
+   */
+  init(apiUrl: string, siteId: string): Promise<void>;
+
+  /**
+   * Set anonymization state of Piwik Pro SDK
+   */
+  trackScreen(
+    path: string,
+    title?: string,
+    customDimensions?: CustomDimensions
+  ): Promise<void>;
+
+  /**
+   * Dispatch queued events
+   */
+  dispatch(): Promise<void>;
+
+  setDispatchInterval(dispatchInterval: number): Promise<void>;
+};
+
+type CustomDimensions = {
+  [index: number]: string;
+};
+
+const PiwikProNativeSdk = NativeModules.PiwikProSdk
   ? NativeModules.PiwikProSdk
   : new Proxy(
       {},
@@ -17,6 +44,37 @@ const PiwikProSdk = NativeModules.PiwikProSdk
       }
     );
 
-export function multiply(a: number, b: number): Promise<number> {
-  return PiwikProSdk.multiply(a, b);
+/**
+ * Initialize Piwik Pro SDK
+ */
+async function init(apiUrl: string, siteId: string): Promise<void> {
+  return await PiwikProNativeSdk.init(apiUrl, siteId);
 }
+
+/**
+ * Set anonymization state of Piwik Pro SDK
+ */
+async function trackScreen(
+  path: string,
+  title?: string,
+  customDimensions?: CustomDimensions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackScreen(path, title, customDimensions);
+}
+
+async function dispatch(): Promise<void> {
+  return await PiwikProNativeSdk.dispatch();
+}
+
+async function setDispatchInterval(dispatchInterval: number): Promise<void> {
+  return await PiwikProNativeSdk.setDispatchInterval(dispatchInterval);
+}
+
+const PiwikProSdk: PiwikProSdkType = {
+  init,
+  trackScreen,
+  dispatch,
+  setDispatchInterval,
+};
+
+export default PiwikProSdk;

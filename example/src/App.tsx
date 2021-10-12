@@ -1,18 +1,64 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-piwik-pro-sdk';
+import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
+import PiwikProSdk from 'react-native-piwik-pro-sdk';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [result, setResult] = React.useState<{
+    message: String;
+    error?: Error;
+  }>({ message: 'Press any button' });
+  const [eventNum, setEventNum] = React.useState<number>(1);
+  const [dispatchInterval, setDispatchInterval] = React.useState<number>(120);
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const initializePiwikProSdk = async () => {
+    PiwikProSdk.init(
+      'https://your.piwik.pro.server.com',
+      '01234567-89ab-cdef-0123-456789abcdef'
+    )
+      .then(() => setResult({ message: 'Success' }))
+      .catch((error) => setResult({ message: 'Error', error }));
+  };
+
+  const trackScreen = () => {
+    PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, undefined, {
+      2: 'beta',
+      1: 'gamma',
+    })
+      .then(() => {
+        setResult({ message: `Success track screen ${eventNum}` });
+        setEventNum(eventNum + 1);
+      })
+      .catch((error) => setResult({ message: 'Error', error }));
+  };
+
+  const dispatchEvents = () => {
+    PiwikProSdk.dispatch()
+      .then(() => setResult({ message: 'Dispatched successfully' }))
+      .catch((error) => setResult({ message: 'Error', error }));
+  };
+
+  const changeDispatchInterval = () => {
+    PiwikProSdk.setDispatchInterval(dispatchInterval)
+      .then(() => setResult({ message: 'Change successfully' }))
+      .catch((error) => setResult({ message: 'Error', error }));
+  };
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Button
+        title="Initialize Piwik Pro SDK"
+        onPress={initializePiwikProSdk}
+      />
+      <Button title="Track screen" onPress={trackScreen} />
+      <Button title="Dispatch events" onPress={dispatchEvents} />
+      <TextInput
+        value={dispatchInterval.toString()}
+        onChangeText={(text) => setDispatchInterval(parseInt(text, 10) || 0)}
+      />
+      <Button title="Set dispatch interval" onPress={changeDispatchInterval} />
+      <Text>Result: {result.message}</Text>
+      {result.error && <Text>Error type: {result.error.message}</Text>}
     </View>
   );
 }
@@ -27,5 +73,8 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     marginVertical: 20,
+  },
+  button: {
+    width: '60%',
   },
 });
