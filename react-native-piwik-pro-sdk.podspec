@@ -16,4 +16,5 @@ Pod::Spec.new do |s|
   s.source_files = "ios/**/*.{h,m,mm}"
 
   s.dependency "React-Core"
+  s.dependency "PiwikPROSDK", "~> 1.0.7"
 end
