@@ -128,5 +128,5 @@ dependencies {
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
   implementation 'pro.piwik:sdk-framework-android:1.0.2'
-  implementation 'com.jakewharton.timber:timber:4.7.1' //Logger from Piwik PRO Android SDK
+  implementation 'com.jakewharton.timber:timber:4.5.1' //Logger from Piwik PRO Android SDK
 }

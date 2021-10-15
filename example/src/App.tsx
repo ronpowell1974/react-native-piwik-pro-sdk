@@ -21,9 +21,18 @@ export default function App() {
   };
 
   const trackScreen = () => {
-    PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, undefined, {
-      2: 'beta',
-      1: 'gamma',
+    PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, undefined)
+      .then(() => {
+        setResult({ message: `Success track screen ${eventNum}` });
+        setEventNum(eventNum + 1);
+      })
+      .catch((error) => setResult({ message: 'Error', error }));
+  };
+
+  const trackScreenWithCustomDimensions = async () => {
+    await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, 'title', {
+      1: 'beta1',
+      2: 'gamma1',
     })
       .then(() => {
         setResult({ message: `Success track screen ${eventNum}` });
@@ -51,6 +60,10 @@ export default function App() {
         onPress={initializePiwikProSdk}
       />
       <Button title="Track screen" onPress={trackScreen} />
+      <Button
+        title="Track screen with custom dimensions"
+        onPress={trackScreenWithCustomDimensions}
+      />
       <Button title="Dispatch events" onPress={dispatchEvents} />
       <TextInput
         value={dispatchInterval.toString()}
