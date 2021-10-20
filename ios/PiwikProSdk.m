@@ -1,19 +1,46 @@
 #import "PiwikProSdk.h"
+#import <PiwikPROSDK/PiwikPROSDK.h>
 
 @implementation PiwikProSdk
 
 RCT_EXPORT_MODULE()
 
-// Example method
-// See // https://reactnative.dev/docs/native-modules-ios
-RCT_REMAP_METHOD(multiply,
-                 multiplyWithA:(nonnull NSNumber*)a withB:(nonnull NSNumber*)b
+RCT_REMAP_METHOD(init,
+                 initWithBaseURL:(nonnull NSString*)baseURL
+                 withSiteID:(nonnull NSString*)siteID
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
-  NSNumber *result = @([a floatValue] * [b floatValue]);
+  if ([PiwikTracker sharedInstance] != nil) {
+    reject(@"already_initialized", @"Piwik Pro SDK has been already initialized", nil);
+    return;
+  }
 
-  resolve(result);
+  dispatch_async(dispatch_get_main_queue(), ^{
+    PiwikTracker* tracker = [PiwikTracker sharedInstanceWithSiteID:siteID baseURL:[NSURL URLWithString:baseURL]];
+    NSBundle* bundle = [NSBundle mainBundle];
+
+    tracker.appName = [bundle bundleIdentifier];
+    resolve(nil);
+  });
+}
+
+RCT_REMAP_METHOD(trackScreen,
+                 withPath:(nonnull NSString*)path
+                 withTitle:(NSString*)title
+                 withCustomDimensions:(NSDictionary*)customDimensions
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+  // NSLog(path);
+  // NSLog(title);
+  if(customDimensions != nil) {
+    NSLog(@"%@",customDimensions); 
+  }
+  NSLog(path);
+  // NSLog(customDimensions);
+  [[PiwikTracker sharedInstance] sendView:path];
+  resolve(nil);
 }
 
 @end

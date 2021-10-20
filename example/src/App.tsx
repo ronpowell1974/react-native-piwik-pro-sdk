@@ -1,6 +1,14 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text, Button, TextInput } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  TextInput,
+  SafeAreaView,
+} from 'react-native';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
 
 export default function App() {
@@ -31,8 +39,8 @@ export default function App() {
 
   const trackScreenWithCustomDimensions = async () => {
     await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, 'title', {
-      1: 'beta1',
-      2: 'gamma1',
+      1: 'beta',
+      2: 'gamma',
     })
       .then(() => {
         setResult({ message: `Success track screen ${eventNum}` });
@@ -54,25 +62,53 @@ export default function App() {
   };
 
   return (
-    <View style={styles.container}>
-      <Button
-        title="Initialize Piwik Pro SDK"
-        onPress={initializePiwikProSdk}
-      />
-      <Button title="Track screen" onPress={trackScreen} />
-      <Button
-        title="Track screen with custom dimensions"
-        onPress={trackScreenWithCustomDimensions}
-      />
-      <Button title="Dispatch events" onPress={dispatchEvents} />
-      <TextInput
-        value={dispatchInterval.toString()}
-        onChangeText={(text) => setDispatchInterval(parseInt(text, 10) || 0)}
-      />
-      <Button title="Set dispatch interval" onPress={changeDispatchInterval} />
-      <Text>Result: {result.message}</Text>
-      {result.error && <Text>Error type: {result.error.message}</Text>}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.subContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={initializePiwikProSdk}
+          >
+            <Text style={styles.buttonText}>Initialize Piwik Pro SDK</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackScreen}>
+            <Text style={styles.buttonText}>Track screen</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={trackScreenWithCustomDimensions}
+          >
+            <Text style={styles.buttonText}>
+              Track screen with custom dimensions
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={dispatchEvents}>
+            <Text style={styles.buttonText}>Dispatch events</Text>
+          </TouchableOpacity>
+
+          <TextInput
+            value={dispatchInterval.toString()}
+            onChangeText={(buttonText) =>
+              setDispatchInterval(parseInt(buttonText, 10) || 0)
+            }
+          />
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={changeDispatchInterval}
+          >
+            <Text style={styles.buttonText}>Set dispatch interval</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+      <Text style={styles.message}>Result: {result.message}</Text>
+      {result.error && (
+        <Text style={styles.message}>Error type: {result.error.message}</Text>
+      )}
+    </SafeAreaView>
   );
 }
 
@@ -82,12 +118,39 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  scrollView: {
+    width: '100%',
+  },
+  subContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+    marginTop: 5,
+  },
   box: {
     width: 60,
     height: 60,
     marginVertical: 20,
   },
   button: {
-    width: '60%',
+    elevation: 8,
+    backgroundColor: '#009688',
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    marginBottom: 5,
+    width: '90%',
+  },
+  buttonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
+    alignSelf: 'center',
+  },
+  message: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
 });

@@ -6,33 +6,6 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo managed workflow\n';
 
-type PiwikProSdkType = {
-  /**
-   * Initialize Piwik Pro SDK
-   */
-  init(apiUrl: string, siteId: string): Promise<void>;
-
-  /**
-   * Set anonymization state of Piwik Pro SDK
-   */
-  trackScreen(
-    path: string,
-    title?: string,
-    customDimensions?: CustomDimensions
-  ): Promise<void>;
-
-  /**
-   * Dispatch queued events
-   */
-  dispatch(): Promise<void>;
-
-  setDispatchInterval(dispatchInterval: number): Promise<void>;
-};
-
-type CustomDimensions = {
-  [index: number]: string;
-};
-
 const PiwikProNativeSdk = NativeModules.PiwikProSdk
   ? NativeModules.PiwikProSdk
   : new Proxy(
