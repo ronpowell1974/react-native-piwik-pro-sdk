@@ -68,8 +68,18 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setDispatchInterval(dispatchInterval: Int, promise: Promise) {
     try {
-      getTracker().setDispatchInterval(dispatchInterval.toLong())
+      getTracker().setDispatchInterval(dispatchInterval.toLong() * 1000)
       promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getDispatchInterval(promise: Promise) {
+    try {
+      val dispatchInterval = getTracker().dispatchInterval.toInt() / 1000
+      promise.resolve(dispatchInterval)
     } catch (exception: Exception) {
       promise.reject(exception)
     }

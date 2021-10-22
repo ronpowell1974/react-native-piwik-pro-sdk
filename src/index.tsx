@@ -1,4 +1,5 @@
 import { NativeModules, Platform } from 'react-native';
+import { validateInt } from './util/validator';
 
 const LINKING_ERROR =
   `The package 'react-native-piwik-pro-sdk' doesn't seem to be linked. Make sure: \n\n` +
@@ -40,7 +41,12 @@ async function dispatch(): Promise<void> {
 }
 
 async function setDispatchInterval(dispatchInterval: number): Promise<void> {
+  validateInt(dispatchInterval);
   return await PiwikProNativeSdk.setDispatchInterval(dispatchInterval);
+}
+
+async function getDispatchInterval(): Promise<number> {
+  return await PiwikProNativeSdk.getDispatchInterval();
 }
 
 const PiwikProSdk: PiwikProSdkType = {
@@ -48,6 +54,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackScreen,
   dispatch,
   setDispatchInterval,
+  getDispatchInterval,
 };
 
 export default PiwikProSdk;

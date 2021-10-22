@@ -17,15 +17,18 @@ export default function App() {
     error?: Error;
   }>({ message: 'Press any button' });
   const [eventNum, setEventNum] = React.useState<number>(1);
-  const [dispatchInterval, setDispatchInterval] = React.useState<number>(120);
+  const [dispatchInterval, setDispatchInterval] = React.useState<number>(0);
 
   const initializePiwikProSdk = async () => {
-    PiwikProSdk.init(
+    await PiwikProSdk.init(
       'https://your.piwik.pro.server.com',
       '01234567-89ab-cdef-0123-456789abcdef'
     )
       .then(() => setResult({ message: 'Success' }))
       .catch((error) => setResult({ message: 'Error', error }));
+    const di = await PiwikProSdk.getDispatchInterval();
+    setDispatchInterval(di);
+    console.log(di);
   };
 
   const trackScreen = () => {
@@ -55,9 +58,9 @@ export default function App() {
       .catch((error) => setResult({ message: 'Error', error }));
   };
 
-  const changeDispatchInterval = () => {
-    PiwikProSdk.setDispatchInterval(dispatchInterval)
-      .then(() => setResult({ message: 'Change successfully' }))
+  const changeDispatchInterval = async () => {
+    await PiwikProSdk.setDispatchInterval(dispatchInterval)
+      .then(() => setResult({ message: 'Changed successfully' }))
       .catch((error) => setResult({ message: 'Error', error }));
   };
 
@@ -70,19 +73,6 @@ export default function App() {
             onPress={initializePiwikProSdk}
           >
             <Text style={styles.buttonText}>Initialize Piwik Pro SDK</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.button} onPress={trackScreen}>
-            <Text style={styles.buttonText}>Track screen</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.button}
-            onPress={trackScreenWithCustomDimensions}
-          >
-            <Text style={styles.buttonText}>
-              Track screen with custom dimensions
-            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} onPress={dispatchEvents}>
@@ -101,6 +91,19 @@ export default function App() {
             onPress={changeDispatchInterval}
           >
             <Text style={styles.buttonText}>Set dispatch interval</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackScreen}>
+            <Text style={styles.buttonText}>Track screen</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={trackScreenWithCustomDimensions}
+          >
+            <Text style={styles.buttonText}>
+              Track screen with custom dimensions
+            </Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

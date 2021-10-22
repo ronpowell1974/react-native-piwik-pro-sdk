@@ -36,6 +36,36 @@ PiwikProSdk.trackScreen('your_activity_path', 'title')
   .catch((error) => setResult({ message: 'Error', error }));
 ```
 
+## Dispatching
+
+Tracked events are stored temporarily on the queue and dispatched in batches every 30 seconds (default setting). This behavior can be changed in the following way:
+
+```js
+const dispatchInterval = 25; // 25 seconds
+await PiwikProSdk.setDispatchInterval(dispatchInterval);
+      
+```
+
+Parameters:
+- `dispatchInterval: number` (*required*) - new dispatch interval (in seconds).
+
+If `dispatchValue` is equal to `0` then events will be dispatched immediately. When its value is negative then events will not be dispatched automatically. This gives you full control over dispatch process using manual `dispatch`:
+
+```js
+await PiwikProSdk.dispatch();
+      
+```
+
+You can obtain current `dispatchInterval` value with `getDispatchInterval`:
+
+```js
+const currentDispatchInterval = await PiwikProSdk.getDispatchInterval();
+      
+```
+Returns:
+- `dispatchInterval: number` - current dispatch interval (in seconds) or negative number if automatic dispatch has been disabled.
+
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
