@@ -25,6 +25,7 @@ await PiwikProSdk.init(
 
 ***Note:*** Each tracking method is implemented as a Promise which will be rejected if the `PiwikProSdk` has not been initialized.
 
+
 ## Tracking screen views
 
 ```js
@@ -35,6 +36,22 @@ PiwikProSdk.trackScreen('your_activity_path', 'title')
   })
   .catch((error) => setResult({ message: 'Error', error }));
 ```
+
+
+## Tracking custom dimensions
+
+To track a custom name-value pair assigned to your users or screen views, use [Custom Dimensions](https://help.piwik.pro/support/analytics/custom-dimension/). Note that the custom value data is not sent by itself, but only with other tracking actions such as screen views, events or other tracking actions (see the documentation of other tracking methods), for example:
+
+```js
+const customDimensions = {
+  1: 'dashboard',
+  2: 'menu',
+}
+await PiwikProSdk.trackScreen(`your_activity_path`, 'title', customDimensions);
+```
+
+`1` and `2` are dimension IDs. `dashboard`, `menu` are the dimension values for the tracked screen view event.
+
 
 ## Dispatching
 

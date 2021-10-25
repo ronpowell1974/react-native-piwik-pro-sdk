@@ -32,13 +32,7 @@ RCT_REMAP_METHOD(trackScreen,
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
-    // NSLog(path);
-    // NSLog(title);
-    if(customDimensions != nil) {
-        NSLog(@"%@",customDimensions); 
-    }
-    // NSLog(path);
-    // NSLog(customDimensions);
+    [self applyCustomDimensions:customDimensions];
     [[PiwikTracker sharedInstance] sendView:path];
     resolve(nil);
 }
@@ -92,6 +86,16 @@ RCT_REMAP_METHOD(getDispatchInterval,
         resolve(@(dispatchInterval));
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
+    }
+}
+
+- (void)applyCustomDimensions:(nullable NSDictionary*)customDimensions {
+    if (customDimensions == nil) {
+        return;
+    }
+    
+    for (NSString* key in customDimensions) {
+        [[PiwikTracker sharedInstance] setCustomDimensionForIndex:[key intValue] value:customDimensions[key] scope:CustomDimensionScopeAction];
     }
 }
 
