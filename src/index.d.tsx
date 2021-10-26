@@ -13,7 +13,9 @@ type PiwikProSdkType = {
   trackScreen(
     path: string,
     title?: string,
-    customDimensions?: CustomDimensions
+    customDimensions?: CustomDimensions,
+    visitCustomVariables?: CustomVariables,
+    screenCustomVariables?: CustomVariables
   ): Promise<void>;
 
   /**
@@ -34,8 +36,33 @@ type PiwikProSdkType = {
    * dispatch has been disabled.
    */
   getDispatchInterval(): Promise<number>;
+
+  /**
+   * Sets flag that determines whether default custom variables should be
+   * added to each tracking event.
+   * @includeDefaultCustomVariable flag that determines whether to include default
+   * custom variables
+   */
+  setIncludeDefaultCustomVariables(
+    includeDefaultCustomVariables: boolean
+  ): Promise<void>;
+
+  /**
+   * Returns the flag that determines whether default custom variables should be
+   * added to each tracking event.
+   */
+  getIncludeDefaultCustomVariables(): Promise<boolean>;
 };
 
 type CustomDimensions = {
   [index: number]: string;
+};
+
+type CustomVariable = {
+  name: string;
+  value: string;
+};
+
+type CustomVariables = {
+  [index: number]: CustomVariable;
 };

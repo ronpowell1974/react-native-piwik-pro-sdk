@@ -8,6 +8,8 @@ jest.mock('react-native', () => ({
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
+      setIncludeDefaultCustomVariables: jest.fn(),
+      getIncludeDefaultCustomVariables: jest.fn(),
     },
   },
   Platform: {
@@ -68,6 +70,27 @@ describe('PiwikProSdk', () => {
       const result = await PiwikProSdk.getDispatchInterval();
 
       expect(result).toStrictEqual(5);
+    });
+  });
+
+  describe('#setIncludeDefaultCustomVariables', () => {
+    it('calls setIncludeDefaultCustomVariables from native SDK', async () => {
+      await PiwikProSdk.setIncludeDefaultCustomVariables(false);
+
+      expect(
+        NativeModules.PiwikProSdk.setIncludeDefaultCustomVariables
+      ).toHaveBeenCalledWith(false);
+    });
+  });
+
+  describe('#getIncludeDefaultCustomVariables', () => {
+    it('calls getIncludeDefaultCustomVariables from native SDK', async () => {
+      NativeModules.PiwikProSdk.getIncludeDefaultCustomVariables.mockResolvedValue(
+        false
+      );
+      const result = await PiwikProSdk.getIncludeDefaultCustomVariables();
+
+      expect(result).toStrictEqual(false);
     });
   });
 });

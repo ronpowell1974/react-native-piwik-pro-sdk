@@ -4,21 +4,23 @@ function validateInt(value: number) {
   }
 }
 
-function validateCustomDimensions(customDimensions?: CustomDimensions) {
-  if (!customDimensions) {
+function validateCustomKeyValue(
+  customKeyValue?: CustomDimensions | CustomVariables
+) {
+  if (!customKeyValue) {
     return;
   }
 
-  Object.entries(customDimensions).forEach(([key, _]) => {
-    const dimensionId = parseInt(key, 10);
-    if (key !== dimensionId.toString()) {
-      throw new Error('Dimension ID must be an integer');
+  Object.entries(customKeyValue).forEach(([key, _]) => {
+    const id = parseInt(key, 10);
+    if (key !== id.toString()) {
+      throw new Error('ID (key) must be an integer');
     }
 
-    if (dimensionId < 1) {
-      throw new Error('Dimension ID must be an integer greater than 0');
+    if (id < 1) {
+      throw new Error('ID (key) must be an integer greater than 0');
     }
   });
 }
 
-export { validateInt, validateCustomDimensions };
+export { validateInt, validateCustomKeyValue };

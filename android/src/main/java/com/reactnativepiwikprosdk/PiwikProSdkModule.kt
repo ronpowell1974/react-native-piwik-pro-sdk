@@ -37,13 +37,17 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun trackScreen(path: String, title: String?, customDimensions: ReadableMap?, promise: Promise) {
+  fun trackScreen(path: String, title: String?, customDimensions: ReadableMap?, visitCustomVariables: ReadableMap?, screenCustomVariables: ReadableMap?, promise: Promise) {
     try {
       val tracker = getTracker()
       val trackHelper = TrackHelper.track()
+      val screen = trackHelper.screen(path).title(title)
 
       applyCustomDimensions(trackHelper, customDimensions)
-      trackHelper.screen(path).title(title).with(tracker)
+      applyVisitCustomVariables(trackHelper, visitCustomVariables)
+      applyScreenCustomVariables(screen, screenCustomVariables)
+      screen.with(tracker)
+
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -80,6 +84,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  @ReactMethod
+  fun setIncludeDefaultCustomVariables(includeDefaultCustomVariables: Boolean, promise: Promise) {
+    try {
+      getTracker().setIncludeDefaultCustomVars(includeDefaultCustomVariables);
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getIncludeDefaultCustomVariables(promise: Promise) {
+    try {
+      val includeDefaultCustomVariables = getTracker().includeDefaultCustomVars
+      promise.resolve(includeDefaultCustomVariables)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
   private fun getTracker(): Tracker {
     return this.tracker ?: throw Exception("Piwik Pro SDK has not been initialized")
   }
@@ -87,6 +111,28 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   private fun applyCustomDimensions(trackHelper: TrackHelper, customDimensions: ReadableMap?) {
     customDimensions?.entryIterator?.forEach {
       trackHelper.dimension(it.key.toInt(), it.value.toString())
+    }
+  }
+
+  private fun applyVisitCustomVariables(trackHelper: TrackHelper, customVariables: ReadableMap?) {
+    customVariables?.entryIterator?.forEach {
+      val key = it.key.toInt();
+      val valuesMap: ReadableMap = it.value as ReadableMap
+      val name = valuesMap.getString("name")
+      val value = valuesMap.getString("value")
+
+      trackHelper.visitVariables(key, name, value)
+    }
+  }
+
+  private fun applyScreenCustomVariables(screen: TrackHelper.Screen, customVariables: ReadableMap?) {
+    customVariables?.entryIterator?.forEach {
+      val key = it.key.toInt();
+      val valuesMap: ReadableMap = it.value as ReadableMap
+      val name = valuesMap.getString("name")
+      val value = valuesMap.getString("value")
+
+      screen.variable(key, name, value)
     }
   }
 }

@@ -38,6 +38,38 @@ PiwikProSdk.trackScreen('your_activity_path', 'title')
 ```
 
 
+## Tracking custom variables
+
+A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name — for example, “User status” — and a value – for example, “LoggedIn” or “Anonymous”. It is required for names and values to be encoded in UTF-8.
+
+Each custom variable has a scope. There are two types of custom variables scope - visit scope and screen scope. The visit scope can be used for any tracking action, and the screen scope can only be applied to tracking screen views.
+
+To set the custom variable of the screen scope, use the `screenCustomVariables` object in the screen tracking method options:
+
+```js
+//TODO
+```
+
+To use the custom variable of the visit scope, use the `visitCustomVariables` object in the tracking method options:
+
+```js
+//TODO
+```
+
+Please note that for the Default custom variables option, use the custom variables of the visit scope with indexes 1-3.
+Custom Variables is the object with the following format:
+```js
+const customVariables = {
+  4: { name: 'food', value: 'pizza' },
+  5: { name: 'drink', value: 'water' },
+}
+```
+where:
+- `index: number`, the key (*required*) – a given custom variable name must always be stored in the same “index” per session. For example, if you choose to store the variable with name “Gender” in index  `1` and you record another custom variable in index `1`, then the “Gender” variable will be deleted and replaced with a new custom variable stored in index `1`.
+- `name: string` (*required*) – defines the name of a specific custom variable such as “User type” (Limited to 200 characters).
+- `value: string` (*required*) – defines the value of a specific custom variable such as “Customer” (Limited to 200 characters).
+
+
 ## Tracking custom dimensions
 
 To track a custom name-value pair assigned to your users or screen views, use [Custom Dimensions](https://help.piwik.pro/support/analytics/custom-dimension/). Note that the custom value data is not sent by itself, but only with other tracking actions such as screen views, events or other tracking actions (see the documentation of other tracking methods), for example:
@@ -81,6 +113,23 @@ const currentDispatchInterval = await PiwikProSdk.getDispatchInterval();
 ```
 Returns:
 - `dispatchInterval: number` - current dispatch interval (in seconds) or negative number if automatic dispatch has been disabled.
+
+
+## Default custom variables
+
+SDK can automatically add information about the platform version, OS version and app version in custom variables with indexes 1-3. By default, this option is turned on. This can be changed via the `setIncludeDefaultCustomVars` method:
+```js
+await PiwikProSdk.setIncludeDefaultCustomVariables(true);
+```
+Parameters:
+- `includeDefaultCustomVariables: boolean` (*required*) - flag that determines whether default custom variables should be added to each tracking event.
+
+The status of the option can be checked with `getIncludeDefaultCustomVariables`:
+```js
+const includeDefaultCustomVariables = await PiwikProSdk.getIncludeDefaultCustomVariables();
+```
+Returns:
+- `includeDefaultCustomVariables: boolean` - flag that determines whether default custom variables should be added to each tracking event.
 
 
 ## Contributing

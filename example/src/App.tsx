@@ -28,7 +28,13 @@ export default function App() {
       .catch((error) => setResult({ message: 'Error', error }));
     const di = await PiwikProSdk.getDispatchInterval();
     setDispatchInterval(di);
-    console.log(di);
+    console.log('Dispatch interval:', di);
+    const includeDefaultCustomVariables = false;
+    await PiwikProSdk.setIncludeDefaultCustomVariables(
+      includeDefaultCustomVariables
+    );
+    const include = await PiwikProSdk.getIncludeDefaultCustomVariables();
+    console.log('Include default custom variables:', include);
   };
 
   const trackScreen = () => {
@@ -45,6 +51,24 @@ export default function App() {
       1: 'beta',
       2: 'gamma',
     })
+      .then(() => {
+        setResult({ message: `Success track screen ${eventNum}` });
+        setEventNum(eventNum + 1);
+      })
+      .catch((error) => setResult({ message: 'Error', error }));
+  };
+
+  const trackScreenWithCustomVariables = async () => {
+    const visitCustomVariables = { 4: { name: 'food', value: 'pizza' } };
+    // const screenCustomVariables = { 5: { name: 'drink', value: 'water' } };
+
+    await PiwikProSdk.trackScreen(
+      `your_activity_path${eventNum}`,
+      'customVariables',
+      undefined,
+      visitCustomVariables,
+      undefined
+    )
       .then(() => {
         setResult({ message: `Success track screen ${eventNum}` });
         setEventNum(eventNum + 1);
@@ -103,6 +127,15 @@ export default function App() {
           >
             <Text style={styles.buttonText}>
               Track screen with custom dimensions
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={trackScreenWithCustomVariables}
+          >
+            <Text style={styles.buttonText}>
+              Track screen with custom variables
             </Text>
           </TouchableOpacity>
         </View>

@@ -29,10 +29,14 @@ RCT_REMAP_METHOD(trackScreen,
                  withPath:(nonnull NSString*)path
                  withTitle:(NSString*)title
                  withCustomDimensions:(NSDictionary*)customDimensions
+                 withVisitCustomVariables:(NSDictionary*)visitCustomVariables
+                 withScreenCustomVariables:(NSDictionary*)screenCustomVariables
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
     [self applyCustomDimensions:customDimensions];
+    [self applyVisitCustomVariables:visitCustomVariables];
+    [self applyScreenCustomVariables:screenCustomVariables];
     [[PiwikTracker sharedInstance] sendView:path];
     resolve(nil);
 }
@@ -45,7 +49,7 @@ RCT_REMAP_METHOD(dispatch,
         reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
         return;
     }
-
+    
     @try {
         [[PiwikTracker sharedInstance] dispatch];
         resolve(nil);
@@ -89,6 +93,41 @@ RCT_REMAP_METHOD(getDispatchInterval,
     }
 }
 
+RCT_REMAP_METHOD(setIncludeDefaultCustomVariables,
+                 withIncludeDefaultCustomVariables:(BOOL)includeDefaultCustomVariables
+                 getDispatchIntervalWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [PiwikTracker sharedInstance].includeDefaultCustomVariable = includeDefaultCustomVariables;
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(getIncludeDefaultCustomVariables,
+                 getIncludeDefaultCustomVariablesWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        BOOL includeDefaultCustomVariables = [PiwikTracker sharedInstance].includeDefaultCustomVariable;
+        resolve(@(includeDefaultCustomVariables));
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 - (void)applyCustomDimensions:(nullable NSDictionary*)customDimensions {
     if (customDimensions == nil) {
         return;
@@ -96,6 +135,28 @@ RCT_REMAP_METHOD(getDispatchInterval,
     
     for (NSString* key in customDimensions) {
         [[PiwikTracker sharedInstance] setCustomDimensionForIndex:[key intValue] value:customDimensions[key] scope:CustomDimensionScopeAction];
+    }
+}
+
+- (void)applyVisitCustomVariables:(nullable NSDictionary*)customVariables {
+    if (customVariables == nil) {
+        return;
+    }
+    
+    for (NSString* key in customVariables) {
+        NSDictionary* valuesDict = customVariables[key];
+        [[PiwikTracker sharedInstance] setCustomVariableForIndex:[key intValue] name:valuesDict[@"name"] value:valuesDict[@"value"] scope:CustomVariableScopeVisit];
+    }
+}
+
+- (void)applyScreenCustomVariables:(nullable NSDictionary*)customVariables {
+    if (customVariables == nil) {
+        return;
+    }
+    
+    for (NSString* key in customVariables) {
+        NSDictionary* valuesDict = customVariables[key];
+        [[PiwikTracker sharedInstance] setCustomVariableForIndex:[key intValue] name:valuesDict[@"name"] value:valuesDict[@"value"] scope:CustomVariableScopeAction];
     }
 }
 
