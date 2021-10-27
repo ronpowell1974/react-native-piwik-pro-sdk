@@ -5,6 +5,7 @@ jest.mock('react-native', () => ({
   NativeModules: {
     PiwikProSdk: {
       init: jest.fn(),
+      trackScreen: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -34,6 +35,34 @@ describe('PiwikProSdk', () => {
       expect(NativeModules.PiwikProSdk.init).toHaveBeenCalledWith(
         apiUrl,
         siteId
+      );
+    });
+  });
+
+  describe('#trackScreen', () => {
+    it('calls trackScreen from native SDK', async () => {
+      const path = 'example/path';
+      const options: TrackScreenOptions = {
+        title: 'newAction',
+        customDimensions: { 1: 'pizza' },
+      };
+
+      await PiwikProSdk.trackScreen(path, options);
+
+      expect(NativeModules.PiwikProSdk.trackScreen).toHaveBeenCalledWith(
+        path,
+        options
+      );
+    });
+
+    it('calls trackScreen from native SDK with path when options are not passed', async () => {
+      const path = 'example/path';
+
+      await PiwikProSdk.trackScreen(path);
+
+      expect(NativeModules.PiwikProSdk.trackScreen).toHaveBeenCalledWith(
+        path,
+        undefined
       );
     });
   });
@@ -108,9 +137,7 @@ describe('PiwikProSdk', () => {
 
   describe('#isAnonymizationOn', () => {
     it('calls isAnonymizationOn from native SDK', async () => {
-      NativeModules.PiwikProSdk.isAnonymizationOn.mockResolvedValue(
-        true
-      );
+      NativeModules.PiwikProSdk.isAnonymizationOn.mockResolvedValue(true);
       const result = await PiwikProSdk.isAnonymizationOn();
 
       expect(result).toStrictEqual(true);

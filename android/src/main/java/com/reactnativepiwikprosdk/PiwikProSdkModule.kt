@@ -37,15 +37,15 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun trackScreen(path: String, title: String?, customDimensions: ReadableMap?, visitCustomVariables: ReadableMap?, screenCustomVariables: ReadableMap?, promise: Promise) {
+  fun trackScreen(path: String, options: ReadableMap?, promise: Promise) {
     try {
       val tracker = getTracker()
       val trackHelper = TrackHelper.track()
-      val screen = trackHelper.screen(path).title(title)
+      val screen = trackHelper.screen(path).title(options?.getString("title"))
 
-      applyCustomDimensions(trackHelper, customDimensions)
-      applyVisitCustomVariables(trackHelper, visitCustomVariables)
-      applyScreenCustomVariables(screen, screenCustomVariables)
+      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyScreenCustomVariables(screen, options?.getMap("screenCustomVariables"))
       screen.with(tracker)
 
       promise.resolve(null)

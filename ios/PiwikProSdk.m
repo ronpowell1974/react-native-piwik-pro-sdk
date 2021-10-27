@@ -26,19 +26,26 @@ RCT_REMAP_METHOD(init,
 }
 
 RCT_REMAP_METHOD(trackScreen,
-                 withPath:(nonnull NSString*)path
-                 withTitle:(NSString*)title
-                 withCustomDimensions:(NSDictionary*)customDimensions
-                 withVisitCustomVariables:(NSDictionary*)visitCustomVariables
-                 withScreenCustomVariables:(NSDictionary*)screenCustomVariables
+                 trackScreenWithPath:(nonnull NSString*)path
+                 withOptions:(NSDictionary*)options
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
-    [self applyCustomDimensions:customDimensions];
-    [self applyVisitCustomVariables:visitCustomVariables];
-    [self applyScreenCustomVariables:screenCustomVariables];
-    [[PiwikTracker sharedInstance] sendView:path];
-    resolve(nil);
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [self applyCustomDimensions:options[@"customDimensions"]];
+        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyScreenCustomVariables:options[@"screenCustomVariables"]];
+        
+        [[PiwikTracker sharedInstance] sendView:path];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
 }
 
 RCT_REMAP_METHOD(dispatch,

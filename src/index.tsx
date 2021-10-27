@@ -24,22 +24,13 @@ async function init(apiUrl: string, siteId: string): Promise<void> {
 
 async function trackScreen(
   path: string,
-  title?: string,
-  customDimensions?: CustomDimensions,
-  visitCustomVariables?: CustomVariables,
-  screenCustomVariables?: CustomVariables
+  options?: TrackScreenOptions
 ): Promise<void> {
-  validateCustomKeyValue(customDimensions);
-  validateCustomKeyValue(visitCustomVariables);
-  validateCustomKeyValue(screenCustomVariables);
+  validateCustomKeyValue(options?.customDimensions);
+  validateCustomKeyValue(options?.visitCustomVariables);
+  validateCustomKeyValue(options?.screenCustomVariables);
 
-  return await PiwikProNativeSdk.trackScreen(
-    path,
-    title,
-    customDimensions,
-    visitCustomVariables,
-    screenCustomVariables
-  );
+  return await PiwikProNativeSdk.trackScreen(path, options);
 }
 
 async function dispatch(): Promise<void> {

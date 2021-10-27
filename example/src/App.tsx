@@ -51,10 +51,14 @@ export default function App() {
   };
 
   const trackScreenWithCustomDimensions = async () => {
-    await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, 'title', {
+    const title = 'customDimensions';
+    const customDimensions = {
       1: 'beta',
       2: 'gamma',
-    })
+    };
+    const options: TrackScreenOptions = { title, customDimensions };
+
+    await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
       .then(() => {
         setResult({ message: `Success track screen ${eventNum}` });
         setEventNum(eventNum + 1);
@@ -63,16 +67,12 @@ export default function App() {
   };
 
   const trackScreenWithCustomVariables = async () => {
+    const title = 'customVariables';
     const visitCustomVariables = { 4: { name: 'food', value: 'pizza' } };
     // const screenCustomVariables = { 5: { name: 'drink', value: 'water' } };
+    const options: TrackScreenOptions = { title, visitCustomVariables };
 
-    await PiwikProSdk.trackScreen(
-      `your_activity_path${eventNum}`,
-      'customVariables',
-      undefined,
-      visitCustomVariables,
-      undefined
-    )
+    await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
       .then(() => {
         setResult({ message: `Success track screen ${eventNum}` });
         setEventNum(eventNum + 1);
