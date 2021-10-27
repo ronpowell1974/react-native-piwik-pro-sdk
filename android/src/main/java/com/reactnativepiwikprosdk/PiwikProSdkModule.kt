@@ -104,6 +104,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  @ReactMethod
+  fun setAnonymizationState(anonymizationState: Boolean, promise: Promise) {
+    try {
+      getTracker().setAnonymizationState(anonymizationState);
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun isAnonymizationOn(promise: Promise) {
+    try {
+      val anonymizationState = getTracker().isAnonymizationOn
+      promise.resolve(anonymizationState)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
   private fun getTracker(): Tracker {
     return this.tracker ?: throw Exception("Piwik Pro SDK has not been initialized")
   }

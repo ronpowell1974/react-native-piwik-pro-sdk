@@ -18,6 +18,8 @@ export default function App() {
   }>({ message: 'Press any button' });
   const [eventNum, setEventNum] = React.useState<number>(1);
   const [dispatchInterval, setDispatchInterval] = React.useState<number>(0);
+  const [anonymizationEnabled, setAnonymizationEnabled] =
+    React.useState<boolean>(true);
 
   const initializePiwikProSdk = async () => {
     await PiwikProSdk.init(
@@ -26,10 +28,12 @@ export default function App() {
     )
       .then(() => setResult({ message: 'Success' }))
       .catch((error) => setResult({ message: 'Error', error }));
+
     const di = await PiwikProSdk.getDispatchInterval();
     setDispatchInterval(di);
     console.log('Dispatch interval:', di);
-    const includeDefaultCustomVariables = false;
+
+    const includeDefaultCustomVariables = true;
     await PiwikProSdk.setIncludeDefaultCustomVariables(
       includeDefaultCustomVariables
     );
@@ -88,6 +92,12 @@ export default function App() {
       .catch((error) => setResult({ message: 'Error', error }));
   };
 
+  const toggleAnonymizationState = async () => {
+    await PiwikProSdk.setAnonymizationState(!anonymizationEnabled);
+    const currentAnonymizationState = await PiwikProSdk.isAnonymizationOn();
+    setAnonymizationEnabled(currentAnonymizationState);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -115,6 +125,16 @@ export default function App() {
             onPress={changeDispatchInterval}
           >
             <Text style={styles.buttonText}>Set dispatch interval</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={toggleAnonymizationState}
+          >
+            <Text style={styles.buttonText}>
+              Toggle anonymization state, current:{' '}
+              {anonymizationEnabled ? 'enabled' : 'disabled'}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.button} onPress={trackScreen}>

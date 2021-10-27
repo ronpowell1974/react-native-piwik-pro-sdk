@@ -67,6 +67,16 @@ async function getIncludeDefaultCustomVariables(): Promise<boolean> {
   return await PiwikProNativeSdk.getIncludeDefaultCustomVariables();
 }
 
+async function setAnonymizationState(
+  anonymizationState: boolean
+): Promise<void> {
+  return await PiwikProNativeSdk.setAnonymizationState(anonymizationState);
+}
+
+async function isAnonymizationOn(): Promise<boolean> {
+  return await PiwikProNativeSdk.isAnonymizationOn();
+}
+
 const PiwikProSdk: PiwikProSdkType = {
   init,
   trackScreen,
@@ -75,6 +85,8 @@ const PiwikProSdk: PiwikProSdkType = {
   getDispatchInterval,
   setIncludeDefaultCustomVariables,
   getIncludeDefaultCustomVariables,
+  setAnonymizationState,
+  isAnonymizationOn,
 };
 
 export default PiwikProSdk;

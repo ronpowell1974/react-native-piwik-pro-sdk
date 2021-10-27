@@ -52,6 +52,17 @@ type PiwikProSdkType = {
    * added to each tracking event.
    */
   getIncludeDefaultCustomVariables(): Promise<boolean>;
+
+  /**
+   * Sets the new anonymization state.
+   * @anonymizationState new anonymization state
+   */
+  setAnonymizationState(anonymizationState: boolean): Promise<void>;
+
+  /**
+   * Returns current anonymization state.
+   */
+  isAnonymizationOn(): Promise<boolean>;
 };
 
 type CustomDimensions = {

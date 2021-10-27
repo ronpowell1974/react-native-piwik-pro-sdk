@@ -128,6 +128,41 @@ RCT_REMAP_METHOD(getIncludeDefaultCustomVariables,
     }
 }
 
+RCT_REMAP_METHOD(setAnonymizationState,
+                 withAnonymizationState:(BOOL)anonymizationState
+                 getDispatchIntervalWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [PiwikTracker sharedInstance].isAnonymizationEnabled = anonymizationState;
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(isAnonymizationOn,
+                 isAnonymizationOnWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        BOOL anonymizationState = [PiwikTracker sharedInstance].isAnonymizationEnabled;
+        resolve(@(anonymizationState));
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 - (void)applyCustomDimensions:(nullable NSDictionary*)customDimensions {
     if (customDimensions == nil) {
         return;

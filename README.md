@@ -26,6 +26,35 @@ await PiwikProSdk.init(
 ***Note:*** Each tracking method is implemented as a Promise which will be rejected if the `PiwikProSdk` has not been initialized.
 
 
+
+## Data anonymization
+
+Anonymization is the feature that allows tracking a user’s activity for aggregated data analysis even if the user doesn’t consent to track the data. If a user does not agree to be tracked, he will not be identified as the same person across multiple sessions.
+
+Personal data will not be tracked during the session (i.e. user ID, device ID) If the anonymization is enabled, a new visitor ID will be created each time the application starts.
+
+Anonymization is enabled by default.
+
+You can turn the anonymization on and off using the `setAnonymizationState` method:
+
+```js
+await PiwikProSdk.setAnonymizationState(false);
+```
+
+Parameters:
+- `anonymizationState: boolean` (*required*) - new anonymization state.
+
+You can also check the anonymization status using the `isAnonymizationOn` method:
+
+```js
+const anonymizationState = await PiwikProSdk.isAnonymizationOn();
+```
+
+Returns:
+- `anonymizationState: boolean` - current anonymization state.
+
+
+
 ## Tracking screen views
 
 ```js
