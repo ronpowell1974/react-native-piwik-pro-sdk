@@ -125,6 +125,19 @@ export default function App() {
     }
   };
 
+  const trackException = async () => {
+    const options: TrackExceptionOptions = {
+      visitCustomVariables,
+    };
+
+    try {
+      await PiwikProSdk.trackException(`exception_${eventNum}`, false, options);
+      setEventNum(eventNum + 1);
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -188,6 +201,10 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackCustomEvent}>
             <Text style={styles.buttonText}>Track custom event</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackException}>
+            <Text style={styles.buttonText}>Track exception</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

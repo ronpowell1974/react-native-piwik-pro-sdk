@@ -27,6 +27,18 @@ type PiwikProSdkType = {
   ): Promise<void>;
 
   /**
+   * Tracks exception.
+   * @description the exception message
+   * @isFatal determines whether the exception prefix will be `'fatal'` or `'caught'`
+   * @options exception tracking options (customDimensions, visitCustomVariables)
+   */
+  trackException(
+    description: string,
+    isFatal: boolean,
+    options?: TrackExceptionOptions
+  ): Promise<void>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;
@@ -101,3 +113,5 @@ type TrackCustomEventOptions = CommonEventOptions & {
   value?: number;
   path?: string;
 };
+
+type TrackExceptionOptions = CommonEventOptions;

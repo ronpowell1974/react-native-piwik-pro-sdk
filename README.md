@@ -87,7 +87,6 @@ const options = {
 await PiwikProSdk.trackCustomEvent(`custom_event`, 'custom_event_action', options);
 ```
 Parameters:
-
 - `category: string` *(required)* - defines the event category. You may define event categories based on the class of user actions (e.g. clicks, gestures, voice commands), or you may define them based on the features available in your application (e.g. play, pause, fast forward, etc.).
 - `action: string` *(required)* - defines the specific event action within the category specified. In the example, we are effectively saying that the category of the event is user clicks, and the action is a button click.
 - `options` - custom event options, object containing five properties (all of them are optional):
@@ -99,6 +98,27 @@ Parameters:
 
 
 For more resources, please visit [documentation](https://help.piwik.pro/support/tag-manager/piwik-pro-custom-event/).
+
+
+## Tracking exceptions
+
+Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` prefix, and additionally the `'exception'` prefix if `tracker.isPrefixing() //TODO` option is enabled(true).
+
+Measure a caught exception by setting the exception field values on the tracker and sending the hit, as with this example:
+
+```js
+const options = {
+  visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
+  customDimensions: { 1: 'some custom dimension value' },
+};
+await PiwikProSdk.trackException('exception', false, options);
+```
+Parameters:
+- `description: string` *(required)* - the exception message.
+- `isFatal: boolean` *(required)* - true if an exception is fatal. Determines whether the exception prefix will be `'fatal'` or `'caught'`.
+- `options` - exception tracking options, object containing two properties (all of them are optional):
+  - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
 
 
 ## Tracking custom variables

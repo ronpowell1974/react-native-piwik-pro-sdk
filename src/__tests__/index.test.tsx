@@ -7,6 +7,7 @@ jest.mock('react-native', () => ({
       init: jest.fn(),
       trackScreen: jest.fn(),
       trackCustomEvent: jest.fn(),
+      trackException: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -96,6 +97,38 @@ describe('PiwikProSdk', () => {
       expect(NativeModules.PiwikProSdk.trackCustomEvent).toHaveBeenCalledWith(
         category,
         action,
+        undefined
+      );
+    });
+  });
+
+  describe('#trackException', () => {
+    it('calls trackException from native SDK', async () => {
+      const description = 'sample exception';
+      const isFatal = true;
+      const options: TrackExceptionOptions = {
+        customDimensions: { 1: 'pizza' },
+        visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
+      };
+
+      await PiwikProSdk.trackException(description, isFatal, options);
+
+      expect(NativeModules.PiwikProSdk.trackException).toHaveBeenCalledWith(
+        description,
+        isFatal,
+        options
+      );
+    });
+
+    it('calls trackException from native SDK with path when options are not passed', async () => {
+      const description = 'sample exception';
+      const isFatal = true;
+
+      await PiwikProSdk.trackException(description, isFatal);
+
+      expect(NativeModules.PiwikProSdk.trackException).toHaveBeenCalledWith(
+        description,
+        isFatal,
         undefined
       );
     });

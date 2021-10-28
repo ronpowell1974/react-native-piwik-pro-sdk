@@ -71,6 +71,52 @@ RCT_REMAP_METHOD(trackCustomEvent,
     }
 }
 
+RCT_REMAP_METHOD(trackCustomEvent,
+                 trackCustomEventWithCategory:(nonnull NSString*)category
+                 withAction:(nonnull NSString*)action
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [self applyCustomDimensions:options[@"customDimensions"]];
+        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+
+        [[PiwikTracker sharedInstance] sendEventWithCategory:category action:action name:options[@"name"] value:options[@"value"]];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(trackException,
+                 trackExceptionWithDescription:(nonnull NSString*)description
+                 withIsFatal:(BOOL)isFatal
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [self applyCustomDimensions:options[@"customDimensions"]];
+        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+
+        [[PiwikTracker sharedInstance] sendExceptionWithDescription:description isFatal:isFatal];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(dispatch,
                  dispatchWithResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)

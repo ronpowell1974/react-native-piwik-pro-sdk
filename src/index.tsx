@@ -41,6 +41,14 @@ async function trackCustomEvent(
   return await PiwikProNativeSdk.trackCustomEvent(category, action, options);
 }
 
+async function trackException(
+  description: string,
+  isFatal: boolean,
+  options?: TrackExceptionOptions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackException(description, isFatal, options);
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -80,6 +88,7 @@ const PiwikProSdk: PiwikProSdkType = {
   init,
   trackScreen,
   trackCustomEvent,
+  trackException,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,
