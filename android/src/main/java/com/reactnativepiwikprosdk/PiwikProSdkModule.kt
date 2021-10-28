@@ -55,6 +55,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackCustomEvent(category: String, action: String, options: ReadableMap?, promise: Promise) {
+    try {
+      val tracker = getTracker()
+      val trackHelper = TrackHelper.track()
+      val customEventTracker = trackHelper.event(category, action).path(options?.getString("path"))
+        .name(options?.getString("name")).value(
+        options?.getDouble("value")?.toFloat()
+      )
+
+      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      customEventTracker.with(tracker)
+
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()
@@ -136,7 +156,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
   private fun applyVisitCustomVariables(trackHelper: TrackHelper, customVariables: ReadableMap?) {
     customVariables?.entryIterator?.forEach {
-      val key = it.key.toInt();
+      val key = it.key.toInt()
       val valuesMap: ReadableMap = it.value as ReadableMap
       val name = valuesMap.getString("name")
       val value = valuesMap.getString("value")
@@ -145,9 +165,12 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
-  private fun applyScreenCustomVariables(screen: TrackHelper.Screen, customVariables: ReadableMap?) {
+  private fun applyScreenCustomVariables(
+    screen: TrackHelper.Screen,
+    customVariables: ReadableMap?
+  ) {
     customVariables?.entryIterator?.forEach {
-      val key = it.key.toInt();
+      val key = it.key.toInt()
       val valuesMap: ReadableMap = it.value as ReadableMap
       val name = valuesMap.getString("name")
       val value = valuesMap.getString("value")

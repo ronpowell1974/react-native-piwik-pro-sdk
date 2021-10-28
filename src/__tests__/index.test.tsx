@@ -6,6 +6,7 @@ jest.mock('react-native', () => ({
     PiwikProSdk: {
       init: jest.fn(),
       trackScreen: jest.fn(),
+      trackCustomEvent: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -62,6 +63,39 @@ describe('PiwikProSdk', () => {
 
       expect(NativeModules.PiwikProSdk.trackScreen).toHaveBeenCalledWith(
         path,
+        undefined
+      );
+    });
+  });
+
+  describe('#trackCustomEvent', () => {
+    it('calls trackCustomEvent from native SDK', async () => {
+      const category = 'example_category';
+      const action = 'add';
+      const options: TrackCustomEventOptions = {
+        name: 'customEvent',
+        path: 'some/path',
+        customDimensions: { 1: 'pizza' },
+      };
+
+      await PiwikProSdk.trackCustomEvent(category, action, options);
+
+      expect(NativeModules.PiwikProSdk.trackCustomEvent).toHaveBeenCalledWith(
+        category,
+        action,
+        options
+      );
+    });
+
+    it('calls trackCustomEvent from native SDK with path when options are not passed', async () => {
+      const category = 'example_category';
+      const action = 'add';
+
+      await PiwikProSdk.trackCustomEvent(category, action);
+
+      expect(NativeModules.PiwikProSdk.trackCustomEvent).toHaveBeenCalledWith(
+        category,
+        action,
         undefined
       );
     });

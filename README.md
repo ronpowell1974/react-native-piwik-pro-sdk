@@ -73,6 +73,34 @@ Parameters:
   - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
 
 
+## Tracking custom events
+
+To collect data about the user’s interaction with the interactive components of the application, like a button presses or the use of a particular item in the game - use event method.
+
+```js
+const options = {
+  name: 'customEvent',
+  path: 'some/path',
+  value: 1.5,
+  customDimensions: { 1: 'some custom dimension value' },
+}
+await PiwikProSdk.trackCustomEvent(`custom_event`, 'custom_event_action', options);
+```
+Parameters:
+
+- `category: string` *(required)* - defines the event category. You may define event categories based on the class of user actions (e.g. clicks, gestures, voice commands), or you may define them based on the features available in your application (e.g. play, pause, fast forward, etc.).
+- `action: string` *(required)* - defines the specific event action within the category specified. In the example, we are effectively saying that the category of the event is user clicks, and the action is a button click.
+- `options` - custom event options, object containing five properties (all of them are optional):
+  - `name: string` - defines a label associated with the event. For example, if you have multiple button controls on a screen, you may use the label to specify the specific view control identifier that was clicked.
+  - `value: number` - float, defines a numerical value associated with the event. For example, if you were tracking “Buy” button clicks, you may log the number of items being purchased or their total cost.
+  - `path: string` - the path under which this event occurred (it will be omitted in iOS application).
+  - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
+
+
+For more resources, please visit [documentation](https://help.piwik.pro/support/tag-manager/piwik-pro-custom-event/).
+
+
 ## Tracking custom variables
 
 A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name - for example, “User status” - and a value - for example, “LoggedIn” or “Anonymous”. It is required for names and values to be encoded in UTF-8.

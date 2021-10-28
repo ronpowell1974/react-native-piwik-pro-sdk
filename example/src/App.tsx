@@ -21,6 +21,14 @@ export default function App() {
   const [anonymizationEnabled, setAnonymizationEnabled] =
     React.useState<boolean>(true);
 
+  const customDimensions = {
+    1: 'beta',
+    2: 'gamma',
+  };
+  const visitCustomVariables = { 4: { name: 'food', value: 'pizza' } };
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const screenCustomVariables = { 5: { name: 'drink', value: 'water' } };
+
   const initializePiwikProSdk = async () => {
     await PiwikProSdk.init(
       'https://your.piwik.pro.server.com',
@@ -51,12 +59,10 @@ export default function App() {
   };
 
   const trackScreenWithCustomDimensions = async () => {
-    const title = 'customDimensions';
-    const customDimensions = {
-      1: 'beta',
-      2: 'gamma',
+    const options: TrackScreenOptions = {
+      title: 'customDimensions',
+      customDimensions,
     };
-    const options: TrackScreenOptions = { title, customDimensions };
 
     await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
       .then(() => {
@@ -67,10 +73,10 @@ export default function App() {
   };
 
   const trackScreenWithCustomVariables = async () => {
-    const title = 'customVariables';
-    const visitCustomVariables = { 4: { name: 'food', value: 'pizza' } };
-    // const screenCustomVariables = { 5: { name: 'drink', value: 'water' } };
-    const options: TrackScreenOptions = { title, visitCustomVariables };
+    const options: TrackScreenOptions = {
+      title: 'customVariables',
+      visitCustomVariables,
+    };
 
     await PiwikProSdk.trackScreen(`your_activity_path${eventNum}`, options)
       .then(() => {
@@ -96,6 +102,27 @@ export default function App() {
     await PiwikProSdk.setAnonymizationState(!anonymizationEnabled);
     const currentAnonymizationState = await PiwikProSdk.isAnonymizationOn();
     setAnonymizationEnabled(currentAnonymizationState);
+  };
+
+  const trackCustomEvent = async () => {
+    const options: TrackCustomEventOptions = {
+      name: 'customEvent',
+      path: 'some/path',
+      value: 1.5,
+      visitCustomVariables,
+      customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackCustomEvent(
+        `custom_event_${eventNum}`,
+        'custom_event_action',
+        options
+      );
+      setEventNum(eventNum + 1);
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
   };
 
   return (
@@ -157,6 +184,10 @@ export default function App() {
             <Text style={styles.buttonText}>
               Track screen with custom variables
             </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackCustomEvent}>
+            <Text style={styles.buttonText}>Track custom event</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

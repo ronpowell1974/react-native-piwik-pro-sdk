@@ -10,9 +10,21 @@ type PiwikProSdkType = {
   /**
    * Sends tracking screen view event.
    * @path screen path
-   * @options tracking screen view options (title, customDimensions, screenCustomVariables, visitCustomVariables)
+   * @options tracking screen options (title, customDimensions, screenCustomVariables, visitCustomVariables)
    */
   trackScreen(path: string, options?: TrackScreenOptions): Promise<void>;
+
+  /**
+   * Tracks custom event.
+   * @category event category
+   * @action specific event action within the category specified
+   * @options custom event options (name, value, path, customDimensions, visitCustomVariables)
+   */
+  trackCustomEvent(
+    category: string,
+    action: string,
+    options?: TrackCustomEventOptions
+  ): Promise<void>;
 
   /**
    * Dispatches queued events.
@@ -74,9 +86,18 @@ type CustomVariables = {
   [index: number]: CustomVariable;
 };
 
-type TrackScreenOptions = {
-  title?: string;
+type CommonEventOptions = {
   customDimensions?: CustomDimensions;
   visitCustomVariables?: CustomVariables;
+};
+
+type TrackScreenOptions = CommonEventOptions & {
+  title?: string;
   screenCustomVariables?: CustomVariables;
+};
+
+type TrackCustomEventOptions = CommonEventOptions & {
+  name?: string;
+  value?: number;
+  path?: string;
 };

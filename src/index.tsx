@@ -33,6 +33,14 @@ async function trackScreen(
   return await PiwikProNativeSdk.trackScreen(path, options);
 }
 
+async function trackCustomEvent(
+  category: string,
+  action: string,
+  options?: TrackCustomEventOptions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackCustomEvent(category, action, options);
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -71,6 +79,7 @@ async function isAnonymizationOn(): Promise<boolean> {
 const PiwikProSdk: PiwikProSdkType = {
   init,
   trackScreen,
+  trackCustomEvent,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,
