@@ -49,6 +49,18 @@ async function trackException(
   return await PiwikProNativeSdk.trackException(description, isFatal, options);
 }
 
+async function trackSocialInteraction(
+  interaction: string,
+  network: string,
+  options?: TrackSocialInteractionOptions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackSocialInteraction(
+    interaction,
+    network,
+    options
+  );
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -89,6 +101,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackScreen,
   trackCustomEvent,
   trackException,
+  trackSocialInteraction,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

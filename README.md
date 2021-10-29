@@ -87,11 +87,11 @@ const options = {
 await PiwikProSdk.trackCustomEvent(`custom_event`, 'custom_event_action', options);
 ```
 Parameters:
-- `category: string` *(required)* - defines the event category. You may define event categories based on the class of user actions (e.g. clicks, gestures, voice commands), or you may define them based on the features available in your application (e.g. play, pause, fast forward, etc.).
-- `action: string` *(required)* - defines the specific event action within the category specified. In the example, we are effectively saying that the category of the event is user clicks, and the action is a button click.
+- `category: string` *(required)* - event category. You may define event categories based on the class of user actions (e.g. clicks, gestures, voice commands), or you may define them based on the features available in your application (e.g. play, pause, fast forward, etc.).
+- `action: string` *(required)* - specific event action within the category specified. In the example, we are effectively saying that the category of the event is user clicks, and the action is a button click.
 - `options` - custom event options, object containing five properties (all of them are optional):
-  - `name: string` - defines a label associated with the event. For example, if you have multiple button controls on a screen, you may use the label to specify the specific view control identifier that was clicked.
-  - `value: number` - float, defines a numerical value associated with the event. For example, if you were tracking “Buy” button clicks, you may log the number of items being purchased or their total cost.
+  - `name: string` - label associated with the event. For example, if you have multiple button controls on a screen, you may use the label to specify the specific view control identifier that was clicked.
+  - `value: number` - float, numerical value associated with the event. For example, if you were tracking 'Buy' button clicks, you may log the number of items being purchased or their total cost.
   - `path: string` - the path under which this event occurred (it will be omitted in iOS application).
   - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
@@ -121,9 +121,33 @@ Parameters:
   - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
 
 
+
+## Tracking social interactions
+
+Social interactions such as likes, shares and comments in various social networks can be tracked as below. This, again, is tracked in a similar way as with screen views but the `'social'` prefix is used when the default `tracker.isPrefixing() //TODO` option is enabled.
+
+```js
+const options = {
+  visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
+  target: 'Photo',
+};
+await PiwikProSdk.trackSocialInteraction(`Like`, 'Facebook', options);
+```
+Parameters:
+- `interaction: string` *(required)* - the social interaction, e.g. 'Like'.
+- `network: string` *(required)* - social network associated with interaction, e.g. 'Facebook'.
+- `options` - exception tracking options, object containing three properties (all of them are optional):
+  - `target: string` - the target for which this interaction occurred, e.g. 'Photo'.
+  - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
+
+The generated URL corresponds to string, which includes the network, interaction and target parameters separated by slash.
+
+
+
 ## Tracking custom variables
 
-A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name - for example, “User status” - and a value - for example, “LoggedIn” or “Anonymous”. It is required for names and values to be encoded in UTF-8.
+A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name - for example, 'User status' - and a value - for example, 'LoggedIn' or 'Anonymous'. It is required for names and values to be encoded in UTF-8.
 
 Each custom variable has a scope. There are two types of custom variables scope - visit scope and screen scope. The visit scope can be used for any tracking action, and the screen scope can only be applied to tracking screen views.
 
@@ -146,9 +170,9 @@ const customVariables = {
 }
 ```
 where:
-- `index: number`, the key *(required)* - a given custom variable name must always be stored in the same “index” per session. For example, if you choose to store the variable with name “Gender” in index  `1` and you record another custom variable in index `1`, then the “Gender” variable will be deleted and replaced with a new custom variable stored in index `1`.
-- `name: string` *(required)* - defines the name of a specific custom variable such as “User type” (Limited to 200 characters).
-- `value: string` *(required)* - defines the value of a specific custom variable such as “Customer” (Limited to 200 characters).
+- `index: number`, the key *(required)* - a given custom variable name must always be stored in the same 'index' per session. For example, if you choose to store the variable with name 'Gender' in index  `1` and you record another custom variable in index `1`, then the 'Gender' variable will be deleted and replaced with a new custom variable stored in index `1`.
+- `name: string` *(required)* - the name of a specific custom variable such as 'User type' (Limited to 200 characters).
+- `value: string` *(required)* - the value of a specific custom variable such as 'Customer' (Limited to 200 characters).
 
 
 ## Tracking custom dimensions

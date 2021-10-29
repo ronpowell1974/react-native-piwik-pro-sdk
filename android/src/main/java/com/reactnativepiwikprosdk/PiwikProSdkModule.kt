@@ -98,6 +98,28 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackSocialInteraction(
+    interaction: String,
+    network: String,
+    options: ReadableMap?,
+    promise: Promise
+  ) {
+    try {
+      val tracker = getTracker()
+      val trackHelper = TrackHelper.track()
+
+      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      trackHelper.socialInteraction(interaction, network).target(options?.getString("target"))
+        .with(tracker)
+
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

@@ -8,6 +8,7 @@ jest.mock('react-native', () => ({
       trackScreen: jest.fn(),
       trackCustomEvent: jest.fn(),
       trackException: jest.fn(),
+      trackSocialInteraction: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -131,6 +132,34 @@ describe('PiwikProSdk', () => {
         isFatal,
         undefined
       );
+    });
+  });
+
+  describe('#trackSocialInteraction', () => {
+    it('calls trackSocialInteraction from native SDK', async () => {
+      const interaction = 'sample exception';
+      const network = 'facebook';
+      const options: TrackExceptionOptions = {
+        customDimensions: { 1: 'pizza' },
+        visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
+      };
+
+      await PiwikProSdk.trackSocialInteraction(interaction, network, options);
+
+      expect(
+        NativeModules.PiwikProSdk.trackSocialInteraction
+      ).toHaveBeenCalledWith(interaction, network, options);
+    });
+
+    it('calls trackSocialInteraction from native SDK with path when options are not passed', async () => {
+      const interaction = 'sample exception';
+      const network = 'facebook';
+
+      await PiwikProSdk.trackSocialInteraction(interaction, network);
+
+      expect(
+        NativeModules.PiwikProSdk.trackSocialInteraction
+      ).toHaveBeenCalledWith(interaction, network, undefined);
     });
   });
 
