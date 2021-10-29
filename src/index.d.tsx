@@ -42,7 +42,7 @@ type PiwikProSdkType = {
    * Tracks social interaction.
    * @interaction defines the social interaction
    * @network social network associated with interaction
-   * @options exception tracking options (target, customDimensions, visitCustomVariables)
+   * @options social interaction tracking options (target, customDimensions, visitCustomVariables)
    */
   trackSocialInteraction(
     interaction: string,
@@ -52,8 +52,17 @@ type PiwikProSdkType = {
 
   /**
    * Tracks download.
+   * @url URL of the downloaded content
+   * @options download tracking options (customDimensions, visitCustomVariables)
    */
   trackDownload(url: string, options?: CommonEventOptions): Promise<void>;
+
+  /**
+   * Tracks outlink.
+   * @url outlink target
+   * @options outlink tracking options (customDimensions, visitCustomVariables)
+   */
+  trackOutlink(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
    * Dispatches queued events.

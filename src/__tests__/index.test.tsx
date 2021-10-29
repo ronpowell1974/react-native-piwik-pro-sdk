@@ -10,6 +10,7 @@ jest.mock('react-native', () => ({
       trackException: jest.fn(),
       trackSocialInteraction: jest.fn(),
       trackDownload: jest.fn(),
+      trackOutlink: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -23,6 +24,11 @@ jest.mock('react-native', () => ({
     select: jest.fn(),
   },
 }));
+
+const commonEventOptions: CommonEventOptions = {
+  customDimensions: { 1: 'pizza' },
+  visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
+};
 
 describe('PiwikProSdk', () => {
   beforeEach(() => {
@@ -48,7 +54,7 @@ describe('PiwikProSdk', () => {
       const path = 'example/path';
       const options: TrackScreenOptions = {
         title: 'newAction',
-        customDimensions: { 1: 'pizza' },
+        ...commonEventOptions,
       };
 
       await PiwikProSdk.trackScreen(path, options);
@@ -78,7 +84,7 @@ describe('PiwikProSdk', () => {
       const options: TrackCustomEventOptions = {
         name: 'customEvent',
         path: 'some/path',
-        customDimensions: { 1: 'pizza' },
+        ...commonEventOptions,
       };
 
       await PiwikProSdk.trackCustomEvent(category, action, options);
@@ -108,10 +114,7 @@ describe('PiwikProSdk', () => {
     it('calls trackException from native SDK', async () => {
       const description = 'sample exception';
       const isFatal = true;
-      const options: TrackExceptionOptions = {
-        customDimensions: { 1: 'pizza' },
-        visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
-      };
+      const options: TrackExceptionOptions = commonEventOptions;
 
       await PiwikProSdk.trackException(description, isFatal, options);
 
@@ -141,8 +144,7 @@ describe('PiwikProSdk', () => {
       const interaction = 'sample exception';
       const network = 'facebook';
       const options: TrackSocialInteractionOptions = {
-        customDimensions: { 1: 'pizza' },
-        visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
+        ...commonEventOptions,
         target: 'photo',
       };
 
@@ -167,11 +169,8 @@ describe('PiwikProSdk', () => {
 
   describe('#trackDownload', () => {
     it('calls trackDownload from native SDK', async () => {
-      const url = 'http://your.server.com/bonusmap${eventNum}.zip';
-      const options: CommonEventOptions = {
-        customDimensions: { 1: 'pizza' },
-        visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
-      };
+      const url = 'http://your.server.com/bonusmap.zip';
+      const options: CommonEventOptions = commonEventOptions;
 
       await PiwikProSdk.trackDownload(url, options);
 
@@ -182,11 +181,36 @@ describe('PiwikProSdk', () => {
     });
 
     it('calls trackDownload from native SDK with path when options are not passed', async () => {
-      const url = 'http://your.server.com/bonusmap${eventNum}.zip';
+      const url = 'http://your.server.com/bonusmap.zip';
 
       await PiwikProSdk.trackDownload(url);
 
       expect(NativeModules.PiwikProSdk.trackDownload).toHaveBeenCalledWith(
+        url,
+        undefined
+      );
+    });
+  });
+
+  describe('#trackOutlink', () => {
+    it('calls trackOutlink from native SDK', async () => {
+      const url = 'http://your.server.com/bonusmap.zip';
+      const options: CommonEventOptions = commonEventOptions;
+
+      await PiwikProSdk.trackOutlink(url, options);
+
+      expect(NativeModules.PiwikProSdk.trackOutlink).toHaveBeenCalledWith(
+        url,
+        options
+      );
+    });
+
+    it('calls trackOutlink from native SDK with path when options are not passed', async () => {
+      const url = 'http://your.server.com/bonusmap.zip';
+
+      await PiwikProSdk.trackOutlink(url);
+
+      expect(NativeModules.PiwikProSdk.trackOutlink).toHaveBeenCalledWith(
         url,
         undefined
       );

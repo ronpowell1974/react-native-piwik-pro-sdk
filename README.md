@@ -159,14 +159,33 @@ const options = {
 await PiwikProSdk.trackDownload(`http://your.server.com/bonusmap.zip`, options);
 ```
 Parameters:
-- `url: string` *(required)* - the URL of the downloaded content.
+- `url: string` *(required)* - URL of the downloaded content.
 - `options` - exception tracking options, object containing two properties (all of them are optional):
-  - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
-  - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
+  - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
 
 All downloads can be viewed in the corresponding section in the analytics panel.
 
 ***Note:*** Generated URLs may differ between Android and iOS.
+
+
+
+## Tracking outlinks
+
+Requires Analytics
+
+For tracking outlinks to external websites or other apps opened from your application use the `trackOutlink` method:
+
+```js
+const options = {
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackOutlink(`http://your.server.com/bonusmap.zip`, options);
+```
+Parameters:
+- URL *(required)* – outlink target. HTTPS, HTTP and FTP are valid.
+
 
 
 

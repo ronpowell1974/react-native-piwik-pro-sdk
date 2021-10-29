@@ -109,16 +109,15 @@ RCT_REMAP_METHOD(trackDownload,
         [self applyCustomDimensions:options[@"customDimensions"]];
         [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
 
-        [[PiwikTracker sharedInstance] sendSocialInteractionWithAction:interaction target:options[@"target"] network:network];
+        [[PiwikTracker sharedInstance] sendDownload:url];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
     }
 }
 
-RCT_REMAP_METHOD(trackSocialInteraction,
-                 trackSocialInteractionWithInteraction:(nonnull NSString*)interaction
-                 withNetwork:(nonnull NSString*)network
+RCT_REMAP_METHOD(trackOutlink,
+                 ttrackOutlinkWithUrl:(nonnull NSString*)outlink
                  withOptions:(NSDictionary*)options
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
@@ -132,7 +131,7 @@ RCT_REMAP_METHOD(trackSocialInteraction,
         [self applyCustomDimensions:options[@"customDimensions"]];
         [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
 
-        [[PiwikTracker sharedInstance] sendDownload:url];
+        [[PiwikTracker sharedInstance] sendOutlink:outlink];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);

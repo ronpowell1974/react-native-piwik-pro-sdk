@@ -8,6 +8,7 @@ import pro.piwik.sdk.extra.DownloadTracker
 import pro.piwik.sdk.extra.DownloadTracker.Extra
 import pro.piwik.sdk.extra.DownloadTracker.Extra.Custom
 import pro.piwik.sdk.extra.TrackHelper
+import java.net.URL
 
 class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -140,6 +141,20 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
       applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
       trackHelper.download(DownloadTracker(tracker)).identifier(extra).force().with(tracker)
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun trackOutlink(url: String, options: ReadableMap?, promise: Promise) {
+    try {
+      val trackHelper = TrackHelper.track()
+
+      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      trackHelper.outlink(URL(url)).with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
