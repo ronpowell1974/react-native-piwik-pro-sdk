@@ -154,6 +154,23 @@ export default function App() {
     }
   };
 
+  const trackDownload = async () => {
+    const options: CommonEventOptions = {
+      visitCustomVariables,
+      // customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackDownload(
+        `http://your.server.com/bonusmap${eventNum}.zip`,
+        options
+      );
+      successMessage('track download');
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -233,6 +250,10 @@ export default function App() {
             onPress={trackSocialInteraction}
           >
             <Text style={styles.buttonText}>Track social interaction</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackDownload}>
+            <Text style={styles.buttonText}>Track download</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -4,6 +4,9 @@ import com.facebook.react.bridge.*
 import pro.piwik.sdk.Piwik
 import pro.piwik.sdk.Tracker
 import pro.piwik.sdk.TrackerConfig
+import pro.piwik.sdk.extra.DownloadTracker
+import pro.piwik.sdk.extra.DownloadTracker.Extra
+import pro.piwik.sdk.extra.DownloadTracker.Extra.Custom
 import pro.piwik.sdk.extra.TrackHelper
 
 class PiwikProSdkModule(reactContext: ReactApplicationContext) :
@@ -113,6 +116,30 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       trackHelper.socialInteraction(interaction, network).target(options?.getString("target"))
         .with(tracker)
 
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun trackDownload(url: String, options: ReadableMap?, promise: Promise) {
+    try {
+      val tracker = getTracker()
+      val trackHelper = TrackHelper.track()
+      val extra: Extra = object : Custom() {
+        override fun isIntensiveWork(): Boolean {
+          return false
+        }
+
+        override fun buildExtraIdentifier(): String? {
+          return url
+        }
+      }
+
+      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      trackHelper.download(DownloadTracker(tracker)).identifier(extra).force().with(tracker)
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)

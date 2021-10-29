@@ -52,6 +52,7 @@ Returns:
 - `anonymizationState: boolean` - current anonymization state.
 
 
+
 ## Tracking screen views
 
 During a valid tracking session, you can track screen views which represent the content the user is viewing in the application. To track a screen you only need to provide the screen path. This path is internally translated by the SDK to an HTTP URL as the Piwik PRO server uses URLs for tracking views. Additionally, Piwik PRO SDK uses prefixes which are inserted in a generated URL for various types of action(s). For tracking screen views it will use a prefix `'screen'` by default, however, automatic prefixing can be disabled with the
@@ -71,6 +72,7 @@ Parameters:
   - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
   - `screenCustomVariables` - the object specifying [screen custom variables](#tracking-custom-variables).
   - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
+
 
 
 ## Tracking custom events
@@ -96,8 +98,8 @@ Parameters:
   - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
 
-
 For more resources, please visit [documentation](https://help.piwik.pro/support/tag-manager/piwik-pro-custom-event/).
+
 
 
 ## Tracking exceptions
@@ -145,6 +147,29 @@ The generated URL corresponds to string, which includes the network, interaction
 
 
 
+## Tracking downloads
+
+You can track the downloads initiated by your application:
+
+```js
+const options = {
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackDownload(`http://your.server.com/bonusmap.zip`, options);
+```
+Parameters:
+- `url: string` *(required)* - the URL of the downloaded content.
+- `options` - exception tracking options, object containing two properties (all of them are optional):
+  - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
+
+All downloads can be viewed in the corresponding section in the analytics panel.
+
+***Note:*** Generated URLs may differ between Android and iOS.
+
+
+
 ## Tracking custom variables
 
 A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name - for example, 'User status' - and a value - for example, 'LoggedIn' or 'Anonymous'. It is required for names and values to be encoded in UTF-8.
@@ -175,6 +200,7 @@ where:
 - `value: string` *(required)* - the value of a specific custom variable such as 'Customer' (Limited to 200 characters).
 
 
+
 ## Tracking custom dimensions
 
 To track a custom name-value pair assigned to your users or screen views, use [Custom Dimensions](https://help.piwik.pro/support/analytics/custom-dimension/). Note that the custom value data is not sent by itself, but only with other tracking actions such as screen views, events or other tracking actions (see the documentation of other tracking methods), for example:
@@ -188,6 +214,7 @@ await PiwikProSdk.trackScreen(`your_screen_path`, { customDimensions });
 ```
 
 `1` and `2` are dimension IDs. `dashboard`, `menu` are the dimension values for the tracked screen view event.
+
 
 
 ## Dispatching
@@ -217,6 +244,7 @@ Returns:
 - `dispatchInterval: number` - current dispatch interval (in seconds) or negative number if automatic dispatch has been disabled.
 
 
+
 ## Default custom variables
 
 SDK can automatically add information about the platform version, OS version and app version in custom variables with indexes 1-3. By default, this option is turned on. This can be changed via the `setIncludeDefaultCustomVars` method:
@@ -232,6 +260,7 @@ const includeDefaultCustomVariables = await PiwikProSdk.getIncludeDefaultCustomV
 ```
 Returns:
 - `includeDefaultCustomVariables: boolean` - flag that determines whether default custom variables should be added to each tracking event.
+
 
 
 ## Contributing

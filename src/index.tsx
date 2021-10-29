@@ -61,6 +61,13 @@ async function trackSocialInteraction(
   );
 }
 
+async function trackDownload(
+  url: string,
+  options?: CommonEventOptions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackDownload(url, options);
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -102,6 +109,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackCustomEvent,
   trackException,
   trackSocialInteraction,
+  trackDownload,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

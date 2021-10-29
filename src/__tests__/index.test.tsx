@@ -9,6 +9,7 @@ jest.mock('react-native', () => ({
       trackCustomEvent: jest.fn(),
       trackException: jest.fn(),
       trackSocialInteraction: jest.fn(),
+      trackDownload: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -139,9 +140,10 @@ describe('PiwikProSdk', () => {
     it('calls trackSocialInteraction from native SDK', async () => {
       const interaction = 'sample exception';
       const network = 'facebook';
-      const options: TrackExceptionOptions = {
+      const options: TrackSocialInteractionOptions = {
         customDimensions: { 1: 'pizza' },
         visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
+        target: 'photo',
       };
 
       await PiwikProSdk.trackSocialInteraction(interaction, network, options);
@@ -160,6 +162,34 @@ describe('PiwikProSdk', () => {
       expect(
         NativeModules.PiwikProSdk.trackSocialInteraction
       ).toHaveBeenCalledWith(interaction, network, undefined);
+    });
+  });
+
+  describe('#trackDownload', () => {
+    it('calls trackDownload from native SDK', async () => {
+      const url = 'http://your.server.com/bonusmap${eventNum}.zip';
+      const options: CommonEventOptions = {
+        customDimensions: { 1: 'pizza' },
+        visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
+      };
+
+      await PiwikProSdk.trackDownload(url, options);
+
+      expect(NativeModules.PiwikProSdk.trackDownload).toHaveBeenCalledWith(
+        url,
+        options
+      );
+    });
+
+    it('calls trackDownload from native SDK with path when options are not passed', async () => {
+      const url = 'http://your.server.com/bonusmap${eventNum}.zip';
+
+      await PiwikProSdk.trackDownload(url);
+
+      expect(NativeModules.PiwikProSdk.trackDownload).toHaveBeenCalledWith(
+        url,
+        undefined
+      );
     });
   });
 
