@@ -123,7 +123,7 @@ export default function App() {
   };
 
   const trackException = async () => {
-    const options: TrackExceptionOptions = {
+    const options: CommonEventOptions = {
       visitCustomVariables,
     };
 
@@ -183,6 +183,22 @@ export default function App() {
         options
       );
       successMessage('track outlink');
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
+  const trackSearch = async () => {
+    const options: TrackSearchOptions = {
+      visitCustomVariables,
+      category: `Movies`,
+      count: 3,
+      // customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackSearch(`Space${eventNum}`, options);
+      successMessage('track search');
     } catch (error) {
       setResult({ message: 'Error', error: error as Error });
     }
@@ -275,6 +291,10 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackOutlink}>
             <Text style={styles.buttonText}>Track outlink</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackSearch}>
+            <Text style={styles.buttonText}>Track search</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -11,6 +11,7 @@ jest.mock('react-native', () => ({
       trackSocialInteraction: jest.fn(),
       trackDownload: jest.fn(),
       trackOutlink: jest.fn(),
+      trackSearch: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -114,7 +115,7 @@ describe('PiwikProSdk', () => {
     it('calls trackException from native SDK', async () => {
       const description = 'sample exception';
       const isFatal = true;
-      const options: TrackExceptionOptions = commonEventOptions;
+      const options: CommonEventOptions = commonEventOptions;
 
       await PiwikProSdk.trackException(description, isFatal, options);
 
@@ -212,6 +213,35 @@ describe('PiwikProSdk', () => {
 
       expect(NativeModules.PiwikProSdk.trackOutlink).toHaveBeenCalledWith(
         url,
+        undefined
+      );
+    });
+  });
+
+  describe('#trackSearch', () => {
+    it('calls trackSearch from native SDK', async () => {
+      const keyword = 'http://your.server.com/bonusmap.zip';
+      const options: TrackSearchOptions = {
+        ...commonEventOptions,
+        count: 3,
+        category: 'Movies',
+      };
+
+      await PiwikProSdk.trackSearch(keyword, options);
+
+      expect(NativeModules.PiwikProSdk.trackSearch).toHaveBeenCalledWith(
+        keyword,
+        options
+      );
+    });
+
+    it('calls trackSearch from native SDK with path when options are not passed', async () => {
+      const keyword = 'http://your.server.com/bonusmap.zip';
+
+      await PiwikProSdk.trackSearch(keyword);
+
+      expect(NativeModules.PiwikProSdk.trackSearch).toHaveBeenCalledWith(
+        keyword,
         undefined
       );
     });

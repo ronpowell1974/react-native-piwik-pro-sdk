@@ -44,7 +44,7 @@ async function trackCustomEvent(
 async function trackException(
   description: string,
   isFatal: boolean,
-  options?: TrackExceptionOptions
+  options?: CommonEventOptions
 ): Promise<void> {
   return await PiwikProNativeSdk.trackException(description, isFatal, options);
 }
@@ -73,6 +73,13 @@ async function trackOutlink(
   options?: CommonEventOptions
 ): Promise<void> {
   return await PiwikProNativeSdk.trackOutlink(url, options);
+}
+
+async function trackSearch(
+  keyword: string,
+  options?: TrackScreenOptions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackSearch(keyword, options);
 }
 
 async function dispatch(): Promise<void> {
@@ -118,6 +125,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackSocialInteraction,
   trackDownload,
   trackOutlink,
+  trackSearch,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

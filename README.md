@@ -184,8 +184,33 @@ const options = {
 await PiwikProSdk.trackOutlink(`http://your.server.com/bonusmap.zip`, options);
 ```
 Parameters:
-- URL *(required)* – outlink target. HTTPS, HTTP and FTP are valid.
+- URL *(required)* - outlink target. HTTPS, HTTP and FTP are valid.
+- `options` - exception tracking options, object containing two properties (all of them are optional):
+  - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
 
+
+
+## Tracking search operations
+
+Tracking search operations allow the measurement of popular keywords used for various search operations performed inside your application. It can be done via the `trackSearch` method:
+
+```js
+const options = {
+  category: `Movies`,
+  count: 3,
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackSearch('Space', options);
+```
+Parameters:
+- `keyword: string` *(required)* - searched query that was used in the app.
+- `options` - exception tracking options, object containing four properties (all of them are optional):
+  - `category: string` - search category.
+  - `count: number` - we recommend setting the search count to the number of search results displayed on the results page. When keywords are tracked with a count of 0, they will appear in the 'No Result Search Keyword' report.
+  - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
 
 
 

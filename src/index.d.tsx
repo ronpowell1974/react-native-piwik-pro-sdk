@@ -35,7 +35,7 @@ type PiwikProSdkType = {
   trackException(
     description: string,
     isFatal: boolean,
-    options?: TrackExceptionOptions
+    options?: CommonEventOptions
   ): Promise<void>;
 
   /**
@@ -63,6 +63,13 @@ type PiwikProSdkType = {
    * @options outlink tracking options (customDimensions, visitCustomVariables)
    */
   trackOutlink(url: string, options?: CommonEventOptions): Promise<void>;
+
+  /**
+   * Tracks search.
+   * @keyword searched query that was used in the app
+   * @options search tracking options (category, count, customDimensions, visitCustomVariables)
+   */
+  trackSearch(keyword: string, options?: TrackScreenOptions): Promise<void>;
 
   /**
    * Dispatches queued events.
@@ -140,8 +147,11 @@ type TrackCustomEventOptions = CommonEventOptions & {
   path?: string;
 };
 
-type TrackExceptionOptions = CommonEventOptions;
-
 type TrackSocialInteractionOptions = CommonEventOptions & {
   target?: string;
+};
+
+type TrackSearchOptions = CommonEventOptions & {
+  category?: string;
+  count?: number;
 };

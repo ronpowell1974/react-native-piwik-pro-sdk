@@ -162,6 +162,25 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackSearch(keyword: String, options: ReadableMap?, promise: Promise) {
+    try {
+      val trackHelper = TrackHelper.track()
+      val search = trackHelper.search(keyword).category(options?.getString("category"))
+
+      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+
+      if (options?.hasKey("count") == true) {
+        search.count(options.getInt("count"))
+      }
+      search.with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()
