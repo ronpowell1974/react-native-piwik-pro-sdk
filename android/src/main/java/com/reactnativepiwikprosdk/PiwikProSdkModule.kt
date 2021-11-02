@@ -181,6 +181,21 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackImpression(contentName: String, options: ReadableMap?, promise: Promise) {
+    try {
+      val trackHelper = TrackHelper.track()
+
+      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      trackHelper.impression(contentName).piece(options?.getString("piece"))
+        .target(options?.getString("target")).with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

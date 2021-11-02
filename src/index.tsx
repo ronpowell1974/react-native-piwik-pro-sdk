@@ -82,6 +82,13 @@ async function trackSearch(
   return await PiwikProNativeSdk.trackSearch(keyword, options);
 }
 
+async function trackImpression(
+  contentName: string,
+  options?: TrackImpressionOptions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackImpression(contentName, options);
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -126,6 +133,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackDownload,
   trackOutlink,
   trackSearch,
+  trackImpression,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

@@ -214,6 +214,28 @@ Parameters:
 
 
 
+## Tracking content impressions
+
+You can track an impression of an ad in your application as below.
+```js
+const options = {
+  piece: 'banner',
+  target: 'https://www.dn.se/',
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackImpression('Some content impression', options);
+```
+Parameters:
+- `contentName: string` *(required)* - name of the content, e.g. 'Ad Foo Bar'.
+- `options` - impression tracking options, object containing four properties (all of them are optional):
+  - `piece: string` - actual content. For instance, path to the image, video, audio or any text.
+  - `target: string` - the target of the content. For instance the URL of a landing page.
+  - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
+
+
+
 ## Tracking custom variables
 
 A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name - for example, 'User status' - and a value - for example, 'LoggedIn' or 'Anonymous'. It is required for names and values to be encoded in UTF-8.

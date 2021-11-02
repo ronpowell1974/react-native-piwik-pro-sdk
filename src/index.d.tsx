@@ -72,6 +72,16 @@ type PiwikProSdkType = {
   trackSearch(keyword: string, options?: TrackScreenOptions): Promise<void>;
 
   /**
+   * Tracks search.
+   * @contentName searched query that was used in the app
+   * @options search tracking options (category, count, customDimensions, visitCustomVariables)
+   */
+  trackImpression(
+    contentName: string,
+    options?: TrackImpressionOptions
+  ): Promise<void>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;
@@ -154,4 +164,9 @@ type TrackSocialInteractionOptions = CommonEventOptions & {
 type TrackSearchOptions = CommonEventOptions & {
   category?: string;
   count?: number;
+};
+
+type TrackImpressionOptions = CommonEventOptions & {
+  piece?: string;
+  target?: string;
 };

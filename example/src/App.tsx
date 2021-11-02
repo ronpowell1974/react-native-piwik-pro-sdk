@@ -204,6 +204,25 @@ export default function App() {
     }
   };
 
+  const trackImpression = async () => {
+    const options: TrackImpressionOptions = {
+      visitCustomVariables,
+      piece: 'banner',
+      target: 'https://www.dn.se/',
+      // customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackImpression(
+        `Some content impression${eventNum}`,
+        options
+      );
+      successMessage('track impression');
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -295,6 +314,10 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackSearch}>
             <Text style={styles.buttonText}>Track search</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackImpression}>
+            <Text style={styles.buttonText}>Track impression</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

@@ -12,6 +12,7 @@ jest.mock('react-native', () => ({
       trackDownload: jest.fn(),
       trackOutlink: jest.fn(),
       trackSearch: jest.fn(),
+      trackImpression: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -242,6 +243,35 @@ describe('PiwikProSdk', () => {
 
       expect(NativeModules.PiwikProSdk.trackSearch).toHaveBeenCalledWith(
         keyword,
+        undefined
+      );
+    });
+  });
+
+  describe('#trackImpression', () => {
+    it('calls trackImpression from native SDK', async () => {
+      const contentName = 'Some content impression';
+      const options: TrackImpressionOptions = {
+        ...commonEventOptions,
+        piece: 'banner',
+        target: 'https://www.dn.se/',
+      };
+
+      await PiwikProSdk.trackImpression(contentName, options);
+
+      expect(NativeModules.PiwikProSdk.trackImpression).toHaveBeenCalledWith(
+        contentName,
+        options
+      );
+    });
+
+    it('calls trackImpression from native SDK with path when options are not passed', async () => {
+      const contentName = 'Some content impression';
+
+      await PiwikProSdk.trackImpression(contentName);
+
+      expect(NativeModules.PiwikProSdk.trackImpression).toHaveBeenCalledWith(
+        contentName,
         undefined
       );
     });
