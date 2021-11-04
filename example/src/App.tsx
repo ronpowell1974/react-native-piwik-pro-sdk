@@ -223,6 +223,21 @@ export default function App() {
     }
   };
 
+  const trackGoal = async () => {
+    const options: TrackGoalOptions = {
+      visitCustomVariables,
+      revenue: 30,
+      // customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackGoal(1, options);
+      successMessage('track goal');
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -318,6 +333,10 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackImpression}>
             <Text style={styles.buttonText}>Track impression</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackGoal}>
+            <Text style={styles.buttonText}>Track goal</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>

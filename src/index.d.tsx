@@ -72,14 +72,21 @@ type PiwikProSdkType = {
   trackSearch(keyword: string, options?: TrackScreenOptions): Promise<void>;
 
   /**
-   * Tracks search.
-   * @contentName searched query that was used in the app
-   * @options search tracking options (category, count, customDimensions, visitCustomVariables)
+   * Tracks impression.
+   * @contentName name of the content
+   * @options search tracking options (piece, target, customDimensions, visitCustomVariables)
    */
   trackImpression(
     contentName: string,
     options?: TrackImpressionOptions
   ): Promise<void>;
+
+  /**
+   * Tracks goal.
+   * @goal tracking request will trigger a conversion for the goal of the website being tracked with given ID
+   * @options goal tracking options (revenue, customDimensions, visitCustomVariables)
+   */
+  trackGoal(goal: number, options?: TrackGoalOptions): Promise<void>;
 
   /**
    * Dispatches queued events.
@@ -169,4 +176,8 @@ type TrackSearchOptions = CommonEventOptions & {
 type TrackImpressionOptions = CommonEventOptions & {
   piece?: string;
   target?: string;
+};
+
+type TrackGoalOptions = CommonEventOptions & {
+  revenue?: number;
 };

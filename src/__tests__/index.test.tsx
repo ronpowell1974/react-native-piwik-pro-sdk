@@ -13,6 +13,7 @@ jest.mock('react-native', () => ({
       trackOutlink: jest.fn(),
       trackSearch: jest.fn(),
       trackImpression: jest.fn(),
+      trackGoal: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -272,6 +273,34 @@ describe('PiwikProSdk', () => {
 
       expect(NativeModules.PiwikProSdk.trackImpression).toHaveBeenCalledWith(
         contentName,
+        undefined
+      );
+    });
+  });
+
+  describe('#trackGoal', () => {
+    it('calls trackGoal from native SDK', async () => {
+      const goal = 1;
+      const options: TrackGoalOptions = {
+        ...commonEventOptions,
+        revenue: 3,
+      };
+
+      await PiwikProSdk.trackGoal(goal, options);
+
+      expect(NativeModules.PiwikProSdk.trackGoal).toHaveBeenCalledWith(
+        goal,
+        options
+      );
+    });
+
+    it('calls trackGoal from native SDK with path when options are not passed', async () => {
+      const goal = 1;
+
+      await PiwikProSdk.trackGoal(goal);
+
+      expect(NativeModules.PiwikProSdk.trackGoal).toHaveBeenCalledWith(
+        goal,
         undefined
       );
     });

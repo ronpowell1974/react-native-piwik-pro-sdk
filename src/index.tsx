@@ -89,6 +89,13 @@ async function trackImpression(
   return await PiwikProNativeSdk.trackImpression(contentName, options);
 }
 
+async function trackGoal(
+  goal: number,
+  options?: TrackGoalOptions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackGoal(goal, options);
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -134,6 +141,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackOutlink,
   trackSearch,
   trackImpression,
+  trackGoal,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

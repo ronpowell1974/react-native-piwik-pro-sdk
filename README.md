@@ -236,6 +236,27 @@ Parameters:
 
 
 
+## Tracking goals
+
+Goaltracking is used to measure and improve your business objectives. To track goals, you first need to configure them on the server in your web panel. Goals such as, for example, subscribing to a newsletter can be tracked as below with the goal ID that you will see on the server after configuring the goal and optional revenue. The currency for the revenue can be set in the Piwik PRO Analytics settings. You can read more about goals [here](https://help.piwik.pro/support/analytics/goals/).
+
+```js
+const options = {
+  revenue: 30,
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackGoal(1, options);
+```
+Parameters:
+- `goal: number` *(required)* - tracking request will trigger a conversion for the goal of the website being tracked with this ID.
+- `options` - goal tracking options, object containing three properties (all of them are optional):
+  - `revenue: number` - monetary value that was generated as revenue by this goal conversion.
+  - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
+
+
+
 ## Tracking custom variables
 
 A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name - for example, 'User status' - and a value - for example, 'LoggedIn' or 'Anonymous'. It is required for names and values to be encoded in UTF-8.
