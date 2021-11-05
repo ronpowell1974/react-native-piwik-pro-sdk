@@ -89,6 +89,13 @@ type PiwikProSdkType = {
   trackGoal(goal: number, options?: TrackGoalOptions): Promise<void>;
 
   /**
+   * Tracks campaign.
+   * @url campaign URL
+   * @options campaign tracking options (customDimensions, visitCustomVariables)
+   */
+  trackCampaign(url: string, options?: CommonEventOptions): Promise<void>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;

@@ -227,6 +227,28 @@ RCT_REMAP_METHOD(trackGoal,
     }
 }
 
+RCT_REMAP_METHOD(trackCampaign,
+                 trackCampaignWithUrl:(nonnull NSString*)url
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [self applyCustomDimensions:options[@"customDimensions"]];
+        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+
+        [[PiwikTracker sharedInstance] sendCampaign:url];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(dispatch,
                  dispatchWithResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)

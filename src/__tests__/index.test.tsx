@@ -14,6 +14,7 @@ jest.mock('react-native', () => ({
       trackSearch: jest.fn(),
       trackImpression: jest.fn(),
       trackGoal: jest.fn(),
+      trackCampaign: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -301,6 +302,33 @@ describe('PiwikProSdk', () => {
 
       expect(NativeModules.PiwikProSdk.trackGoal).toHaveBeenCalledWith(
         goal,
+        undefined
+      );
+    });
+  });
+
+  describe('#trackCampaign', () => {
+    it('calls trackCampaign from native SDK', async () => {
+      const url =
+        'http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore';
+      const options = commonEventOptions;
+
+      await PiwikProSdk.trackCampaign(url, options);
+
+      expect(NativeModules.PiwikProSdk.trackCampaign).toHaveBeenCalledWith(
+        url,
+        options
+      );
+    });
+
+    it('calls trackCampaign from native SDK with path when options are not passed', async () => {
+      const url =
+        'http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore';
+
+      await PiwikProSdk.trackCampaign(url);
+
+      expect(NativeModules.PiwikProSdk.trackCampaign).toHaveBeenCalledWith(
+        url,
         undefined
       );
     });

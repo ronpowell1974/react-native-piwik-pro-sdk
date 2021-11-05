@@ -138,7 +138,7 @@ await PiwikProSdk.trackSocialInteraction(`Like`, 'Facebook', options);
 Parameters:
 - `interaction: string` *(required)* - the social interaction, e.g. 'Like'.
 - `network: string` *(required)* - social network associated with interaction, e.g. 'Facebook'.
-- `options` - exception tracking options, object containing three properties (all of them are optional):
+- `options` - social interaction tracking options, object containing three properties (all of them are optional):
   - `target: string` - the target for which this interaction occurred, e.g. 'Photo'.
   - `customDimensions` - the object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` - the object specifying [visit custom variables](#tracking-custom-variables).
@@ -160,7 +160,7 @@ await PiwikProSdk.trackDownload(`http://your.server.com/bonusmap.zip`, options);
 ```
 Parameters:
 - `url: string` *(required)* - URL of the downloaded content.
-- `options` - exception tracking options, object containing two properties (all of them are optional):
+- `options` - download tracking options, object containing two properties (all of them are optional):
   - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
 
@@ -185,7 +185,7 @@ await PiwikProSdk.trackOutlink(`http://your.server.com/bonusmap.zip`, options);
 ```
 Parameters:
 - URL *(required)* - outlink target. HTTPS, HTTP and FTP are valid.
-- `options` - exception tracking options, object containing two properties (all of them are optional):
+- `options` - outlinks tracking options, object containing two properties (all of them are optional):
   - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
 
@@ -206,7 +206,7 @@ await PiwikProSdk.trackSearch('Space', options);
 ```
 Parameters:
 - `keyword: string` *(required)* - searched query that was used in the app.
-- `options` - exception tracking options, object containing four properties (all of them are optional):
+- `options` - search tracking options, object containing four properties (all of them are optional):
   - `category: string` - search category.
   - `count: number` - we recommend setting the search count to the number of search results displayed on the results page. When keywords are tracked with a count of 0, they will appear in the 'No Result Search Keyword' report.
   - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
@@ -254,6 +254,27 @@ Parameters:
   - `revenue: number` - monetary value that was generated as revenue by this goal conversion.
   - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
+
+
+
+## Tracking campaigns
+
+[Tracking campaigns](https://piwik.pro/glossary/campaign-tracking/) URLs configured with the online [Campaign URL Builder](https://piwik.pro/url-builder-tool/) tool allow you to measure how different campaigns (for example with Facebook ads or direct emails) bring traffic to your application:
+
+```js
+const options = {
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackCampaign('http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore', options);
+```
+Parameters:
+- `url: string` *(required)* - the campaign URL. HTTPS, HTTP and FTP are valid, however, the URL must contain campaign name and keyword parameters.
+- `options` - campaign tracking options, object containing two properties (all of them are optional):
+  - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
+
+***Note:*** On iOS the campaign information will be sent to the server together with the next analytics event.
 
 
 

@@ -238,6 +238,23 @@ export default function App() {
     }
   };
 
+  const trackCampaign = async () => {
+    const options: CommonEventOptions = {
+      visitCustomVariables,
+      // customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackCampaign(
+        `http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore${eventNum}`,
+        options
+      );
+      successMessage('track campaign');
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -337,6 +354,10 @@ export default function App() {
 
           <TouchableOpacity style={styles.button} onPress={trackGoal}>
             <Text style={styles.buttonText}>Track goal</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={styles.button} onPress={trackCampaign}>
+            <Text style={styles.buttonText}>Track campaign</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
