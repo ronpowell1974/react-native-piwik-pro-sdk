@@ -101,6 +101,13 @@ type PiwikProSdkType = {
   getProfileAttributes(): Promise<ProfileAttributes>;
 
   /**
+   * Checks whether user belongs to a specific group of users defined in the data manger. Returns `true` if user
+   * belongs to the specified audience, `false` otherwise.
+   * @param audienceId ID of the audience
+   */
+  checkAudienceMembership(audienceId: string): Promise<boolean>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;

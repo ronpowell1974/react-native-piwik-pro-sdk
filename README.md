@@ -340,6 +340,25 @@ Returns:
 
 
 
+## Checking audience membership
+
+*Requires Audience Manager*
+
+Audiences are allowed to check whether or not the user belongs to a specific group of users defined in the data manger panel based on analytics data and audience manager profile attributes. You can check if the user belongs to a given audience, for example, to show a special offer. To check it, use the `checkAudienceMembership` method:
+```js
+const audienceId = 'a83d4aac-faa6-4746-96eb-5ac110083f8e';
+const isMember = await PiwikProSdk.checkAudienceMembership(audienceId);
+console.log(isMember);
+// true
+```
+Parameters:
+- `audienceId: string` *(required)* - ID of the audience (Audience Manager -> Audiences).
+
+Returns:
+- `isMember: boolean` - value indicating whether user belongs to the audience with given ID or error message if an error occurred.
+
+
+
 ## Dispatching
 
 Tracked events are stored temporarily on the queue and dispatched in batches every 30 seconds (default setting). This behavior can be changed in the following way:

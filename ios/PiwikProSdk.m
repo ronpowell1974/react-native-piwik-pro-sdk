@@ -272,6 +272,30 @@ RCT_REMAP_METHOD(getProfileAttributes,
     }
 }
 
+RCT_REMAP_METHOD(checkAudienceMembership,
+                 checkAudienceMembershipWithAudienceId:(nonnull NSString*)audienceId
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+
+    @try {
+        [[PiwikTracker sharedInstance] checkMembershipWithAudienceID:audienceId completionBlock:^(BOOL isMember, NSError * _Nullable error) {
+            if(error != nil) {
+                reject(@"error", @"Checking audience membership failed", error);
+                return;
+            }
+
+            resolve(@(isMember));
+        }];
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(dispatch,
                  dispatchWithResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)

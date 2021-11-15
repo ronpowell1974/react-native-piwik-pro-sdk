@@ -5,6 +5,7 @@ import com.facebook.react.bridge.*
 import pro.piwik.sdk.Piwik
 import pro.piwik.sdk.Tracker
 import pro.piwik.sdk.Tracker.OnGetProfileAttributes
+import pro.piwik.sdk.Tracker.OnCheckAudienceMembership
 import pro.piwik.sdk.TrackerConfig
 import pro.piwik.sdk.extra.DownloadTracker
 import pro.piwik.sdk.extra.DownloadTracker.Extra
@@ -237,6 +238,23 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
           var errorData: String? = errorData
           errorData =
             if (TextUtils.isEmpty(errorData)) "Getting user profile attributes failed" else errorData
+          promise.reject(Exception(errorData))
+        }
+      })
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun checkAudienceMembership(audienceId: String, promise: Promise) {
+    try {
+      getTracker().checkAudienceMembership(audienceId, object : OnCheckAudienceMembership {
+        override fun onChecked(isMember: Boolean) {
+          promise.resolve(isMember)
+        }
+
+        override fun onError(errorData: String) {
           promise.reject(Exception(errorData))
         }
       })

@@ -265,6 +265,17 @@ export default function App() {
     }
   };
 
+  const checkAudienceMembership = async () => {
+    const audienceId = 'a83d4aac-faa6-4746-96eb-5ac110083f8e';
+
+    try {
+      const isMember = await PiwikProSdk.checkAudienceMembership(audienceId);
+      successMessage(`audience membership: ${isMember}`);
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -375,6 +386,13 @@ export default function App() {
             onPress={getProfileAttributes}
           >
             <Text style={styles.buttonText}>Get profile attributes</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={checkAudienceMembership}
+          >
+            <Text style={styles.buttonText}>Check audience membership</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
