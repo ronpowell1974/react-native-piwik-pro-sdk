@@ -1,8 +1,10 @@
 package com.reactnativepiwikprosdk
 
+import android.text.TextUtils
 import com.facebook.react.bridge.*
 import pro.piwik.sdk.Piwik
 import pro.piwik.sdk.Tracker
+import pro.piwik.sdk.Tracker.OnGetProfileAttributes
 import pro.piwik.sdk.TrackerConfig
 import pro.piwik.sdk.extra.DownloadTracker
 import pro.piwik.sdk.extra.DownloadTracker.Extra
@@ -224,6 +226,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun getProfileAttributes(promise: Promise) {
+    try {
+      getTracker().audienceManagerGetProfileAttributes(object : OnGetProfileAttributes {
+        override fun onAttributesReceived(attributes: Map<String, String>) {
+          promise.resolve(convertMapToWritableMap(attributes))
+        }
+
+        override fun onError(errorData: String) {
+          var errorData: String? = errorData
+          errorData =
+            if (TextUtils.isEmpty(errorData)) "Getting user profile attributes failed" else errorData
+          promise.reject(Exception(errorData))
+        }
+      })
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()
@@ -236,7 +258,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setDispatchInterval(dispatchInterval: Int, promise: Promise) {
     try {
-      getTracker().setDispatchInterval(dispatchInterval.toLong() * 1000)
+      getTracker().dispatchInterval = dispatchInterval.toLong() * 1000
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -256,7 +278,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setIncludeDefaultCustomVariables(includeDefaultCustomVariables: Boolean, promise: Promise) {
     try {
-      getTracker().setIncludeDefaultCustomVars(includeDefaultCustomVariables)
+      getTracker().includeDefaultCustomVars = includeDefaultCustomVariables
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -326,5 +348,14 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
       screen.variable(key, name, value)
     }
+  }
+
+  private fun convertMapToWritableMap(map: Map<String, String>): WritableMap {
+    val writableMap = WritableNativeMap()
+    for ((key, value) in map.entries) {
+      writableMap.putString(key, value)
+    }
+
+    return writableMap
   }
 }

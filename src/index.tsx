@@ -103,6 +103,10 @@ async function trackCampaign(
   return await PiwikProNativeSdk.trackCampaign(url, options);
 }
 
+async function getProfileAttributes(): Promise<ProfileAttributes> {
+  return await PiwikProNativeSdk.getProfileAttributes();
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -150,6 +154,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackImpression,
   trackGoal,
   trackCampaign,
+  getProfileAttributes,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

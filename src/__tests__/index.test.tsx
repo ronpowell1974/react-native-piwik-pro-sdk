@@ -15,6 +15,7 @@ jest.mock('react-native', () => ({
       trackImpression: jest.fn(),
       trackGoal: jest.fn(),
       trackCampaign: jest.fn(),
+      getProfileAttributes: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -331,6 +332,20 @@ describe('PiwikProSdk', () => {
         url,
         undefined
       );
+    });
+  });
+
+  describe('#getProfileAttributes', () => {
+    it('calls getProfileAttributes from native SDK and returns attributes', async () => {
+      const profileAttributes: ProfileAttributes = { device_type: 'desktop' };
+      NativeModules.PiwikProSdk.getProfileAttributes.mockResolvedValue(
+        profileAttributes
+      );
+
+      const result = await PiwikProSdk.getProfileAttributes();
+
+      expect(result).toStrictEqual(profileAttributes);
+      expect(NativeModules.PiwikProSdk.getProfileAttributes).toHaveBeenCalled();
     });
   });
 

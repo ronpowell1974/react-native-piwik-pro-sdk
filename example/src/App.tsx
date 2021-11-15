@@ -255,6 +255,16 @@ export default function App() {
     }
   };
 
+  const getProfileAttributes = async () => {
+    try {
+      const profileAttributes = await PiwikProSdk.getProfileAttributes();
+      console.log(profileAttributes);
+      successMessage('profile attributes in console');
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -359,9 +369,16 @@ export default function App() {
           <TouchableOpacity style={styles.button} onPress={trackCampaign}>
             <Text style={styles.buttonText}>Track campaign</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={getProfileAttributes}
+          >
+            <Text style={styles.buttonText}>Get profile attributes</Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
-      <Text style={styles.message}>Result: {result.message}</Text>
+      <Text style={styles.message}>{result.message}</Text>
       {result.error && (
         <Text style={styles.message}>Error type: {result.error.message}</Text>
       )}

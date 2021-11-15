@@ -96,6 +96,11 @@ type PiwikProSdkType = {
   trackCampaign(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
+   * Returns user profile attributes.
+   */
+  getProfileAttributes(): Promise<ProfileAttributes>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;
@@ -187,4 +192,8 @@ type TrackImpressionOptions = CommonEventOptions & {
 
 type TrackGoalOptions = CommonEventOptions & {
   revenue?: number;
+};
+
+type ProfileAttributes = {
+  [index: string]: string;
 };
