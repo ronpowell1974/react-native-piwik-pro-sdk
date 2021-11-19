@@ -152,6 +152,17 @@ type PiwikProSdkType = {
    * Returns current anonymization state.
    */
   isAnonymizationOn(): Promise<boolean>;
+
+  /**
+   * Sets the new opt out state.
+   * @optOut new opt out state
+   */
+  setOptOut(optOut: boolean): Promise<void>;
+
+  /**
+   * Returns current opt out state.
+   */
+  getOptOut(): Promise<boolean>;
 };
 
 type CustomDimensions = {

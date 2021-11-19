@@ -405,6 +405,26 @@ Returns:
 
 
 
+## Opt out
+
+You can enable an app-level opt-out flag that will disable Piwik PRO tracking across the entire app. Note that this flag must be set each time the app starts up and by default is set to `false`. To set the app-level opt-out, use:
+```js
+await PiwikProSdk.setOptOut(true);
+```
+Parameters:
+- `optOut: boolean` *(required)* – flag that determines whether opt-out is enabled.
+
+You can obtain current `optOut` value with `getOptOut`:
+
+```js
+const currentOptOutState = await PiwikProSdk.getOptOut();
+console.log(currentOptOutState); // false
+```
+Returns:
+- `optOut: boolean` - current opt-out flag state.
+
+
+
 ## Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.

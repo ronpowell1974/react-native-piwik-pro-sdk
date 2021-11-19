@@ -24,6 +24,8 @@ jest.mock('react-native', () => ({
       getIncludeDefaultCustomVariables: jest.fn(),
       setAnonymizationState: jest.fn(),
       isAnonymizationOn: jest.fn(),
+      setOptOut: jest.fn(),
+      getOptOut: jest.fn(),
     },
   },
   Platform: {
@@ -439,6 +441,23 @@ describe('PiwikProSdk', () => {
     it('calls isAnonymizationOn from native SDK', async () => {
       NativeModules.PiwikProSdk.isAnonymizationOn.mockResolvedValue(true);
       const result = await PiwikProSdk.isAnonymizationOn();
+
+      expect(result).toStrictEqual(true);
+    });
+  });
+
+  describe('#setOptOut', () => {
+    it('calls setOptOut from native SDK', async () => {
+      await PiwikProSdk.setOptOut(false);
+
+      expect(NativeModules.PiwikProSdk.setOptOut).toHaveBeenCalledWith(false);
+    });
+  });
+
+  describe('#getOptOut', () => {
+    it('calls getOptOut from native SDK', async () => {
+      NativeModules.PiwikProSdk.getOptOut.mockResolvedValue(true);
+      const result = await PiwikProSdk.getOptOut();
 
       expect(result).toStrictEqual(true);
     });

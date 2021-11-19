@@ -146,6 +146,14 @@ async function isAnonymizationOn(): Promise<boolean> {
   return await PiwikProNativeSdk.isAnonymizationOn();
 }
 
+async function setOptOut(optOut: boolean): Promise<void> {
+  return await PiwikProNativeSdk.setOptOut(optOut);
+}
+
+async function getOptOut(): Promise<boolean> {
+  return await PiwikProNativeSdk.getOptOut();
+}
+
 const PiwikProSdk: PiwikProSdkType = {
   init,
   trackScreen,
@@ -167,6 +175,8 @@ const PiwikProSdk: PiwikProSdkType = {
   getIncludeDefaultCustomVariables,
   setAnonymizationState,
   isAnonymizationOn,
+  setOptOut,
+  getOptOut,
 };
 
 export default PiwikProSdk;

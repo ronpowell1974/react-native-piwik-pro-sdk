@@ -219,7 +219,7 @@ RCT_REMAP_METHOD(trackGoal,
     @try {
         [self applyCustomDimensions:options[@"customDimensions"]];
         [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
-
+        
         [[PiwikTracker sharedInstance] sendGoalWithID:[goal intValue] revenue:options[@"revenue"]];
         resolve(nil);
     } @catch (NSException *exception) {
@@ -241,7 +241,7 @@ RCT_REMAP_METHOD(trackCampaign,
     @try {
         [self applyCustomDimensions:options[@"customDimensions"]];
         [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
-
+        
         [[PiwikTracker sharedInstance] sendCampaign:url];
         resolve(nil);
     } @catch (NSException *exception) {
@@ -281,14 +281,14 @@ RCT_REMAP_METHOD(checkAudienceMembership,
         reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
         return;
     }
-
+    
     @try {
         [[PiwikTracker sharedInstance] checkMembershipWithAudienceID:audienceId completionBlock:^(BOOL isMember, NSError * _Nullable error) {
             if(error != nil) {
                 reject(@"error", @"Checking audience membership failed", error);
                 return;
             }
-
+            
             resolve(@(isMember));
         }];
     } @catch (NSException *exception) {
@@ -413,6 +413,41 @@ RCT_REMAP_METHOD(isAnonymizationOn,
     @try {
         BOOL anonymizationState = [PiwikTracker sharedInstance].isAnonymizationEnabled;
         resolve(@(anonymizationState));
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(setOptOut,
+                 setOptOutWithOptOut:(BOOL)optOut
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [PiwikTracker sharedInstance].optOut = optOut;
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(getOptOut,
+                 getOptOutWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        BOOL optOut = [PiwikTracker sharedInstance].optOut;
+        resolve(@(optOut));
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
     }

@@ -4,8 +4,8 @@ import android.text.TextUtils
 import com.facebook.react.bridge.*
 import pro.piwik.sdk.Piwik
 import pro.piwik.sdk.Tracker
-import pro.piwik.sdk.Tracker.OnGetProfileAttributes
 import pro.piwik.sdk.Tracker.OnCheckAudienceMembership
+import pro.piwik.sdk.Tracker.OnGetProfileAttributes
 import pro.piwik.sdk.TrackerConfig
 import pro.piwik.sdk.extra.DownloadTracker
 import pro.piwik.sdk.extra.DownloadTracker.Extra
@@ -328,6 +328,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       val anonymizationState = getTracker().isAnonymizationOn
       promise.resolve(anonymizationState)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun setOptOut(optOut: Boolean, promise: Promise) {
+    try {
+      getTracker().isOptOut = optOut
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getOptOut(promise: Promise) {
+    try {
+      val optOut = getTracker().isOptOut
+      promise.resolve(optOut)
     } catch (exception: Exception) {
       promise.reject(exception)
     }
