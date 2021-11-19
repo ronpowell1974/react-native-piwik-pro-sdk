@@ -21,6 +21,7 @@ export default function App() {
   const [anonymizationEnabled, setAnonymizationEnabled] =
     React.useState<boolean>(true);
   const [optOut, setOptOut] = React.useState<boolean>(false);
+  const [prefixingEnabled, setPrefixingEnabled] = React.useState<boolean>(true);
 
   const customDimensions = {
     1: 'beta',
@@ -287,6 +288,16 @@ export default function App() {
     }
   };
 
+  const togglePrefixingState = async () => {
+    try {
+      await PiwikProSdk.setPrefixing(!prefixingEnabled);
+      const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
+      setPrefixingEnabled(currentPrefixingState);
+    } catch (error) {
+      setResult({ message: 'Error', error: error as Error });
+    }
+  };
+
   const successMessage = (eventType: string) => {
     setResult({ message: `Success: ${eventType} ${eventNum}` });
     setEventNum(eventNum + 1);
@@ -409,6 +420,16 @@ export default function App() {
           <TouchableOpacity style={styles.button} onPress={toggleOptOut}>
             <Text style={styles.buttonText}>
               Toggle opt out state, current: {optOut ? 'enabled' : 'disabled'}
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={togglePrefixingState}
+          >
+            <Text style={styles.buttonText}>
+              Toggle prefixing state, current:{' '}
+              {prefixingEnabled ? 'enabled' : 'disabled'}
             </Text>
           </TouchableOpacity>
         </View>

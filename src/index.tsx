@@ -154,6 +154,14 @@ async function getOptOut(): Promise<boolean> {
   return await PiwikProNativeSdk.getOptOut();
 }
 
+async function setPrefixing(prefixingEnabled: boolean): Promise<void> {
+  return await PiwikProNativeSdk.setPrefixing(prefixingEnabled);
+}
+
+async function isPrefixingOn(): Promise<boolean> {
+  return await PiwikProNativeSdk.isPrefixingOn();
+}
+
 const PiwikProSdk: PiwikProSdkType = {
   init,
   trackScreen,
@@ -177,6 +185,8 @@ const PiwikProSdk: PiwikProSdkType = {
   isAnonymizationOn,
   setOptOut,
   getOptOut,
+  setPrefixing,
+  isPrefixingOn,
 };
 
 export default PiwikProSdk;

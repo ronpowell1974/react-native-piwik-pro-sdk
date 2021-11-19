@@ -353,6 +353,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
   }
 
+  @ReactMethod
+  fun setPrefixing(prefixingEnabled: Boolean, promise: Promise) {
+    try {
+      getTracker().isPrefixing = prefixingEnabled
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun isPrefixingOn(promise: Promise) {
+    try {
+      val prefixingEnabled = getTracker().isPrefixing
+      promise.resolve(prefixingEnabled)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
   private fun getTracker(): Tracker {
     return this.tracker ?: throw Exception("Piwik Pro SDK has not been initialized")
   }

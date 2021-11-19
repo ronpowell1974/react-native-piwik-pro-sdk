@@ -163,6 +163,17 @@ type PiwikProSdkType = {
    * Returns current opt out state.
    */
   getOptOut(): Promise<boolean>;
+
+  /**
+   * Sets the new prefixing state.
+   * @prefixingEnabled new prefixing state
+   */
+  setPrefixing(prefixingEnabled: boolean): Promise<void>;
+
+  /**
+   * Returns current prefixing state.
+   */
+  isPrefixingOn(): Promise<boolean>;
 };
 
 type CustomDimensions = {

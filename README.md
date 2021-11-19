@@ -55,8 +55,7 @@ Returns:
 
 ## Tracking screen views
 
-During a valid tracking session, you can track screen views which represent the content the user is viewing in the application. To track a screen you only need to provide the screen path. This path is internally translated by the SDK to an HTTP URL as the Piwik PRO server uses URLs for tracking views. Additionally, Piwik PRO SDK uses prefixes which are inserted in a generated URL for various types of action(s). For tracking screen views it will use a prefix `'screen'` by default, however, automatic prefixing can be disabled with the
-TODO `tracker.setPrefixing(false)` option.
+During a valid tracking session, you can track screen views which represent the content the user is viewing in the application. To track a screen you only need to provide the screen path. This path is internally translated by the SDK to an HTTP URL as the Piwik PRO server uses URLs for tracking views. Additionally, Piwik PRO SDK uses prefixes which are inserted in a generated URL for various types of action(s). For tracking screen views it will use a prefix `'screen'` by default, however, [automatic prefixing](#prefixing) can be disabled with the `setPrefixing(false)` option.
 
 ```js
 const options = {
@@ -104,7 +103,7 @@ For more resources, please visit [documentation](https://help.piwik.pro/support/
 
 ## Tracking exceptions
 
-Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` prefix, and additionally the `'exception'` prefix if `tracker.isPrefixing() //TODO` option is enabled(true).
+Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` [prefix](#prefixing), and additionally the `'exception'` prefix if `isPrefixingOn()` option is enabled (`true`).
 
 Measure a caught exception by setting the exception field values on the tracker and sending the hit, as with this example:
 
@@ -126,7 +125,7 @@ Parameters:
 
 ## Tracking social interactions
 
-Social interactions such as likes, shares and comments in various social networks can be tracked as below. This, again, is tracked in a similar way as with screen views but the `'social'` prefix is used when the default `tracker.isPrefixing() //TODO` option is enabled.
+Social interactions such as likes, shares and comments in various social networks can be tracked as below. This, again, is tracked in a similar way as with screen views but the `'social'` [prefix](#prefixing) is used when the default `isPrefixing()` option is enabled.
 
 ```js
 const options = {
@@ -415,13 +414,32 @@ Parameters:
 - `optOut: boolean` *(required)* – flag that determines whether opt-out is enabled.
 
 You can obtain current `optOut` value with `getOptOut`:
-
 ```js
 const currentOptOutState = await PiwikProSdk.getOptOut();
 console.log(currentOptOutState); // false
 ```
 Returns:
 - `optOut: boolean` - current opt-out flag state.
+
+
+
+## Prefixing
+
+In case of tracking events like screen view, exception or social interaction event path in the tracker will contain corresponding prefix. You can disable prefixing with:
+```js
+await PiwikProSdk.setPrefixing(false);
+```
+Parameters:
+- `prefixingEnabled: boolean` *(required)* - flag that determines whether prefixing is enabled
+
+You can also check the prefixing status using the `isPrefixingOn` method:
+
+```js
+const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
+console.log(currentPrefixingState); // false
+```
+Returns:
+- `prefixingEnabled: boolean` - current prefixing state.
 
 
 

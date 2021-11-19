@@ -26,6 +26,8 @@ jest.mock('react-native', () => ({
       isAnonymizationOn: jest.fn(),
       setOptOut: jest.fn(),
       getOptOut: jest.fn(),
+      setPrefixing: jest.fn(),
+      isPrefixingOn: jest.fn(),
     },
   },
   Platform: {
@@ -458,6 +460,25 @@ describe('PiwikProSdk', () => {
     it('calls getOptOut from native SDK', async () => {
       NativeModules.PiwikProSdk.getOptOut.mockResolvedValue(true);
       const result = await PiwikProSdk.getOptOut();
+
+      expect(result).toStrictEqual(true);
+    });
+  });
+
+  describe('#setPrefixing', () => {
+    it('calls setPrefixing from native SDK', async () => {
+      await PiwikProSdk.setPrefixing(false);
+
+      expect(NativeModules.PiwikProSdk.setPrefixing).toHaveBeenCalledWith(
+        false
+      );
+    });
+  });
+
+  describe('#isPrefixingOn', () => {
+    it('calls isPrefixingOn from native SDK', async () => {
+      NativeModules.PiwikProSdk.isPrefixingOn.mockResolvedValue(true);
+      const result = await PiwikProSdk.isPrefixingOn();
 
       expect(result).toStrictEqual(true);
     });
