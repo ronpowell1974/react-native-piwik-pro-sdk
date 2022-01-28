@@ -26,10 +26,7 @@ async function trackScreen(
   path: string,
   options?: TrackScreenOptions
 ): Promise<void> {
-  validateCustomKeyValue(options?.customDimensions);
-  validateCustomKeyValue(options?.visitCustomVariables);
-  validateCustomKeyValue(options?.screenCustomVariables);
-
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackScreen(path, options);
 }
 
@@ -38,6 +35,7 @@ async function trackCustomEvent(
   action: string,
   options?: TrackCustomEventOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackCustomEvent(category, action, options);
 }
 
@@ -46,6 +44,7 @@ async function trackException(
   isFatal: boolean,
   options?: CommonEventOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackException(description, isFatal, options);
 }
 
@@ -54,6 +53,7 @@ async function trackSocialInteraction(
   network: string,
   options?: TrackSocialInteractionOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackSocialInteraction(
     interaction,
     network,
@@ -65,6 +65,7 @@ async function trackDownload(
   url: string,
   options?: CommonEventOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackDownload(url, options);
 }
 
@@ -72,6 +73,7 @@ async function trackOutlink(
   url: string,
   options?: CommonEventOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackOutlink(url, options);
 }
 
@@ -79,6 +81,7 @@ async function trackSearch(
   keyword: string,
   options?: TrackScreenOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackSearch(keyword, options);
 }
 
@@ -86,6 +89,7 @@ async function trackImpression(
   contentName: string,
   options?: TrackImpressionOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackImpression(contentName, options);
 }
 
@@ -93,6 +97,7 @@ async function trackGoal(
   goal: number,
   options?: TrackGoalOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackGoal(goal, options);
 }
 
@@ -100,6 +105,7 @@ async function trackCampaign(
   url: string,
   options?: CommonEventOptions
 ): Promise<void> {
+  validateCustomKeyValues(options);
   return await PiwikProNativeSdk.trackCampaign(url, options);
 }
 
@@ -160,6 +166,12 @@ async function setPrefixing(prefixingEnabled: boolean): Promise<void> {
 
 async function isPrefixingOn(): Promise<boolean> {
   return await PiwikProNativeSdk.isPrefixingOn();
+}
+
+function validateCustomKeyValues(options: any) {
+  validateCustomKeyValue(options?.customDimensions);
+  validateCustomKeyValue(options?.visitCustomVariables);
+  validateCustomKeyValue(options?.screenCustomVariables);
 }
 
 const PiwikProSdk: PiwikProSdkType = {

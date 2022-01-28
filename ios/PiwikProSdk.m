@@ -37,8 +37,7 @@ RCT_REMAP_METHOD(trackScreen,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyOptionalParameters:options];
         [self applyScreenCustomVariables:options[@"screenCustomVariables"]];
         
         [[PiwikTracker sharedInstance] sendView:path];
@@ -61,8 +60,7 @@ RCT_REMAP_METHOD(trackCustomEvent,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyOptionalParameters:options];
         
         [[PiwikTracker sharedInstance] sendEventWithCategory:category action:action name:options[@"name"] value:options[@"value"]];
         resolve(nil);
@@ -84,8 +82,7 @@ RCT_REMAP_METHOD(trackException,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyOptionalParameters:options];
         
         [[PiwikTracker sharedInstance] sendExceptionWithDescription:description isFatal:isFatal];
         resolve(nil);
@@ -107,8 +104,7 @@ RCT_REMAP_METHOD(trackSocialInteraction,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyOptionalParameters:options];
         
         [[PiwikTracker sharedInstance] sendSocialInteractionWithAction:interaction target:options[@"target"] network:network];
         resolve(nil);
@@ -129,8 +125,7 @@ RCT_REMAP_METHOD(trackDownload,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyOptionalParameters:options];
         
         [[PiwikTracker sharedInstance] sendDownload:url];
         resolve(nil);
@@ -151,8 +146,7 @@ RCT_REMAP_METHOD(trackOutlink,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyOptionalParameters:options];
         
         [[PiwikTracker sharedInstance] sendOutlink:outlink];
         resolve(nil);
@@ -173,8 +167,7 @@ RCT_REMAP_METHOD(trackSearch,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyOptionalParameters:options];
         
         [[PiwikTracker sharedInstance] sendSearchWithKeyword:keyword category:options[@"category"] numberOfHits:options[@"count"]];
         resolve(nil);
@@ -195,8 +188,7 @@ RCT_REMAP_METHOD(trackImpression,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+        [self applyOptionalParameters:options];
         
         [[PiwikTracker sharedInstance] sendContentImpressionWithName:contentName piece:options[@"piece"] target:options[@"target"]];
         resolve(nil);
@@ -217,9 +209,8 @@ RCT_REMAP_METHOD(trackGoal,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
-        
+        [self applyOptionalParameters:options];
+
         [[PiwikTracker sharedInstance] sendGoalWithID:[goal intValue] revenue:options[@"revenue"]];
         resolve(nil);
     } @catch (NSException *exception) {
@@ -239,9 +230,8 @@ RCT_REMAP_METHOD(trackCampaign,
     }
     
     @try {
-        [self applyCustomDimensions:options[@"customDimensions"]];
-        [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
-        
+        [self applyOptionalParameters:options];
+
         [[PiwikTracker sharedInstance] sendCampaign:url];
         resolve(nil);
     } @catch (NSException *exception) {
@@ -281,14 +271,14 @@ RCT_REMAP_METHOD(checkAudienceMembership,
         reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
         return;
     }
-    
+
     @try {
         [[PiwikTracker sharedInstance] checkMembershipWithAudienceID:audienceId completionBlock:^(BOOL isMember, NSError * _Nullable error) {
             if(error != nil) {
                 reject(@"error", @"Checking audience membership failed", error);
                 return;
             }
-            
+
             resolve(@(isMember));
         }];
     } @catch (NSException *exception) {
@@ -518,6 +508,11 @@ RCT_REMAP_METHOD(isPrefixingOn,
         NSDictionary* valuesDict = customVariables[key];
         [[PiwikTracker sharedInstance] setCustomVariableForIndex:[key intValue] name:valuesDict[@"name"] value:valuesDict[@"value"] scope:CustomVariableScopeAction];
     }
+}
+
+- (void)applyOptionalParameters:(NSDictionary*)options {
+    [self applyCustomDimensions:options[@"customDimensions"]];
+    [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
 }
 
 @end

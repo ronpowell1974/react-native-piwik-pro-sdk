@@ -50,8 +50,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
       val screen = trackHelper.screen(path).title(options?.getString("title"))
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       applyScreenCustomVariables(screen, options?.getMap("screenCustomVariables"))
       screen.with(tracker)
 
@@ -71,8 +70,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
           options?.getDouble("value")?.toFloat()
         )
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       customEventTracker.with(tracker)
 
       promise.resolve(null)
@@ -94,8 +92,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val exceptionTracker =
         trackHelper.exception(Exception(description)).description(description).fatal(isFatal)
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       exceptionTracker.with(tracker)
 
       promise.resolve(null)
@@ -115,8 +112,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val tracker = getTracker()
       val trackHelper = TrackHelper.track()
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       trackHelper.socialInteraction(interaction, network).target(options?.getString("target"))
         .with(tracker)
 
@@ -141,8 +137,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
         }
       }
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       trackHelper.download(DownloadTracker(tracker)).identifier(extra).force().with(tracker)
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -155,8 +150,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       val trackHelper = TrackHelper.track()
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       trackHelper.outlink(URL(url)).with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -170,8 +164,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
       val search = trackHelper.search(keyword).category(options?.getString("category"))
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
 
       if (options?.hasKey("count") == true) {
         search.count(options.getInt("count"))
@@ -188,8 +181,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       val trackHelper = TrackHelper.track()
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       trackHelper.impression(contentName).piece(options?.getString("piece"))
         .target(options?.getString("target")).with(getTracker())
       promise.resolve(null)
@@ -203,8 +195,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       val trackHelper = TrackHelper.track()
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       trackHelper.goal(goal).revenue(options?.getDouble("revenue")?.toFloat()).with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -217,8 +208,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       val trackHelper = TrackHelper.track()
 
-      applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
-      applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+      applyOptionalParameters(trackHelper, options)
       trackHelper.campaign(URL(url)).with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -415,5 +405,10 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
 
     return writableMap
+  }
+
+  private fun applyOptionalParameters(trackHelper: TrackHelper, options: ReadableMap?) {
+    applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
+    applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
   }
 }

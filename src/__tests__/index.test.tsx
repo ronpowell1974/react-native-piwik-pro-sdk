@@ -61,7 +61,7 @@ describe('PiwikProSdk', () => {
 
   describe('#trackScreen', () => {
     it('calls trackScreen from native SDK', async () => {
-      const path = 'example/path';
+      const path = 'sample/path';
       const options: TrackScreenOptions = {
         title: 'newAction',
         ...commonEventOptions,
@@ -75,8 +75,8 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackScreen from native SDK with path when options are not passed', async () => {
-      const path = 'example/path';
+    it('calls trackScreen from native SDK when options are not passed', async () => {
+      const path = 'sample/path';
 
       await PiwikProSdk.trackScreen(path);
 
@@ -89,7 +89,7 @@ describe('PiwikProSdk', () => {
 
   describe('#trackCustomEvent', () => {
     it('calls trackCustomEvent from native SDK', async () => {
-      const category = 'example_category';
+      const category = 'sample_category';
       const action = 'add';
       const options: TrackCustomEventOptions = {
         name: 'customEvent',
@@ -106,8 +106,8 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackCustomEvent from native SDK with path when options are not passed', async () => {
-      const category = 'example_category';
+    it('calls trackCustomEvent from native SDK when options are not passed', async () => {
+      const category = 'sample_category';
       const action = 'add';
 
       await PiwikProSdk.trackCustomEvent(category, action);
@@ -135,7 +135,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackException from native SDK with path when options are not passed', async () => {
+    it('calls trackException from native SDK when options are not passed', async () => {
       const description = 'sample exception';
       const isFatal = true;
 
@@ -165,7 +165,7 @@ describe('PiwikProSdk', () => {
       ).toHaveBeenCalledWith(interaction, network, options);
     });
 
-    it('calls trackSocialInteraction from native SDK with path when options are not passed', async () => {
+    it('calls trackSocialInteraction from native SDK when options are not passed', async () => {
       const interaction = 'sample exception';
       const network = 'facebook';
 
@@ -190,7 +190,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackDownload from native SDK with path when options are not passed', async () => {
+    it('calls trackDownload from native SDK when options are not passed', async () => {
       const url = 'http://your.server.com/bonusmap.zip';
 
       await PiwikProSdk.trackDownload(url);
@@ -215,7 +215,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackOutlink from native SDK with path when options are not passed', async () => {
+    it('calls trackOutlink from native SDK when options are not passed', async () => {
       const url = 'http://your.server.com/bonusmap.zip';
 
       await PiwikProSdk.trackOutlink(url);
@@ -244,7 +244,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackSearch from native SDK with path when options are not passed', async () => {
+    it('calls trackSearch from native SDK when options are not passed', async () => {
       const keyword = 'http://your.server.com/bonusmap.zip';
 
       await PiwikProSdk.trackSearch(keyword);
@@ -273,7 +273,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackImpression from native SDK with path when options are not passed', async () => {
+    it('calls trackImpression from native SDK when options are not passed', async () => {
       const contentName = 'Some content impression';
 
       await PiwikProSdk.trackImpression(contentName);
@@ -301,7 +301,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackGoal from native SDK with path when options are not passed', async () => {
+    it('calls trackGoal from native SDK when options are not passed', async () => {
       const goal = 1;
 
       await PiwikProSdk.trackGoal(goal);
@@ -327,7 +327,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackCampaign from native SDK with path when options are not passed', async () => {
+    it('calls trackCampaign from native SDK when options are not passed', async () => {
       const url =
         'http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore';
 

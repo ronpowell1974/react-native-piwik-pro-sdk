@@ -2,13 +2,13 @@
 
 Piwik PRO SDK for React Native
 
-## Installation
+### Installation
 
 ```sh
 npm install react-native-piwik-pro-sdk
 ```
 
-## Configuration
+### Configuration
 
 In order to set up the Piwik PRO tracker you have to call `init` method passing a server address and website ID (you can find it in `Administration` > `Sites & apps`):
 
@@ -17,17 +17,19 @@ import PiwikProSdk from "react-native-piwik-pro-sdk";
 
 // ...
 
-await PiwikProSdk.init(
-  'https://example.piwik.pro/',
-  '6565aa65-8f8f-4242-abc1-9876dcbaabcd'
-);
+await PiwikProSdk.init('https://your.piwik.pro.server.com', '01234567-89ab-cdef-0123-456789abcdef')
 ```
+Parameters:
+- `serverAddress: string` *(required)* - URL of your Piwik PRO server.
+- `websiteId: string` *(required)* - ID of your website or application.
 
 ***Note:*** Each tracking method is implemented as a Promise which will be rejected if the `PiwikProSdk` has not been initialized.
 
 
 
-## Data anonymization
+## Using Piwik PRO SDK
+
+### Data anonymization
 
 Anonymization is the feature that allows tracking a user’s activity for aggregated data analysis even if the user doesn’t consent to track the data. If a user does not agree to be tracked, he will not be identified as the same person across multiple sessions.
 
@@ -53,7 +55,7 @@ Returns:
 
 
 
-## Tracking screen views
+### Tracking screen views
 
 During a valid tracking session, you can track screen views which represent the content the user is viewing in the application. To track a screen you only need to provide the screen path. This path is internally translated by the SDK to an HTTP URL as the Piwik PRO server uses URLs for tracking views. Additionally, Piwik PRO SDK uses prefixes which are inserted in a generated URL for various types of action(s). For tracking screen views it will use a prefix `'screen'` by default, however, [automatic prefixing](#prefixing) can be disabled with the `setPrefixing(false)` option.
 
@@ -74,7 +76,7 @@ Parameters:
 
 
 
-## Tracking custom events
+### Tracking custom events
 
 To collect data about the user’s interaction with the interactive components of the application, like a button presses or the use of a particular item in the game - use event method.
 
@@ -101,7 +103,7 @@ For more resources, please visit [documentation](https://help.piwik.pro/support/
 
 
 
-## Tracking exceptions
+### Tracking exceptions
 
 Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` [prefix](#prefixing), and additionally the `'exception'` prefix if `isPrefixingOn()` option is enabled (`true`).
 
@@ -123,7 +125,7 @@ Parameters:
 
 
 
-## Tracking social interactions
+### Tracking social interactions
 
 Social interactions such as likes, shares and comments in various social networks can be tracked as below. This, again, is tracked in a similar way as with screen views but the `'social'` [prefix](#prefixing) is used when the default `isPrefixing()` option is enabled.
 
@@ -146,7 +148,7 @@ The generated URL corresponds to string, which includes the network, interaction
 
 
 
-## Tracking downloads
+### Tracking downloads
 
 You can track the downloads initiated by your application:
 
@@ -169,7 +171,7 @@ All downloads can be viewed in the corresponding section in the analytics panel.
 
 
 
-## Tracking outlinks
+### Tracking outlinks
 
 Requires Analytics
 
@@ -190,7 +192,7 @@ Parameters:
 
 
 
-## Tracking search operations
+### Tracking search operations
 
 Tracking search operations allow the measurement of popular keywords used for various search operations performed inside your application. It can be done via the `trackSearch` method:
 
@@ -213,7 +215,7 @@ Parameters:
 
 
 
-## Tracking content impressions
+### Tracking content impressions
 
 You can track an impression of an ad in your application as below.
 ```js
@@ -235,7 +237,7 @@ Parameters:
 
 
 
-## Tracking goals
+### Tracking goals
 
 Goaltracking is used to measure and improve your business objectives. To track goals, you first need to configure them on the server in your web panel. Goals such as, for example, subscribing to a newsletter can be tracked as below with the goal ID that you will see on the server after configuring the goal and optional revenue. The currency for the revenue can be set in the Piwik PRO Analytics settings. You can read more about goals [here](https://help.piwik.pro/support/analytics/goals/).
 
@@ -256,7 +258,7 @@ Parameters:
 
 
 
-## Tracking campaigns
+### Tracking campaigns
 
 [Tracking campaigns](https://piwik.pro/glossary/campaign-tracking/) URLs configured with the online [Campaign URL Builder](https://piwik.pro/url-builder-tool/) tool allow you to measure how different campaigns (for example with Facebook ads or direct emails) bring traffic to your application:
 
@@ -277,7 +279,7 @@ Parameters:
 
 
 
-## Tracking custom variables
+### Tracking custom variables
 
 A [Custom Variable](https://piwik.pro/glossary/custom-variables/) is a custom name-value pair that you can assign to your users or screen views, and then visualize the reports of how many visits, conversions, etc. for each custom variable. A custom variable is defined by a name - for example, 'User status' - and a value - for example, 'LoggedIn' or 'Anonymous'. It is required for names and values to be encoded in UTF-8.
 
@@ -308,7 +310,7 @@ where:
 
 
 
-## Tracking custom dimensions
+### Tracking custom dimensions
 
 To track a custom name-value pair assigned to your users or screen views, use [Custom Dimensions](https://help.piwik.pro/support/analytics/custom-dimension/). Note that the custom value data is not sent by itself, but only with other tracking actions such as screen views, events or other tracking actions (see the documentation of other tracking methods), for example:
 
@@ -324,7 +326,7 @@ await PiwikProSdk.trackScreen(`your_screen_path`, { customDimensions });
 
 
 
-## Reading user profile attributes
+### Reading user profile attributes
 
 *Requires Audience Manager*
 
@@ -339,7 +341,7 @@ Returns:
 
 
 
-## Checking audience membership
+### Checking audience membership
 
 *Requires Audience Manager*
 
@@ -358,7 +360,9 @@ Returns:
 
 
 
-## Dispatching
+## Advanced usage
+
+### Dispatching
 
 Tracked events are stored temporarily on the queue and dispatched in batches every 30 seconds (default setting). This behavior can be changed in the following way:
 
@@ -386,7 +390,7 @@ Returns:
 
 
 
-## Default custom variables
+### Default custom variables
 
 SDK can automatically add information about the platform version, OS version and app version in custom variables with indexes 1-3. By default, this option is turned on. This can be changed via the `setIncludeDefaultCustomVars` method:
 ```js
@@ -404,7 +408,7 @@ Returns:
 
 
 
-## Opt out
+### Opt out
 
 You can enable an app-level opt-out flag that will disable Piwik PRO tracking across the entire app. Note that this flag must be set each time the app starts up and by default is set to `false`. To set the app-level opt-out, use:
 ```js
@@ -423,7 +427,7 @@ Returns:
 
 
 
-## Prefixing
+### Prefixing
 
 In case of tracking events like screen view, exception or social interaction event path in the tracker will contain corresponding prefix. You can disable prefixing with:
 ```js
@@ -443,7 +447,7 @@ Returns:
 
 
 
-## Contributing
+### Contributing
 
 See the [contributing guide](CONTRIBUTING.md) to learn how to contribute to the repository and the development workflow.
 
