@@ -19,7 +19,7 @@ PODS:
     - DoubleConversion
     - glog
   - glog (0.3.5)
-  - PiwikPROSDK (1.0.7)
+  - PiwikPROSDK (1.1.0)
   - RCTRequired (0.63.4)
   - RCTTypeSafety (0.63.4):
     - FBLazyVector (= 0.63.4)
@@ -187,7 +187,7 @@ PODS:
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
   - react-native-piwik-pro-sdk (0.1.0):
-    - PiwikPROSDK (~> 1.0.7)
+    - PiwikPROSDK (~> 1.1)
     - React-Core
   - react-native-safe-area-context (3.3.2):
     - React-Core
@@ -366,7 +366,7 @@ SPEC CHECKSUMS:
   FBReactNativeSpec: f2c97f2529dd79c083355182cc158c9f98f4bd6e
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
-  PiwikPROSDK: 5da5efc3adfa68795ff2b3a2af806ed9316d63e6
+  PiwikPROSDK: d3db88e91c5ec5c7b94e5b62af4a4fb5d64e5417
   RCTRequired: 082f10cd3f905d6c124597fd1c14f6f2655ff65e
   RCTTypeSafety: 8c9c544ecbf20337d069e4ae7fd9a377aadf504b
   React: b0a957a2c44da4113b0c4c9853d8387f8e64e615
@@ -377,7 +377,7 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-piwik-pro-sdk: 697deb525841142bef01333428fdd6c95ed75fc6
+  react-native-piwik-pro-sdk: f9a443311f73bbbe45a472e3f0a588025f3e80ad
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-RCTActionSheet: 89a0ca9f4a06c1f93c26067af074ccdce0f40336
   React-RCTAnimation: 1bde3ecc0c104c55df246eda516e0deb03c4e49b
@@ -393,6 +393,6 @@ SPEC CHECKSUMS:
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: e270c090ff12d117596690f8ec4ae6e7510aa7fd
+PODFILE CHECKSUM: 076ca7aa89647f5a2e74cd5fce1d08e0b9534dc9
 
 COCOAPODS: 1.11.2
