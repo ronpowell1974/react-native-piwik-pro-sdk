@@ -6,6 +6,8 @@ import {
   setDispatchInterval,
   setError,
   setMessage,
+  setUserId,
+  userIdSelector,
 } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { styles } from '../styles';
@@ -17,6 +19,7 @@ export default function Settings() {
   const successMessage = (message: string) => dispatch(setMessage(message));
   const dispatchInterval = useAppSelector(dispatchIntervalSelector);
   const sdkInitialized = useAppSelector(sdkInitializedSelector);
+  const userId = useAppSelector(userIdSelector);
   const [anonymizationEnabled, setAnonymizationEnabled] =
     useState<boolean>(true);
   const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
@@ -67,6 +70,15 @@ export default function Settings() {
     try {
       await PiwikProSdk.setDispatchInterval(dispatchInterval);
       successMessage('Dispatch interval changed successfully');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const changeUserId = async () => {
+    try {
+      await PiwikProSdk.setUserId(userId);
+      successMessage('User ID changed successfully');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -160,6 +172,18 @@ export default function Settings() {
           prefixingEnabled ? 'enabled' : 'disabled'
         }`}
       />
+
+      <Input
+        value={userId}
+        containerStyle={styles.inputContainer}
+        inputStyle={styles.input}
+        label="User ID"
+        autoCompleteType={undefined}
+        keyboardType={'default'}
+        onChangeText={(buttonText) => dispatch(setUserId(buttonText))}
+      />
+
+      <Button onPress={changeUserId} text={'Set user ID'} />
     </ScrollViewContainer>
   );
 }

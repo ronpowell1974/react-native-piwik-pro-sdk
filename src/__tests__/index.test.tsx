@@ -17,6 +17,7 @@ jest.mock('react-native', () => ({
       trackCampaign: jest.fn(),
       getProfileAttributes: jest.fn(),
       checkAudienceMembership: jest.fn(),
+      setUserId: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -368,6 +369,15 @@ describe('PiwikProSdk', () => {
       expect(
         NativeModules.PiwikProSdk.checkAudienceMembership
       ).toHaveBeenCalledWith(audienceId);
+    });
+  });
+
+  describe('#setUserId', () => {
+    it('calls setUserId from native SDK', async () => {
+      const userId = 'userId123';
+      await PiwikProSdk.setUserId(userId);
+
+      expect(NativeModules.PiwikProSdk.setUserId).toHaveBeenCalledWith(userId);
     });
   });
 

@@ -6,6 +6,7 @@ interface AppState {
   eventNum: number;
   dispatchInterval: number;
   sdkInitialized: boolean;
+  userId: string;
 }
 
 const initialState: AppState = {
@@ -13,6 +14,7 @@ const initialState: AppState = {
   eventNum: 1,
   dispatchInterval: 0,
   sdkInitialized: false,
+  userId: '',
 };
 
 export const appSlice = createSlice({
@@ -35,6 +37,9 @@ export const appSlice = createSlice({
     setSdkInitializationState: (state, action: PayloadAction<boolean>) => {
       state.sdkInitialized = action.payload;
     },
+    setUserId: (state, action: PayloadAction<string>) => {
+      state.userId = action.payload;
+    },
   },
 });
 
@@ -44,6 +49,7 @@ export const {
   setDispatchInterval,
   setSdkInitializationState,
   setEventMessage,
+  setUserId,
 } = appSlice.actions;
 
 export const messageSelector = (state: RootState) => state.app.message;
@@ -52,5 +58,6 @@ export const dispatchIntervalSelector = (state: RootState) =>
   state.app.dispatchInterval;
 export const sdkInitializedSelector = (state: RootState) =>
   state.app.sdkInitialized;
+export const userIdSelector = (state: RootState) => state.app.userId;
 
 export default appSlice.reducer;
