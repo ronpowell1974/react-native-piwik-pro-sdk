@@ -414,7 +414,6 @@ await PiwikProSdk.setUserId("John Doe");
 Parameters:
 - `userId: string` *(required)* - any non-empty unique string identifying the user. Passing null will delete the current User ID.
 
-
 You can obtain current User ID value with `getUserId`:
 
 ```js
@@ -423,6 +422,28 @@ const currentUserId = await PiwikProSdk.getUserId();
 Returns:
 - `userId: string` - current User ID.
 
+
+
+### User email address
+
+*Used only by Audience Manager*
+
+The user email address is an optional parameter for user identification. Similar to User ID, it allows the association of events from various sources to the same user. To set user email use the setUserMail method:
+```js
+await PiwikProSdk.setUserEmail('john@doe.com');
+```
+Parameters:
+- `email: string` *(required)* - non-null string representing email address.
+
+Setting up an email helps the Audience Manager to enrich existing profiles or merge profiles which come from other sources (if they also have an email). Check [Tracking user profile attributes](//TODO) for more information.
+
+You can obtain current user email value with `getUserEmail`:
+
+```js
+const currentUserEmail = await PiwikProSdk.getUserEmail(); 
+```
+Returns:
+- `userEmail: string` - current user email.
 
 
 

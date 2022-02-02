@@ -7,6 +7,7 @@ import {
   setError,
   setMessage,
   setSdkInitializationState,
+  setUserEmail,
   setUserId,
 } from '../store/appSlice';
 import { useAppDispatch } from '../store/hooks';
@@ -26,6 +27,8 @@ export default function Home({ navigation }: Props) {
     dispatch(setDispatchInterval(dispatchInterval));
     const currentUserId = await PiwikProSdk.getUserId();
     dispatch(setUserId(currentUserId));
+    const currentUserEmail = await PiwikProSdk.getUserEmail();
+    dispatch(setUserEmail(currentUserEmail));
     dispatch(setSdkInitializationState(true));
   };
 

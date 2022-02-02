@@ -6,13 +6,13 @@ import {
   setDispatchInterval,
   setError,
   setMessage,
+  setUserEmail,
   setUserId,
+  userEmailSelector,
   userIdSelector,
 } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { styles } from '../styles';
-import { Input } from 'react-native-elements';
-import { Button, ScrollViewContainer } from '../components';
+import { Button, Input, ScrollViewContainer } from '../components';
 
 export default function Settings() {
   const dispatch = useAppDispatch();
@@ -20,6 +20,7 @@ export default function Settings() {
   const dispatchInterval = useAppSelector(dispatchIntervalSelector);
   const sdkInitialized = useAppSelector(sdkInitializedSelector);
   const userId = useAppSelector(userIdSelector);
+  const userEmail = useAppSelector(userEmailSelector);
   const [anonymizationEnabled, setAnonymizationEnabled] =
     useState<boolean>(true);
   const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
@@ -70,6 +71,15 @@ export default function Settings() {
     try {
       await PiwikProSdk.setDispatchInterval(dispatchInterval);
       successMessage('Dispatch interval changed successfully');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const changeUserEmail = async () => {
+    try {
+      await PiwikProSdk.setUserEmail(userEmail);
+      successMessage('User email changed successfully');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -133,10 +143,7 @@ export default function Settings() {
 
       <Input
         value={dispatchInterval.toString()}
-        containerStyle={styles.inputContainer}
-        inputStyle={styles.input}
         label="Dispatch interval (in seconds)"
-        autoCompleteType={undefined}
         keyboardType={'numeric'}
         onChangeText={(buttonText) =>
           dispatch(setDispatchInterval(parseInt(buttonText, 10) || 0))
@@ -174,12 +181,16 @@ export default function Settings() {
       />
 
       <Input
+        value={userEmail}
+        label="User email"
+        onChangeText={(buttonText) => dispatch(setUserEmail(buttonText))}
+      />
+
+      <Button onPress={changeUserEmail} text={'Set email'} />
+
+      <Input
         value={userId}
-        containerStyle={styles.inputContainer}
-        inputStyle={styles.input}
         label="User ID"
-        autoCompleteType={undefined}
-        keyboardType={'default'}
         onChangeText={(buttonText) => dispatch(setUserId(buttonText))}
       />
 
