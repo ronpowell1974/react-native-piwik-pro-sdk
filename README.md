@@ -239,7 +239,7 @@ Parameters:
 
 ### Tracking goals
 
-Goaltracking is used to measure and improve your business objectives. To track goals, you first need to configure them on the server in your web panel. Goals such as, for example, subscribing to a newsletter can be tracked as below with the goal ID that you will see on the server after configuring the goal and optional revenue. The currency for the revenue can be set in the Piwik PRO Analytics settings. You can read more about goals [here](https://help.piwik.pro/support/analytics/goals/).
+Goal tracking is used to measure and improve your business objectives. To track goals, you first need to configure them on the server in your web panel. Goals such as, for example, subscribing to a newsletter can be tracked as below with the goal ID that you will see on the server after configuring the goal and optional revenue. The currency for the revenue can be set in the Piwik PRO Analytics settings. You can read more about goals [here](https://help.piwik.pro/support/analytics/goals/).
 
 ```js
 const options = {
@@ -253,6 +253,49 @@ Parameters:
 - `goal: number` *(required)* - tracking request will trigger a conversion for the goal of the website being tracked with this ID.
 - `options` - goal tracking options, object containing three properties (all of them are optional):
   - `revenue: number` - monetary value that was generated as revenue by this goal conversion.
+  - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
+  - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
+
+
+
+### Tracking ecommerce transactions
+
+Ecommerce transactions (in-app purchases) can be tracked to help you improve your business strategy. To track a transaction you must provide two required values - the transaction identifier and grandTotal. Optionally, you can also provide values for subTotal, tax, shippingCost, discount and list of purchased items as in the example below.
+
+```js
+const options: TrackEcommerceOptions = {
+  discount: 0,
+  shipping: 1000,
+  subTotal: 33110,
+  tax: 9890,
+  items: [
+    {
+      sku: '0123456789012',
+      category: "Men's T-shirts",
+      name: 'Polo T-shirt',
+      price: 3000,
+      quantity: 2,
+    },
+  ],
+  visitCustomVariables: 4: { name: 'food', value: 'pizza' },
+  customDimensions: { 1: 'beta', 2: 'gamma', },
+};
+await PiwikProSdk.trackEcommerce('order_1', 124144, options);
+```
+Parameters:
+- `orderId: string` (required) - unique string identifying the order.
+- `grandTotal: number` (required) - total amount of the order, in cents.
+- `options` - goal tracking options, object containing five properties (all of them are optional):
+  - `subTotal: number` - subtotal (net price) for the order, in cents.
+  - `tax: number` - tax for the order, in cents.
+  - `shipping: number` - shipping for the order, in cents.
+  - `discount: number` - discount for the order, in cents.
+  - `items` - items included in the order, array of objects containing five required properties:
+    - `sku: string` - identifier of the item.
+    - `name: string` - name of the item.
+    - `category: string` - category of the item.
+    - `price: string` - price of the single item, in cents.
+    - `quantity: string` - quantity of the item.
   - `customDimensions` - object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` - object specifying [visit custom variables](#tracking-custom-variables).
 
@@ -436,7 +479,7 @@ You can enable an app-level opt-out flag that will disable Piwik PRO tracking ac
 await PiwikProSdk.setOptOut(true);
 ```
 Parameters:
-- `optOut: boolean` *(required)* – flag that determines whether opt-out is enabled.
+- `optOut: boolean` *(required)* - flag that determines whether opt-out is enabled.
 
 You can obtain current `optOut` value with `getOptOut`:
 ```js

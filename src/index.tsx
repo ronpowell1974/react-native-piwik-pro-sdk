@@ -101,6 +101,14 @@ async function trackGoal(
   return await PiwikProNativeSdk.trackGoal(goal, options);
 }
 
+async function trackEcommerce(
+  orderId: string,
+  grandTotal: number,
+  options?: TrackEcommerceOptions
+): Promise<void> {
+  return await PiwikProNativeSdk.trackEcommerce(orderId, grandTotal, options);
+}
+
 async function trackCampaign(
   url: string,
   options?: CommonEventOptions
@@ -193,6 +201,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackSearch,
   trackImpression,
   trackGoal,
+  trackEcommerce,
   trackCampaign,
   getProfileAttributes,
   checkAudienceMembership,

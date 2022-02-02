@@ -193,6 +193,37 @@ export default function TrackingActions() {
     }
   };
 
+  const trackEcommerce = async () => {
+    const options: TrackEcommerceOptions = {
+      visitCustomVariables,
+      discount: 500,
+      shipping: 3000,
+      subTotal: 1000,
+      tax: 2000,
+      items: [
+        {
+          sku: '0123456789012',
+          category: "Men's T-shirts",
+          name: 'Polo T-shirt',
+          price: 3000,
+          quantity: 2,
+        },
+      ],
+      customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackEcommerce(
+        `Transaction_${eventNum}`,
+        100000,
+        options
+      );
+      successMessage('Track ecommerce transaction');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   const trackCampaign = async () => {
     const options: CommonEventOptions = {
       visitCustomVariables,
@@ -242,6 +273,8 @@ export default function TrackingActions() {
       <Button onPress={trackImpression} text={'Track impression'} />
 
       <Button onPress={trackGoal} text={'Track goal'} />
+
+      <Button onPress={trackEcommerce} text={'Track ecmommerce transaction'} />
 
       <Button onPress={trackCampaign} text={'Track campaign'} />
     </ScrollViewContainer>

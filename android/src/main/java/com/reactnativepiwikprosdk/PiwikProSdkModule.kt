@@ -10,6 +10,7 @@ import pro.piwik.sdk.TrackerConfig
 import pro.piwik.sdk.extra.DownloadTracker
 import pro.piwik.sdk.extra.DownloadTracker.Extra
 import pro.piwik.sdk.extra.DownloadTracker.Extra.Custom
+import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
 import java.net.URL
 
@@ -197,6 +198,28 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
       applyOptionalParameters(trackHelper, options)
       trackHelper.goal(goal).revenue(options?.getDouble("revenue")?.toFloat()).with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun trackEcommerce(orderId: String, grandTotal: Int, options: ReadableMap?, promise: Promise) {
+    try {
+      val items = buildEcommerceItems(options?.getArray("items"))
+      val trackHelper = TrackHelper.track()
+
+      applyOptionalParameters(trackHelper, options)
+      trackHelper
+        .order(orderId, grandTotal)
+        .subTotal(options?.getInt("subTotal"))
+        .tax(options?.getInt("tax"))
+        .shipping(options?.getInt("shipping"))
+        .discount(options?.getInt("discount"))
+        .items(items)
+        .with(getTracker())
+
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -430,5 +453,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   private fun applyOptionalParameters(trackHelper: TrackHelper, options: ReadableMap?) {
     applyCustomDimensions(trackHelper, options?.getMap("customDimensions"))
     applyVisitCustomVariables(trackHelper, options?.getMap("visitCustomVariables"))
+  }
+
+  private fun buildEcommerceItems(
+    itemsArray: ReadableArray?
+  ): EcommerceItems {
+    val items = EcommerceItems()
+
+    if (itemsArray == null) {
+      return items
+    }
+
+    for (i in 0 until itemsArray.size()) {
+      val itemValues = itemsArray.getMap(i) as ReadableMap
+      items.addItem(
+        EcommerceItems.Item(itemValues.getString("sku")).name(itemValues.getString("name"))
+          .category(itemValues.getString("category"))
+          .price(itemValues.getInt("price")).quantity(itemValues.getInt("quantity"))
+      )
+    }
+
+    return items
   }
 }

@@ -14,6 +14,7 @@ jest.mock('react-native', () => ({
       trackSearch: jest.fn(),
       trackImpression: jest.fn(),
       trackGoal: jest.fn(),
+      trackEcommerce: jest.fn(),
       trackCampaign: jest.fn(),
       getProfileAttributes: jest.fn(),
       checkAudienceMembership: jest.fn(),
@@ -310,6 +311,37 @@ describe('PiwikProSdk', () => {
       expect(NativeModules.PiwikProSdk.trackGoal).toHaveBeenCalledWith(
         goal,
         undefined
+      );
+    });
+  });
+
+  describe('#trackEcommerce', () => {
+    it('calls trackEcommerce from native SDK', async () => {
+      const orderId = 'transaction';
+      const grandTotal = 650;
+      const options: TrackEcommerceOptions = {
+        ...commonEventOptions,
+        discount: 0,
+        shipping: 222,
+        subTotal: 500,
+        tax: 20,
+        items: [
+          {
+            sku: '0123456789012',
+            category: "Men's T-shirts",
+            name: 'Polo T-shirt',
+            price: 3000,
+            quantity: 2,
+          },
+        ],
+      };
+
+      await PiwikProSdk.trackEcommerce(orderId, grandTotal, options);
+
+      expect(NativeModules.PiwikProSdk.trackEcommerce).toHaveBeenCalledWith(
+        orderId,
+        grandTotal,
+        options
       );
     });
   });

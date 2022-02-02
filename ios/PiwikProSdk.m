@@ -210,8 +210,38 @@ RCT_REMAP_METHOD(trackGoal,
     
     @try {
         [self applyOptionalParameters:options];
-
+        
         [[PiwikTracker sharedInstance] sendGoalWithID:[goal intValue] revenue:options[@"revenue"]];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(trackEcommerce,
+                 trackEcommerceWithOrderId:(nonnull NSString*)orderId
+                 withGrandTotal:(nonnull NSNumber*)grandTotal
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [self applyOptionalParameters:options];
+        
+        [[PiwikTracker sharedInstance] sendTransaction:[PiwikTransaction transactionWithBlock:^(PiwikTransactionBuilder *builder) {
+            builder.identifier = orderId;
+            builder.grandTotal = grandTotal;
+            builder.subTotal = options[@"subTotal"];
+            builder.tax = options[@"tax"];
+            builder.shippingCost = options[@"shipping"];
+            builder.discount = options[@"discount"];
+            [self buildEcommerceItems:builder withItemsArray:options[@"items"]];
+        }]];
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);
@@ -231,7 +261,7 @@ RCT_REMAP_METHOD(trackCampaign,
     
     @try {
         [self applyOptionalParameters:options];
-
+        
         [[PiwikTracker sharedInstance] sendCampaign:url];
         resolve(nil);
     } @catch (NSException *exception) {
@@ -271,14 +301,14 @@ RCT_REMAP_METHOD(checkAudienceMembership,
         reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
         return;
     }
-
+    
     @try {
         [[PiwikTracker sharedInstance] checkMembershipWithAudienceID:audienceId completionBlock:^(BOOL isMember, NSError * _Nullable error) {
             if(error != nil) {
                 reject(@"error", @"Checking audience membership failed", error);
                 return;
             }
-
+            
             resolve(@(isMember));
         }];
     } @catch (NSException *exception) {
@@ -548,6 +578,16 @@ RCT_REMAP_METHOD(isPrefixingOn,
 - (void)applyOptionalParameters:(NSDictionary*)options {
     [self applyCustomDimensions:options[@"customDimensions"]];
     [self applyVisitCustomVariables:options[@"visitCustomVariables"]];
+}
+
+- (void)buildEcommerceItems:(PiwikTransactionBuilder *)builder withItemsArray:(nullable NSDictionary*)itemsArray {
+    if (itemsArray == nil) {
+        return;
+    }
+    
+    for (NSDictionary* itemValues in itemsArray) {
+        [builder addItemWithSku:itemValues[@"sku"] name:itemValues[@"name"] category:itemValues[@"category"] price:itemValues[@"price"] quantity:itemValues[@"quantity"]];
+    }
 }
 
 @end

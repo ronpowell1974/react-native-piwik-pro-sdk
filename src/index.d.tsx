@@ -89,6 +89,17 @@ type PiwikProSdkType = {
   trackGoal(goal: number, options?: TrackGoalOptions): Promise<void>;
 
   /**
+   * Tracks ecommerce transaction.
+   * @contentName searched query that was used in the app
+   * @options search tracking options (category, count, customDimensions, visitCustomVariables)
+   */
+  trackEcommerce(
+    orderId: string,
+    grandTotal: number,
+    options?: TrackEcommerceOptions
+  ): Promise<void>;
+
+  /**
    * Tracks campaign.
    * @url campaign URL
    * @options campaign tracking options (customDimensions, visitCustomVariables)
@@ -233,6 +244,22 @@ type TrackImpressionOptions = CommonEventOptions & {
 
 type TrackGoalOptions = CommonEventOptions & {
   revenue?: number;
+};
+
+type EcommerceItem = {
+  sku: string;
+  name: string;
+  category: string;
+  price: number;
+  quantity: number;
+};
+
+type TrackEcommerceOptions = CommonEventOptions & {
+  subTotal?: number;
+  tax?: number;
+  shipping?: number;
+  discount?: number;
+  items?: EcommerceItem[];
 };
 
 type ProfileAttributes = {
