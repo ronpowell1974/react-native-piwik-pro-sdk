@@ -141,6 +141,17 @@ type PiwikProSdkType = {
   getUserEmail(): Promise<string>;
 
   /**
+   * Sets the session timeout.
+   * @sessionTimeout new session timeout value (in seconds)
+   */
+  setSessionTimeout(sessionTimeout: number): Promise<void>;
+
+  /**
+   * Returns session timeout value (in seconds).
+   */
+  getSessionTimeout(): Promise<number>;
+
+  /**
    * Dispatches queued events.
    */
   dispatch(): Promise<void>;

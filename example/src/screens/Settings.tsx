@@ -3,9 +3,11 @@ import PiwikProSdk from 'react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
   sdkInitializedSelector,
+  sessionTimeoutSelector,
   setDispatchInterval,
   setError,
   setMessage,
+  setSessionTimeout,
   setUserEmail,
   setUserId,
   userEmailSelector,
@@ -21,6 +23,7 @@ export default function Settings() {
   const sdkInitialized = useAppSelector(sdkInitializedSelector);
   const userId = useAppSelector(userIdSelector);
   const userEmail = useAppSelector(userEmailSelector);
+  const sessionTimeout = useAppSelector(sessionTimeoutSelector);
   const [anonymizationEnabled, setAnonymizationEnabled] =
     useState<boolean>(true);
   const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
@@ -71,6 +74,15 @@ export default function Settings() {
     try {
       await PiwikProSdk.setDispatchInterval(dispatchInterval);
       successMessage('Dispatch interval changed successfully');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const changeSessionTimeout = async () => {
+    try {
+      await PiwikProSdk.setSessionTimeout(sessionTimeout);
+      successMessage('Session timeout changed successfully');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -151,6 +163,17 @@ export default function Settings() {
       />
 
       <Button onPress={changeDispatchInterval} text={'Set dispatch interval'} />
+
+      <Input
+        value={sessionTimeout.toString()}
+        label="Session timeout (in seconds)"
+        keyboardType={'numeric'}
+        onChangeText={(buttonText) =>
+          dispatch(setSessionTimeout(parseInt(buttonText, 10) || 0))
+        }
+      />
+
+      <Button onPress={changeSessionTimeout} text={'Set session timeout'} />
 
       <Button
         onPress={toggleAnonymizationState}

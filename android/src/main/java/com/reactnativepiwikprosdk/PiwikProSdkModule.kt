@@ -317,6 +317,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun setSessionTimeout(timeout: Int, promise: Promise) {
+    try {
+      getTracker().setSessionTimeout(timeout * 1000)
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getSessionTimeout(promise: Promise) {
+    try {
+      val sessionTimeout = getTracker().sessionTimeout.toInt() / 1000
+      promise.resolve(sessionTimeout)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

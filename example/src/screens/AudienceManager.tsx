@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Input } from 'react-native-elements';
 import PiwikProSdk from 'react-native-piwik-pro-sdk';
-import { Button, ScrollViewContainer } from '../components';
+import { Button, Input, ScrollViewContainer } from '../components';
 import { setError, setMessage } from '../store/appSlice';
 import { useAppDispatch } from '../store/hooks';
-import { styles } from '../styles';
 
 export default function AudienceManager() {
   const dispatch = useAppDispatch();
@@ -46,12 +44,9 @@ export default function AudienceManager() {
 
       <Input
         value={audienceId}
-        containerStyle={styles.inputContainer}
-        inputStyle={styles.input}
         label="Audience ID"
         placeholder="Audience ID"
         onChangeText={(buttonText) => setAudienceId(buttonText)}
-        autoCompleteType={undefined}
       />
 
       <Button

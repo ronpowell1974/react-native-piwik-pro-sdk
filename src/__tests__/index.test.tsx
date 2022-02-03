@@ -22,6 +22,8 @@ jest.mock('react-native', () => ({
       getUserId: jest.fn(),
       setUserEmail: jest.fn(),
       getUserEmail: jest.fn(),
+      setSessionTimeout: jest.fn(),
+      getSessionTimeout: jest.fn(),
       dispatch: jest.fn(),
       setDispatchInterval: jest.fn(),
       getDispatchInterval: jest.fn(),
@@ -444,6 +446,27 @@ describe('PiwikProSdk', () => {
       const result = await PiwikProSdk.getUserEmail();
 
       expect(result).toStrictEqual(userEmail);
+    });
+  });
+
+  describe('#setSessionTimeout', () => {
+    it('calls setSessionTimeout from native SDK', async () => {
+      const timeout = 1200;
+      await PiwikProSdk.setSessionTimeout(timeout);
+
+      expect(NativeModules.PiwikProSdk.setSessionTimeout).toHaveBeenCalledWith(
+        timeout
+      );
+    });
+  });
+
+  describe('#getSessionTimeout', () => {
+    it('calls getSessionTimeout from native SDK', async () => {
+      const timeout = 1200;
+      NativeModules.PiwikProSdk.getSessionTimeout.mockResolvedValue(timeout);
+      const result = await PiwikProSdk.getSessionTimeout();
+
+      expect(result).toStrictEqual(timeout);
     });
   });
 

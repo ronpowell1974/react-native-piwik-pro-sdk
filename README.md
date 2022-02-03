@@ -283,8 +283,8 @@ const options: TrackEcommerceOptions = {
 await PiwikProSdk.trackEcommerce('order_1', 124144, options);
 ```
 Parameters:
-- `orderId: string` (required) - unique string identifying the order.
-- `grandTotal: number` (required) - total amount of the order, in cents.
+- `orderId: string` *(required)* - unique string identifying the order.
+- `grandTotal: number` *(required)* - total amount of the order, in cents.
 - `options` - goal tracking options, object containing five properties (all of them are optional):
   - `subTotal: number` - subtotal (net price) for the order, in cents.
   - `tax: number` - tax for the order, in cents.
@@ -444,6 +444,26 @@ const currentUserEmail = await PiwikProSdk.getUserEmail();
 ```
 Returns:
 - `userEmail: string` - current user email.
+
+
+
+### Sessions
+
+A session represents a set of user’s interactions with your app. By default, Analytics is closing the session after 30 minutes of inactivity, counting from the last recorded event in session and when the user will open up the app again the new session is started. You can configure the tracker to automatically close the session when users have placed your app in the background for a period of time. That period is defined by the `setSessionTimeout`:
+```js
+await PiwikProSdk.setSessionTimeout(1800);
+```
+Parameters:
+- `sessionTimeout: number` *(required)* – session timeout time in seconds. Default: 1800 seconds (30 minutes).
+
+You can obtain current `sessionTimeout` value with `getSessionTimeout`:
+
+```js
+const currentSessionTimeout = await PiwikProSdk.getSessionTimeout();
+console.log(currentSessionTimeout); // 1800
+```
+Returns:
+- `sessionTimeout: number` - current session timeout value in seconds.
 
 
 

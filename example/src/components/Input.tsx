@@ -7,6 +7,7 @@ interface InputProps {
   label: string;
   value: string;
   keyboardType?: 'default' | 'numeric';
+  placeholder?: string;
 }
 
 export function Input({
@@ -14,6 +15,7 @@ export function Input({
   value,
   label,
   keyboardType = 'default',
+  placeholder,
 }: InputProps) {
   return (
     <RNInput
@@ -24,6 +26,7 @@ export function Input({
       autoCompleteType={undefined}
       keyboardType={keyboardType}
       onChangeText={onChangeText}
+      placeholder={placeholder}
     />
   );
 }

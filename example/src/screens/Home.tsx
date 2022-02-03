@@ -7,6 +7,7 @@ import {
   setError,
   setMessage,
   setSdkInitializationState,
+  setSessionTimeout,
   setUserEmail,
   setUserId,
 } from '../store/appSlice';
@@ -29,6 +30,8 @@ export default function Home({ navigation }: Props) {
     dispatch(setUserId(currentUserId));
     const currentUserEmail = await PiwikProSdk.getUserEmail();
     dispatch(setUserEmail(currentUserEmail));
+    const currentSessionTimeout = await PiwikProSdk.getSessionTimeout();
+    dispatch(setSessionTimeout(currentSessionTimeout));
     dispatch(setSdkInitializationState(true));
   };
 

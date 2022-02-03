@@ -8,6 +8,7 @@ interface AppState {
   sdkInitialized: boolean;
   userId: string;
   userEmail: string;
+  sessionTimeout: number;
 }
 
 const initialState: AppState = {
@@ -17,6 +18,7 @@ const initialState: AppState = {
   sdkInitialized: false,
   userId: '',
   userEmail: '',
+  sessionTimeout: 0,
 };
 
 export const appSlice = createSlice({
@@ -45,6 +47,9 @@ export const appSlice = createSlice({
     setUserEmail: (state, action: PayloadAction<string>) => {
       state.userEmail = action.payload;
     },
+    setSessionTimeout: (state, action: PayloadAction<number>) => {
+      state.sessionTimeout = action.payload;
+    },
   },
 });
 
@@ -56,6 +61,7 @@ export const {
   setEventMessage,
   setUserId,
   setUserEmail,
+  setSessionTimeout,
 } = appSlice.actions;
 
 export const messageSelector = (state: RootState) => state.app.message;
@@ -66,5 +72,7 @@ export const sdkInitializedSelector = (state: RootState) =>
   state.app.sdkInitialized;
 export const userIdSelector = (state: RootState) => state.app.userId;
 export const userEmailSelector = (state: RootState) => state.app.userEmail;
+export const sessionTimeoutSelector = (state: RootState) =>
+  state.app.sessionTimeout;
 
 export default appSlice.reducer;
