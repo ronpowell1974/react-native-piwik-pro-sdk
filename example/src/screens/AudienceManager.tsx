@@ -38,6 +38,26 @@ export default function AudienceManager() {
     dispatch(setMessage(profileAttributesString));
   };
 
+  const trackProfileAttributes = async () => {
+    const profileAttributes: TrackProfileAttributes = [
+      {
+        name: 'food',
+        value: 'pizza',
+      },
+      {
+        name: 'drink',
+        value: 'water',
+      },
+    ];
+
+    try {
+      await PiwikProSdk.trackProfileAttributes(profileAttributes);
+      dispatch(setMessage('Track profile attributes'));
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollViewContainer>
       <Button onPress={getProfileAttributes} text={'Get profile attributes'} />
@@ -52,6 +72,11 @@ export default function AudienceManager() {
       <Button
         onPress={checkAudienceMembership}
         text={'Check audience membership'}
+      />
+
+      <Button
+        onPress={trackProfileAttributes}
+        text={'Track profile attributes'}
       />
     </ScrollViewContainer>
   );

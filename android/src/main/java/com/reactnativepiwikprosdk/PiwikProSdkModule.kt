@@ -240,6 +240,32 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun trackProfileAttributes(profileAttributes: ReadableArray, promise: Promise) {
+    try {
+      val trackHelper = TrackHelper.track()
+      val firstAttribute = profileAttributes.getMap(0) as ReadableMap
+      val profileAttributesEvent = trackHelper.audienceManagerSetProfileAttribute(
+        firstAttribute.getString("name").toString(),
+        firstAttribute.getString("value").toString()
+      )
+
+      for (i in 1 until profileAttributes.size()) {
+        val attribute = profileAttributes.getMap(i) as ReadableMap
+
+        profileAttributesEvent.add(
+          attribute.getString("name").toString(),
+          attribute.getString("value").toString()
+        )
+      }
+
+      profileAttributesEvent.with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun getProfileAttributes(promise: Promise) {
     try {
       getTracker().audienceManagerGetProfileAttributes(object : OnGetProfileAttributes {
@@ -279,7 +305,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setUserId(userId: String, promise: Promise) {
     try {
-      getTracker().userId = userId;
+      getTracker().userId = userId
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -289,7 +315,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun getUserId(promise: Promise) {
     try {
-      val userId = getTracker().userId;
+      val userId = getTracker().userId
       promise.resolve(userId)
     } catch (exception: Exception) {
       promise.reject(exception)

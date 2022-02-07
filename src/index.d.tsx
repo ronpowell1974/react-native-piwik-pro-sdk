@@ -107,6 +107,14 @@ type PiwikProSdkType = {
   trackCampaign(url: string, options?: CommonEventOptions): Promise<void>;
 
   /**
+   * Tracks user profile attributes.
+   * @profileAttributes profile attributes
+   */
+  trackProfileAttributes(
+    profileAttributes: TrackProfileAttributes
+  ): Promise<void>;
+
+  /**
    * Returns user profile attributes.
    */
   getProfileAttributes(): Promise<ProfileAttributes>;
@@ -286,3 +294,10 @@ type TrackEcommerceOptions = CommonEventOptions & {
 type ProfileAttributes = {
   [index: string]: string;
 };
+
+type TrackProfileAttribute = {
+  name: string;
+  value: string;
+};
+
+type TrackProfileAttributes = TrackProfileAttribute | TrackProfileAttribute[];

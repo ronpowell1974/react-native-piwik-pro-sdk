@@ -269,6 +269,27 @@ RCT_REMAP_METHOD(trackCampaign,
     }
 }
 
+RCT_REMAP_METHOD(trackProfileAttributes,
+                 withProfileAttributes:(nonnull NSArray*)profileAttributes
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        for (NSDictionary* attribute in profileAttributes) {
+            [[PiwikTracker sharedInstance] sendProfileAttributeWithName:attribute[@"name"] value:attribute[@"value"]];
+        }
+
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(getProfileAttributes,
                  getProfileAttributesWithResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)

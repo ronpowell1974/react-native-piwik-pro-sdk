@@ -117,6 +117,20 @@ async function trackCampaign(
   return await PiwikProNativeSdk.trackCampaign(url, options);
 }
 
+async function trackProfileAttributes(
+  profileAttributes: TrackProfileAttributes
+): Promise<void> {
+  if (Array.isArray(profileAttributes)) {
+    if (!profileAttributes.length) {
+      throw new Error('Profile attributes cannot be an empty array');
+    }
+
+    return await PiwikProNativeSdk.trackProfileAttributes(profileAttributes);
+  }
+
+  return await PiwikProNativeSdk.trackProfileAttributes([profileAttributes]);
+}
+
 async function getProfileAttributes(): Promise<ProfileAttributes> {
   return await PiwikProNativeSdk.getProfileAttributes();
 }
@@ -219,6 +233,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackGoal,
   trackEcommerce,
   trackCampaign,
+  trackProfileAttributes,
   getProfileAttributes,
   checkAudienceMembership,
   setUserId,

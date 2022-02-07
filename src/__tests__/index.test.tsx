@@ -16,6 +16,7 @@ jest.mock('react-native', () => ({
       trackGoal: jest.fn(),
       trackEcommerce: jest.fn(),
       trackCampaign: jest.fn(),
+      trackProfileAttributes: jest.fn(),
       getProfileAttributes: jest.fn(),
       checkAudienceMembership: jest.fn(),
       setUserId: jest.fn(),
@@ -53,7 +54,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#init', () => {
-    it('calls init from native SDK', async () => {
+    it('should call init from native SDK', async () => {
       const apiUrl = 'https://example.com';
       const siteId = '1111-2222-3333-dddd';
 
@@ -67,7 +68,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackScreen', () => {
-    it('calls trackScreen from native SDK', async () => {
+    it('should call trackScreen from native SDK', async () => {
       const path = 'sample/path';
       const options: TrackScreenOptions = {
         title: 'newAction',
@@ -82,7 +83,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackScreen from native SDK when options are not passed', async () => {
+    it('should call trackScreen from native SDK when options are not passed', async () => {
       const path = 'sample/path';
 
       await PiwikProSdk.trackScreen(path);
@@ -95,7 +96,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackCustomEvent', () => {
-    it('calls trackCustomEvent from native SDK', async () => {
+    it('should call trackCustomEvent from native SDK', async () => {
       const category = 'sample_category';
       const action = 'add';
       const options: TrackCustomEventOptions = {
@@ -113,7 +114,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackCustomEvent from native SDK when options are not passed', async () => {
+    it('should call trackCustomEvent from native SDK when options are not passed', async () => {
       const category = 'sample_category';
       const action = 'add';
 
@@ -128,7 +129,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackException', () => {
-    it('calls trackException from native SDK', async () => {
+    it('should call trackException from native SDK', async () => {
       const description = 'sample exception';
       const isFatal = true;
       const options: CommonEventOptions = commonEventOptions;
@@ -142,7 +143,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackException from native SDK when options are not passed', async () => {
+    it('should call trackException from native SDK when options are not passed', async () => {
       const description = 'sample exception';
       const isFatal = true;
 
@@ -157,7 +158,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackSocialInteraction', () => {
-    it('calls trackSocialInteraction from native SDK', async () => {
+    it('should call trackSocialInteraction from native SDK', async () => {
       const interaction = 'sample exception';
       const network = 'facebook';
       const options: TrackSocialInteractionOptions = {
@@ -172,7 +173,7 @@ describe('PiwikProSdk', () => {
       ).toHaveBeenCalledWith(interaction, network, options);
     });
 
-    it('calls trackSocialInteraction from native SDK when options are not passed', async () => {
+    it('should call trackSocialInteraction from native SDK when options are not passed', async () => {
       const interaction = 'sample exception';
       const network = 'facebook';
 
@@ -185,7 +186,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackDownload', () => {
-    it('calls trackDownload from native SDK', async () => {
+    it('should call trackDownload from native SDK', async () => {
       const url = 'http://your.server.com/bonusmap.zip';
       const options: CommonEventOptions = commonEventOptions;
 
@@ -197,7 +198,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackDownload from native SDK when options are not passed', async () => {
+    it('should call trackDownload from native SDK when options are not passed', async () => {
       const url = 'http://your.server.com/bonusmap.zip';
 
       await PiwikProSdk.trackDownload(url);
@@ -210,7 +211,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackOutlink', () => {
-    it('calls trackOutlink from native SDK', async () => {
+    it('should call trackOutlink from native SDK', async () => {
       const url = 'http://your.server.com/bonusmap.zip';
       const options: CommonEventOptions = commonEventOptions;
 
@@ -222,7 +223,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackOutlink from native SDK when options are not passed', async () => {
+    it('should call trackOutlink from native SDK when options are not passed', async () => {
       const url = 'http://your.server.com/bonusmap.zip';
 
       await PiwikProSdk.trackOutlink(url);
@@ -235,7 +236,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackSearch', () => {
-    it('calls trackSearch from native SDK', async () => {
+    it('should call trackSearch from native SDK', async () => {
       const keyword = 'http://your.server.com/bonusmap.zip';
       const options: TrackSearchOptions = {
         ...commonEventOptions,
@@ -251,7 +252,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackSearch from native SDK when options are not passed', async () => {
+    it('should call trackSearch from native SDK when options are not passed', async () => {
       const keyword = 'http://your.server.com/bonusmap.zip';
 
       await PiwikProSdk.trackSearch(keyword);
@@ -264,7 +265,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackImpression', () => {
-    it('calls trackImpression from native SDK', async () => {
+    it('should call trackImpression from native SDK', async () => {
       const contentName = 'Some content impression';
       const options: TrackImpressionOptions = {
         ...commonEventOptions,
@@ -280,7 +281,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackImpression from native SDK when options are not passed', async () => {
+    it('should call trackImpression from native SDK when options are not passed', async () => {
       const contentName = 'Some content impression';
 
       await PiwikProSdk.trackImpression(contentName);
@@ -293,7 +294,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackGoal', () => {
-    it('calls trackGoal from native SDK', async () => {
+    it('should call trackGoal from native SDK', async () => {
       const goal = 1;
       const options: TrackGoalOptions = {
         ...commonEventOptions,
@@ -308,7 +309,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackGoal from native SDK when options are not passed', async () => {
+    it('should call trackGoal from native SDK when options are not passed', async () => {
       const goal = 1;
 
       await PiwikProSdk.trackGoal(goal);
@@ -321,7 +322,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackEcommerce', () => {
-    it('calls trackEcommerce from native SDK', async () => {
+    it('should call trackEcommerce from native SDK', async () => {
       const orderId = 'transaction';
       const grandTotal = 650;
       const options: TrackEcommerceOptions = {
@@ -352,7 +353,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#trackCampaign', () => {
-    it('calls trackCampaign from native SDK', async () => {
+    it('should call trackCampaign from native SDK', async () => {
       const url =
         'http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore';
       const options = commonEventOptions;
@@ -365,7 +366,7 @@ describe('PiwikProSdk', () => {
       );
     });
 
-    it('calls trackCampaign from native SDK when options are not passed', async () => {
+    it('should call trackCampaign from native SDK when options are not passed', async () => {
       const url =
         'http://example.org/offer.html?pk_campaign=Email-SummerDeals&pk_keyword=LearnMore';
 
@@ -378,8 +379,50 @@ describe('PiwikProSdk', () => {
     });
   });
 
+  describe('#trackProfileAttributes', () => {
+    it('should call trackProfileAttributes from native SDK properly when array is passed', async () => {
+      const profileAttributes: TrackProfileAttributes = [
+        { name: 'food', value: 'pizza' },
+        { name: 'color', value: 'green' },
+      ];
+
+      await PiwikProSdk.trackProfileAttributes(profileAttributes);
+
+      expect(
+        NativeModules.PiwikProSdk.trackProfileAttributes
+      ).toHaveBeenCalledWith(profileAttributes);
+    });
+
+    it('should call trackProfileAttributes from native SDK properly when single profile attribute is passed', async () => {
+      const profileAttributes: TrackProfileAttributes = {
+        name: 'food',
+        value: 'pizza',
+      };
+
+      await PiwikProSdk.trackProfileAttributes(profileAttributes);
+
+      expect(
+        NativeModules.PiwikProSdk.trackProfileAttributes
+      ).toHaveBeenCalledWith([profileAttributes]);
+    });
+
+    it('should throw an error when empty array is passed', async () => {
+      const profileAttributes: TrackProfileAttributes = [];
+
+      await expect(() =>
+        PiwikProSdk.trackProfileAttributes(profileAttributes)
+      ).rejects.toThrow(
+        new Error('Profile attributes cannot be an empty array')
+      );
+
+      expect(
+        NativeModules.PiwikProSdk.trackProfileAttributes
+      ).not.toHaveBeenCalled();
+    });
+  });
+
   describe('#getProfileAttributes', () => {
-    it('calls getProfileAttributes from native SDK and returns attributes', async () => {
+    it('should call getProfileAttributes from native SDK and return attributes', async () => {
       const profileAttributes: ProfileAttributes = { device_type: 'desktop' };
       NativeModules.PiwikProSdk.getProfileAttributes.mockResolvedValue(
         profileAttributes
@@ -393,7 +436,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#checkAudienceMembership', () => {
-    it('calls checkAudienceMembership from native SDK and returns status', async () => {
+    it('should call checkAudienceMembership from native SDK and return status', async () => {
       const audienceId = 'audience123';
       const isMember = true;
       NativeModules.PiwikProSdk.checkAudienceMembership.mockResolvedValue(
@@ -410,7 +453,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#setUserId', () => {
-    it('calls setUserId from native SDK', async () => {
+    it('should call setUserId from native SDK', async () => {
       const userId = 'userId123';
       await PiwikProSdk.setUserId(userId);
 
@@ -419,7 +462,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#getUserId', () => {
-    it('calls getUserId from native SDK', async () => {
+    it('should call getUserId from native SDK', async () => {
       const userId = 'user_id_5';
       NativeModules.PiwikProSdk.getUserId.mockResolvedValue(userId);
       const result = await PiwikProSdk.getUserId();
@@ -429,7 +472,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#setUserEmail', () => {
-    it('calls setUserEmail from native SDK', async () => {
+    it('should call setUserEmail from native SDK', async () => {
       const email = 'john@doe.com';
       await PiwikProSdk.setUserEmail(email);
 
@@ -440,7 +483,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#getUserEmail', () => {
-    it('calls getUserEmail from native SDK', async () => {
+    it('should call getUserEmail from native SDK', async () => {
       const userEmail = 'john@doe.com';
       NativeModules.PiwikProSdk.getUserEmail.mockResolvedValue(userEmail);
       const result = await PiwikProSdk.getUserEmail();
@@ -450,7 +493,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#setSessionTimeout', () => {
-    it('calls setSessionTimeout from native SDK', async () => {
+    it('should call setSessionTimeout from native SDK', async () => {
       const timeout = 1200;
       await PiwikProSdk.setSessionTimeout(timeout);
 
@@ -461,7 +504,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#getSessionTimeout', () => {
-    it('calls getSessionTimeout from native SDK', async () => {
+    it('should call getSessionTimeout from native SDK', async () => {
       const timeout = 1200;
       NativeModules.PiwikProSdk.getSessionTimeout.mockResolvedValue(timeout);
       const result = await PiwikProSdk.getSessionTimeout();
@@ -471,7 +514,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#dispatch', () => {
-    it('calls dispatch from native SDK', async () => {
+    it('should call dispatch from native SDK', async () => {
       await PiwikProSdk.dispatch();
 
       expect(NativeModules.PiwikProSdk.dispatch).toHaveBeenCalled();
@@ -479,7 +522,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#setDispatchInterval', () => {
-    it('calls setDispatchInterval from native SDK', async () => {
+    it('should call setDispatchInterval from native SDK', async () => {
       await PiwikProSdk.setDispatchInterval(5);
 
       expect(
@@ -487,7 +530,7 @@ describe('PiwikProSdk', () => {
       ).toHaveBeenCalledWith(5);
     });
 
-    it('throws an error if setDispatchInterval was called with float number', async () => {
+    it('should throw an error if setDispatchInterval was called with float number', async () => {
       await expect(() => PiwikProSdk.setDispatchInterval(5.1)).rejects.toThrow(
         new Error('Parameter must be an integer number')
       );
@@ -499,7 +542,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#getDispatchInterval', () => {
-    it('calls getDispatchInterval from native SDK', async () => {
+    it('should call getDispatchInterval from native SDK', async () => {
       NativeModules.PiwikProSdk.getDispatchInterval.mockResolvedValue(5);
       const result = await PiwikProSdk.getDispatchInterval();
 
@@ -508,7 +551,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#setIncludeDefaultCustomVariables', () => {
-    it('calls setIncludeDefaultCustomVariables from native SDK', async () => {
+    it('should call setIncludeDefaultCustomVariables from native SDK', async () => {
       await PiwikProSdk.setIncludeDefaultCustomVariables(false);
 
       expect(
@@ -518,7 +561,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#getIncludeDefaultCustomVariables', () => {
-    it('calls getIncludeDefaultCustomVariables from native SDK', async () => {
+    it('should call getIncludeDefaultCustomVariables from native SDK', async () => {
       NativeModules.PiwikProSdk.getIncludeDefaultCustomVariables.mockResolvedValue(
         false
       );
@@ -529,7 +572,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#setAnonymizationState', () => {
-    it('calls setAnonymizationState from native SDK', async () => {
+    it('should call setAnonymizationState from native SDK', async () => {
       await PiwikProSdk.setAnonymizationState(false);
 
       expect(
@@ -539,7 +582,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#isAnonymizationOn', () => {
-    it('calls isAnonymizationOn from native SDK', async () => {
+    it('should call isAnonymizationOn from native SDK', async () => {
       NativeModules.PiwikProSdk.isAnonymizationOn.mockResolvedValue(true);
       const result = await PiwikProSdk.isAnonymizationOn();
 
@@ -548,7 +591,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#setOptOut', () => {
-    it('calls setOptOut from native SDK', async () => {
+    it('should call setOptOut from native SDK', async () => {
       await PiwikProSdk.setOptOut(false);
 
       expect(NativeModules.PiwikProSdk.setOptOut).toHaveBeenCalledWith(false);
@@ -556,7 +599,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#getOptOut', () => {
-    it('calls getOptOut from native SDK', async () => {
+    it('should call getOptOut from native SDK', async () => {
       NativeModules.PiwikProSdk.getOptOut.mockResolvedValue(true);
       const result = await PiwikProSdk.getOptOut();
 
@@ -565,7 +608,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#setPrefixing', () => {
-    it('calls setPrefixing from native SDK', async () => {
+    it('should call setPrefixing from native SDK', async () => {
       await PiwikProSdk.setPrefixing(false);
 
       expect(NativeModules.PiwikProSdk.setPrefixing).toHaveBeenCalledWith(
@@ -575,7 +618,7 @@ describe('PiwikProSdk', () => {
   });
 
   describe('#isPrefixingOn', () => {
-    it('calls isPrefixingOn from native SDK', async () => {
+    it('should call isPrefixingOn from native SDK', async () => {
       NativeModules.PiwikProSdk.isPrefixingOn.mockResolvedValue(true);
       const result = await PiwikProSdk.isPrefixingOn();
 
