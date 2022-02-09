@@ -499,6 +499,12 @@ console.log(currentSessionTimeout); // 1800
 Returns:
 - `sessionTimeout: number` - current session timeout value in seconds.
 
+You can manually start a new session when sending a hit to Piwik by using the `startNewSession` method.
+
+```js
+await PiwikProSdk.startNewSession();
+```
+
 
 
 ### Dispatching

@@ -163,6 +163,10 @@ async function getSessionTimeout(): Promise<number> {
   return await PiwikProNativeSdk.getSessionTimeout();
 }
 
+async function startNewSession(): Promise<void> {
+  return await PiwikProNativeSdk.startNewSession();
+}
+
 async function dispatch(): Promise<void> {
   return await PiwikProNativeSdk.dispatch();
 }
@@ -242,6 +246,7 @@ const PiwikProSdk: PiwikProSdkType = {
   getUserEmail,
   setSessionTimeout,
   getSessionTimeout,
+  startNewSession,
   dispatch,
   setDispatchInterval,
   getDispatchInterval,

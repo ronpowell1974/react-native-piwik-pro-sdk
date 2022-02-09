@@ -149,6 +149,15 @@ export default function Settings() {
     }
   };
 
+  const startNewSession = async () => {
+    try {
+      await PiwikProSdk.startNewSession();
+      successMessage('New session started');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollViewContainer>
       <Button onPress={dispatchEvents} text={'Dispatch events'} />
@@ -174,6 +183,8 @@ export default function Settings() {
       />
 
       <Button onPress={changeSessionTimeout} text={'Set session timeout'} />
+
+      <Button onPress={startNewSession} text={'Start new session'} />
 
       <Button
         onPress={toggleAnonymizationState}

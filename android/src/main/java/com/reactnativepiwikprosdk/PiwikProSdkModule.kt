@@ -363,6 +363,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun startNewSession(promise: Promise) {
+    try {
+      getTracker().startNewSession()
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun dispatch(promise: Promise) {
     try {
       getTracker().dispatch()

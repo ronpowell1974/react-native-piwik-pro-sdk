@@ -155,6 +155,11 @@ type PiwikProSdkType = {
   setSessionTimeout(sessionTimeout: number): Promise<void>;
 
   /**
+   * Starts new session.
+   */
+  startNewSession(): Promise<void>;
+
+  /**
    * Returns session timeout value (in seconds).
    */
   getSessionTimeout(): Promise<number>;
