@@ -13,6 +13,7 @@ import pro.piwik.sdk.extra.DownloadTracker.Extra.Custom
 import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
 import java.net.URL
+import java.util.ArrayList
 
 class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
@@ -447,6 +448,37 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       getTracker().isOptOut = optOut
       promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun setDryRun(dryRun: Boolean, promise: Promise) {
+    try {
+      if(dryRun) {
+        getTracker().dryRunTarget = ArrayList()
+      } else{
+        getTracker().dryRunTarget = null
+      }
+
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getDryRun(promise: Promise) {
+    try {
+      val dryRunTarget = getTracker().dryRunTarget
+      var dryRun = false
+
+      if(dryRunTarget != null) {
+        dryRun = true
+      }
+
+      promise.resolve(dryRun)
     } catch (exception: Exception) {
       promise.reject(exception)
     }

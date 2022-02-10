@@ -206,6 +206,14 @@ async function setOptOut(optOut: boolean): Promise<void> {
   return await PiwikProNativeSdk.setOptOut(optOut);
 }
 
+async function setDryRun(dryRun: boolean): Promise<void> {
+  return await PiwikProNativeSdk.setDryRun(dryRun);
+}
+
+async function getDryRun(): Promise<boolean> {
+  return await PiwikProNativeSdk.getDryRun();
+}
+
 async function getOptOut(): Promise<boolean> {
   return await PiwikProNativeSdk.getOptOut();
 }
@@ -256,6 +264,8 @@ const PiwikProSdk: PiwikProSdkType = {
   isAnonymizationOn,
   setOptOut,
   getOptOut,
+  setDryRun,
+  getDryRun,
   setPrefixing,
   isPrefixingOn,
 };

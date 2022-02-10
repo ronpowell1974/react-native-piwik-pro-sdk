@@ -568,7 +568,25 @@ const currentOptOutState = await PiwikProSdk.getOptOut();
 console.log(currentOptOutState); // false
 ```
 Returns:
-- `optOut: boolean` - current opt-out flag state.
+- `optOut: boolean` - current opt-out state.
+
+
+
+### Dry run
+
+The SDK provides a `dryRun` flag that, when set, prevents any data from being sent to Piwik. The `dryRun` flag should be set whenever you are testing or debugging an implementation and do not want test data to appear in your Piwik reports. To set the `dryRun` flag, use:
+```js
+await PiwikProSdk.setDryRun(true);
+```
+Parameters:
+- `dryRun: boolean` *(required)* - flag that determines whether dry run is enabled.
+
+You can obtain current `dryRun` value with `getDryRun`:
+```js
+const currentDryRunState = await PiwikProSdk.getDryRun();
+```
+Returns:
+- `dryRun: boolean` - current dry run state.
 
 
 

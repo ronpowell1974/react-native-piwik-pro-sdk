@@ -30,6 +30,7 @@ export default function Settings() {
     useState<boolean>(true);
   const [optOut, setOptOut] = useState<boolean>(false);
   const [prefixingEnabled, setPrefixingEnabled] = useState<boolean>(true);
+  const [dryRun, setDryRun] = useState<boolean>(false);
 
   useEffect(() => {
     if (sdkInitialized) {
@@ -37,6 +38,7 @@ export default function Settings() {
       getIncludeDefaultCustomVariablesState();
       getOptOutState();
       getPrefixingState();
+      getDryRunState();
     }
   }, [sdkInitialized]);
 
@@ -59,6 +61,11 @@ export default function Settings() {
   const getPrefixingState = async () => {
     const currentPrefixingState = await PiwikProSdk.isPrefixingOn();
     setPrefixingEnabled(currentPrefixingState);
+  };
+
+  const getDryRunState = async () => {
+    const currentDryRunState = await PiwikProSdk.getDryRun();
+    setDryRun(currentDryRunState);
   };
 
   const dispatchEvents = async () => {
@@ -158,6 +165,16 @@ export default function Settings() {
     }
   };
 
+  const toggleDryRun = async () => {
+    try {
+      await PiwikProSdk.setDryRun(!dryRun);
+      const currentDryRunState = await PiwikProSdk.getDryRun();
+      setDryRun(currentDryRunState);
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   return (
     <ScrollViewContainer>
       <Button onPress={dispatchEvents} text={'Dispatch events'} />
@@ -204,6 +221,13 @@ export default function Settings() {
         onPress={toggleOptOut}
         text={`Toggle opt out state, current: ${
           optOut ? 'enabled' : 'disabled'
+        }`}
+      />
+
+      <Button
+        onPress={toggleDryRun}
+        text={`Toggle dry run state, current: ${
+          dryRun ? 'enabled' : 'disabled'
         }`}
       />
 

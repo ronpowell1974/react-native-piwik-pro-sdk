@@ -222,6 +222,17 @@ type PiwikProSdkType = {
   getOptOut(): Promise<boolean>;
 
   /**
+   * Sets the new dry run state.
+   * @dryRun new dry run state
+   */
+  setDryRun(dryRun: boolean): Promise<void>;
+
+  /**
+   * Returns current dry run state.
+   */
+  getDryRun(): Promise<boolean>;
+
+  /**
    * Sets the new prefixing state.
    * @prefixingEnabled new prefixing state
    */
