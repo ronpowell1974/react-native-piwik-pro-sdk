@@ -53,9 +53,6 @@ repositories {
   mavenCentral()
   jcenter()
   google()
-  maven {
-    url "http://dl.cloudsmith.io/public/piwik/piwik-pro/maven/"
-  }
 
   def found = false
   def defaultDir = null
@@ -129,5 +126,5 @@ dependencies {
   // noinspection GradleDynamicVersion
   api 'com.facebook.react:react-native:+'
   implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-  implementation 'pro.piwik.sdk:piwik-sdk:1.0.4'
+  implementation 'pro.piwik:sdk-framework-android:1.1.1'
 }

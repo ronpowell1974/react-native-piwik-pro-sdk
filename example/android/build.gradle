@@ -35,6 +35,5 @@ allprojects {
         mavenCentral()
         jcenter()
         maven { url 'https://www.jitpack.io' }
-        maven { url "http://dl.cloudsmith.io/public/piwik/piwik-pro/maven/" }
     }
 }
