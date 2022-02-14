@@ -15,6 +15,8 @@ import pro.piwik.sdk.extra.TrackHelper
 import java.net.URL
 import java.util.ArrayList
 
+const val TRAFFIC_SOURCE_NAME = "react_native"
+
 class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   ReactContextBaseJavaModule(reactContext) {
 
@@ -25,7 +27,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun init(apiUrl: String, siteId: String, promise: Promise) {
+  fun init(apiUrl: String, siteId: String, version: String, promise: Promise) {
     if (this.tracker != null) {
       promise.reject(Error("Piwik Pro SDK has been already initialized"))
       return
@@ -38,6 +40,8 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
         )
       )
 
+      tracker.trafficSourceName = TRAFFIC_SOURCE_NAME
+      tracker.trafficSourceVersion = version
       this.tracker = tracker
       promise.resolve(null)
     } catch (exception: Exception) {

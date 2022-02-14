@@ -8,6 +8,7 @@ RCT_EXPORT_MODULE()
 RCT_REMAP_METHOD(init,
                  initWithBaseURL:(nonnull NSString*)baseURL
                  withSiteID:(nonnull NSString*)siteID
+                 withVersion:(nonnull NSString*)version
                  withResolver:(RCTPromiseResolveBlock)resolve
                  withRejecter:(RCTPromiseRejectBlock)reject)
 {
@@ -21,6 +22,8 @@ RCT_REMAP_METHOD(init,
         NSBundle* bundle = [NSBundle mainBundle];
         
         tracker.appName = [bundle bundleIdentifier];
+        tracker.sourceTrafficName = @"react_native";
+        tracker.sourceTrafficVesion = version;
         resolve(nil);
     });
 }

@@ -4,6 +4,7 @@ import {
   validateCustomKeyValue,
   validateVisitorId,
 } from './util/validator';
+import { version } from './version';
 
 const LINKING_ERROR =
   `The package 'react-native-piwik-pro-sdk' doesn't seem to be linked. Make sure: \n\n` +
@@ -23,7 +24,7 @@ const PiwikProNativeSdk = NativeModules.PiwikProSdk
     );
 
 async function init(apiUrl: string, siteId: string): Promise<void> {
-  return await PiwikProNativeSdk.init(apiUrl, siteId);
+  return await PiwikProNativeSdk.init(apiUrl, siteId, version);
 }
 
 async function trackScreen(

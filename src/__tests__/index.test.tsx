@@ -1,6 +1,8 @@
 import { NativeModules } from 'react-native';
 import PiwikProSdk from '../';
 
+const version = '0.0.1';
+
 jest.mock('react-native', () => ({
   NativeModules: {
     PiwikProSdk: {
@@ -47,6 +49,10 @@ jest.mock('react-native', () => ({
   },
 }));
 
+jest.mock('../version', () => ({
+  version,
+}));
+
 const commonEventOptions: CommonEventOptions = {
   customDimensions: { 1: 'pizza' },
   visitCustomVariables: { 4: { name: 'food', value: 'pizza' } },
@@ -66,7 +72,8 @@ describe('PiwikProSdk', () => {
 
       expect(NativeModules.PiwikProSdk.init).toHaveBeenCalledWith(
         apiUrl,
-        siteId
+        siteId,
+        version
       );
     });
   });
