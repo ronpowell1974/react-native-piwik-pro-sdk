@@ -23,6 +23,8 @@ jest.mock('react-native', () => ({
       getUserId: jest.fn(),
       setUserEmail: jest.fn(),
       getUserEmail: jest.fn(),
+      setVisitorId: jest.fn(),
+      getVisitorId: jest.fn(),
       setSessionTimeout: jest.fn(),
       getSessionTimeout: jest.fn(),
       startNewSession: jest.fn(),
@@ -491,6 +493,27 @@ describe('PiwikProSdk', () => {
       const result = await PiwikProSdk.getUserEmail();
 
       expect(result).toStrictEqual(userEmail);
+    });
+  });
+
+  describe('#setVisitorId', () => {
+    it('calls setVisitorId from native SDK', async () => {
+      const visitorId = '41c90f410ed00000';
+      await PiwikProSdk.setVisitorId(visitorId);
+
+      expect(NativeModules.PiwikProSdk.setVisitorId).toHaveBeenCalledWith(
+        visitorId
+      );
+    });
+  });
+
+  describe('#getVisitorId', () => {
+    it('calls getVisitorId from native SDK', async () => {
+      const visitorId = '41c90f410ed00000';
+      NativeModules.PiwikProSdk.getVisitorId.mockResolvedValue(visitorId);
+      const result = await PiwikProSdk.getVisitorId();
+
+      expect(result).toStrictEqual(visitorId);
     });
   });
 

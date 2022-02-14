@@ -10,8 +10,10 @@ import {
   setSessionTimeout,
   setUserEmail,
   setUserId,
+  setVisitorId,
   userEmailSelector,
   userIdSelector,
+  visitorIdSelector,
 } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { Button, Input, ScrollViewContainer } from '../components';
@@ -24,6 +26,7 @@ export default function Settings() {
   const userId = useAppSelector(userIdSelector);
   const userEmail = useAppSelector(userEmailSelector);
   const sessionTimeout = useAppSelector(sessionTimeoutSelector);
+  const visitorId = useAppSelector(visitorIdSelector);
   const [anonymizationEnabled, setAnonymizationEnabled] =
     useState<boolean>(true);
   const [includeDefaultCustomVariables, setIncludeDefaultCustomVariables] =
@@ -113,6 +116,15 @@ export default function Settings() {
     }
   };
 
+  const changeVisitorId = async () => {
+    try {
+      await PiwikProSdk.setVisitorId(visitorId);
+      successMessage('Visitor ID changed successfully');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
   const toggleAnonymizationState = async () => {
     try {
       await PiwikProSdk.setAnonymizationState(!anonymizationEnabled);
@@ -177,29 +189,29 @@ export default function Settings() {
 
   return (
     <ScrollViewContainer>
-      <Button onPress={dispatchEvents} text={'Dispatch events'} />
+      <Button onPress={dispatchEvents} text="Dispatch events" />
 
       <Input
         value={dispatchInterval.toString()}
         label="Dispatch interval (in seconds)"
-        keyboardType={'numeric'}
+        placeholder="Dispatch interval (in seconds)"
+        keyboardType="numeric"
         onChangeText={(buttonText) =>
           dispatch(setDispatchInterval(parseInt(buttonText, 10) || 0))
         }
       />
-
-      <Button onPress={changeDispatchInterval} text={'Set dispatch interval'} />
+      <Button onPress={changeDispatchInterval} text="Set dispatch interval" />
 
       <Input
         value={sessionTimeout.toString()}
         label="Session timeout (in seconds)"
-        keyboardType={'numeric'}
+        placeholder="Session timeout (in seconds)"
+        keyboardType="numeric"
         onChangeText={(buttonText) =>
           dispatch(setSessionTimeout(parseInt(buttonText, 10) || 0))
         }
       />
-
-      <Button onPress={changeSessionTimeout} text={'Set session timeout'} />
+      <Button onPress={changeSessionTimeout} text="Set session timeout" />
 
       <Button onPress={startNewSession} text={'Start new session'} />
 
@@ -241,18 +253,26 @@ export default function Settings() {
       <Input
         value={userEmail}
         label="User email"
+        placeholder="User email"
         onChangeText={(buttonText) => dispatch(setUserEmail(buttonText))}
       />
-
-      <Button onPress={changeUserEmail} text={'Set email'} />
+      <Button onPress={changeUserEmail} text="Set email" />
 
       <Input
         value={userId}
         label="User ID"
+        placeholder="User ID"
         onChangeText={(buttonText) => dispatch(setUserId(buttonText))}
       />
+      <Button onPress={changeUserId} text="Set user ID" />
 
-      <Button onPress={changeUserId} text={'Set user ID'} />
+      <Input
+        value={visitorId}
+        label="Visitor ID"
+        placeholder="Visitor ID"
+        onChangeText={(buttonText) => dispatch(setVisitorId(buttonText))}
+      />
+      <Button onPress={changeVisitorId} text="Set visitor ID" />
     </ScrollViewContainer>
   );
 }

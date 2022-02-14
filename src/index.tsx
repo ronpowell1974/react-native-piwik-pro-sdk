@@ -1,5 +1,9 @@
 import { NativeModules, Platform } from 'react-native';
-import { validateInt, validateCustomKeyValue } from './util/validator';
+import {
+  validateInt,
+  validateCustomKeyValue,
+  validateVisitorId,
+} from './util/validator';
 
 const LINKING_ERROR =
   `The package 'react-native-piwik-pro-sdk' doesn't seem to be linked. Make sure: \n\n` +
@@ -155,6 +159,15 @@ async function getUserEmail(): Promise<string> {
   return await PiwikProNativeSdk.getUserEmail();
 }
 
+async function setVisitorId(visitorId: string): Promise<void> {
+  validateVisitorId(visitorId);
+  return await PiwikProNativeSdk.setVisitorId(visitorId);
+}
+
+async function getVisitorId(): Promise<string> {
+  return await PiwikProNativeSdk.getVisitorId();
+}
+
 async function setSessionTimeout(sessionTimeout: number): Promise<void> {
   return await PiwikProNativeSdk.setSessionTimeout(sessionTimeout);
 }
@@ -252,6 +265,8 @@ const PiwikProSdk: PiwikProSdkType = {
   getUserId,
   setUserEmail,
   getUserEmail,
+  setVisitorId,
+  getVisitorId,
   setSessionTimeout,
   getSessionTimeout,
   startNewSession,

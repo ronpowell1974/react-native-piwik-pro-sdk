@@ -10,6 +10,7 @@ import {
   setSessionTimeout,
   setUserEmail,
   setUserId,
+  setVisitorId,
 } from '../store/appSlice';
 import { useAppDispatch } from '../store/hooks';
 
@@ -32,6 +33,8 @@ export default function Home({ navigation }: Props) {
     dispatch(setUserEmail(currentUserEmail));
     const currentSessionTimeout = await PiwikProSdk.getSessionTimeout();
     dispatch(setSessionTimeout(currentSessionTimeout));
+    const currentVisitorId = await PiwikProSdk.getVisitorId();
+    dispatch(setVisitorId(currentVisitorId));
     dispatch(setSdkInitializationState(true));
   };
 

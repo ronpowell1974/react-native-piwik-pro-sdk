@@ -481,6 +481,27 @@ Returns:
 
 
 
+### Visitor ID
+
+To track user sessions on different sources, the Visitor ID parameter is used. Visitor ID is randomly generated when the tracker instance is created, and stored between application launches. It is also possible to reset the Visitor ID manually:
+```js
+await PiwikProSdk.setVisitorId("0123456789abcdef");
+```
+Parameters:
+- `visitorId: string` *(required)* - unique visitor ID, must be 16 characters hexadecimal string.
+
+Every unique visitor must be assigned a different ID and this ID must not change after it is assigned. We recommend using [User ID](#user-id) instead of Visitor ID.
+
+You can check current Visitor ID value with `getVisitorId`:
+
+```js
+const currentVisitorId = await PiwikProSdk.getVisitorId(); 
+```
+Returns:
+- `visitorId: string` - current Visitor ID.
+
+
+
 ### Sessions
 
 A session represents a set of user’s interactions with your app. By default, Analytics is closing the session after 30 minutes of inactivity, counting from the last recorded event in session and when the user will open up the app again the new session is started. You can configure the tracker to automatically close the session when users have placed your app in the background for a period of time. That period is defined by the `setSessionTimeout`:

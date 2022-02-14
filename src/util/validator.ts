@@ -23,4 +23,12 @@ function validateCustomKeyValue(
   });
 }
 
-export { validateInt, validateCustomKeyValue };
+function validateVisitorId(visitorId: string) {
+  if (!/^[0-9a-f]{16}$/.test(visitorId)) {
+    throw new Error(
+      `Visitor ID ${visitorId} has invalid format. The format must match the regular expression: ^[0-9a-f]{16}$`
+    );
+  }
+}
+
+export { validateInt, validateCustomKeyValue, validateVisitorId };

@@ -149,6 +149,17 @@ type PiwikProSdkType = {
   getUserEmail(): Promise<string>;
 
   /**
+   * Sets the visitor ID
+   * @param visitorId string representing visitor ID
+   */
+  setVisitorId(visitorId: string): Promise<void>;
+
+  /**
+   * Returns the visitor ID
+   */
+  getVisitorId(): Promise<string>;
+
+  /**
    * Sets the session timeout.
    * @sessionTimeout new session timeout value (in seconds)
    */

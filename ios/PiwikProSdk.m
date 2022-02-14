@@ -408,6 +408,41 @@ RCT_REMAP_METHOD(getUserEmail,
     }
 }
 
+RCT_REMAP_METHOD(setVisitorId,
+                 withVisitorId:(nonnull NSString*)visitorId
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [[PiwikTracker sharedInstance] setVisitorID:visitorId];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
+RCT_REMAP_METHOD(getVisitorId,
+                 getVisitorIdWithResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        NSString* visitorId = [[PiwikTracker sharedInstance] visitorID];
+        resolve(visitorId);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(setSessionTimeout,
                  setSessionTimeoutWithSessionTimeout:(double)sessionTimeout
                  withResolver:(RCTPromiseResolveBlock)resolve

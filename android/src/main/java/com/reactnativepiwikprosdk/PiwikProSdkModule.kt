@@ -344,6 +344,26 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
+  fun setVisitorId(visitorId: String, promise: Promise) {
+    try {
+      getTracker().visitorId = visitorId
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun getVisitorId(promise: Promise) {
+    try {
+      val visitorId = getTracker().visitorId
+      promise.resolve(visitorId)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
   fun setSessionTimeout(timeout: Int, promise: Promise) {
     try {
       getTracker().setSessionTimeout(timeout * 1000)
