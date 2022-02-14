@@ -40,25 +40,19 @@ export default function Home({ navigation }: Props) {
 
   return (
     <ScrollViewContainer>
-      <Button
-        onPress={initializePiwikProSdk}
-        text={'Initialize Piwik Pro SDK'}
-      />
+      <Button onPress={initializePiwikProSdk} text="Initialize Piwik Pro SDK" />
 
       <Button
         onPress={() => navigation.navigate('Tracking Actions')}
-        text={'Tracking Actions'}
+        text="Tracking Actions"
       />
 
       <Button
         onPress={() => navigation.navigate('Audience Manager')}
-        text={'Audience Manager'}
+        text="Audience Manager"
       />
 
-      <Button
-        onPress={() => navigation.navigate('Settings')}
-        text={'Settings'}
-      />
+      <Button onPress={() => navigation.navigate('Settings')} text="Settings" />
     </ScrollViewContainer>
   );
 }

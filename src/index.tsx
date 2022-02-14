@@ -98,6 +98,14 @@ async function trackImpression(
   return await PiwikProNativeSdk.trackImpression(contentName, options);
 }
 
+async function trackInteraction(
+  contentName: string,
+  options?: TrackInteractionOptions
+): Promise<void> {
+  validateCustomKeyValues(options);
+  return await PiwikProNativeSdk.trackInteraction(contentName, options);
+}
+
 async function trackGoal(
   goal: number,
   options?: TrackGoalOptions
@@ -256,6 +264,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackOutlink,
   trackSearch,
   trackImpression,
+  trackInteraction,
   trackGoal,
   trackEcommerce,
   trackCampaign,

@@ -60,7 +60,7 @@ export default function AudienceManager() {
 
   return (
     <ScrollViewContainer>
-      <Button onPress={getProfileAttributes} text={'Get profile attributes'} />
+      <Button onPress={getProfileAttributes} text="Get profile attributes" />
 
       <Input
         value={audienceId}
@@ -71,12 +71,12 @@ export default function AudienceManager() {
 
       <Button
         onPress={checkAudienceMembership}
-        text={'Check audience membership'}
+        text="Check audience membership"
       />
 
       <Button
         onPress={trackProfileAttributes}
-        text={'Track profile attributes'}
+        text="Track profile attributes"
       />
     </ScrollViewContainer>
   );

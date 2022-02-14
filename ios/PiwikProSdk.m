@@ -200,6 +200,27 @@ RCT_REMAP_METHOD(trackImpression,
     }
 }
 
+RCT_REMAP_METHOD(trackInteraction,
+                 trackInteractionWithContentName:(nonnull NSString*)contentName
+                 withOptions:(NSDictionary*)options
+                 withResolver:(RCTPromiseResolveBlock)resolve
+                 withRejecter:(RCTPromiseRejectBlock)reject)
+{
+    if ([PiwikTracker sharedInstance] == nil) {
+        reject(@"not_initialized", @"Piwik Pro SDK has not been initialized", nil);
+        return;
+    }
+    
+    @try {
+        [self applyOptionalParameters:options];
+        
+        [[PiwikTracker sharedInstance] sendContentInteractionWithName:contentName piece:options[@"piece"] target:options[@"target"]];
+        resolve(nil);
+    } @catch (NSException *exception) {
+        reject(exception.name, exception.reason, nil);
+    }
+}
+
 RCT_REMAP_METHOD(trackGoal,
                  trackGoalWithGoal:(nonnull NSNumber*)goal
                  withOptions:(NSDictionary*)options
@@ -286,7 +307,7 @@ RCT_REMAP_METHOD(trackProfileAttributes,
         for (NSDictionary* attribute in profileAttributes) {
             [[PiwikTracker sharedInstance] sendProfileAttributeWithName:attribute[@"name"] value:attribute[@"value"]];
         }
-
+        
         resolve(nil);
     } @catch (NSException *exception) {
         reject(exception.name, exception.reason, nil);

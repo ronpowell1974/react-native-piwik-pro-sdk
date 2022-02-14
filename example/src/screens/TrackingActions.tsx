@@ -169,10 +169,29 @@ export default function TrackingActions() {
 
     try {
       await PiwikProSdk.trackImpression(
-        `Some content impression${eventNum}`,
+        `Some content impression ${eventNum}`,
         options
       );
-      successMessage('Track impression');
+      successMessage('Track content impression');
+    } catch (error) {
+      dispatch(setError((error as Error).message));
+    }
+  };
+
+  const trackInteraction = async () => {
+    const options: TrackInteractionOptions = {
+      visitCustomVariables,
+      piece: 'banner',
+      target: 'https://www.dn.se/',
+      customDimensions,
+    };
+
+    try {
+      await PiwikProSdk.trackInteraction(
+        `Some content interaction ${eventNum}`,
+        options
+      );
+      successMessage('Track content interaction');
     } catch (error) {
       dispatch(setError((error as Error).message));
     }
@@ -243,40 +262,42 @@ export default function TrackingActions() {
 
   return (
     <ScrollViewContainer>
-      <Button onPress={trackScreen} text={'Track screen'} />
+      <Button onPress={trackScreen} text="Track screen" />
 
       <Button
         onPress={trackScreenWithCustomDimensions}
-        text={'Track screen with custom dimensions'}
+        text="Track screen with custom dimensions"
       />
 
       <Button
         onPress={trackScreenWithCustomVariables}
-        text={'Track screen with custom variables'}
+        text="Track screen with custom variables"
       />
 
-      <Button onPress={trackCustomEvent} text={'Track custom event'} />
+      <Button onPress={trackCustomEvent} text="Track custom event" />
 
-      <Button onPress={trackException} text={'Track exception'} />
+      <Button onPress={trackException} text="Track exception" />
 
       <Button
         onPress={trackSocialInteraction}
-        text={'Track social interaction'}
+        text="Track social interaction"
       />
 
-      <Button onPress={trackDownload} text={'Track download'} />
+      <Button onPress={trackDownload} text="Track download" />
 
-      <Button onPress={trackOutlink} text={'Track outlink'} />
+      <Button onPress={trackOutlink} text="Track outlink" />
 
-      <Button onPress={trackSearch} text={'Track search'} />
+      <Button onPress={trackSearch} text="Track search" />
 
-      <Button onPress={trackImpression} text={'Track impression'} />
+      <Button onPress={trackImpression} text="Track content impression" />
 
-      <Button onPress={trackGoal} text={'Track goal'} />
+      <Button onPress={trackInteraction} text="Track content interaction" />
 
-      <Button onPress={trackEcommerce} text={'Track ecmommerce transaction'} />
+      <Button onPress={trackGoal} text="Track goal" />
 
-      <Button onPress={trackCampaign} text={'Track campaign'} />
+      <Button onPress={trackEcommerce} text="Track ecmommerce transaction" />
+
+      <Button onPress={trackCampaign} text="Track campaign" />
     </ScrollViewContainer>
   );
 }

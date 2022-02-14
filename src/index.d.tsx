@@ -72,13 +72,23 @@ type PiwikProSdkType = {
   trackSearch(keyword: string, options?: TrackScreenOptions): Promise<void>;
 
   /**
-   * Tracks impression.
+   * Tracks content impression.
    * @contentName name of the content
    * @options search tracking options (piece, target, customDimensions, visitCustomVariables)
    */
   trackImpression(
     contentName: string,
     options?: TrackImpressionOptions
+  ): Promise<void>;
+
+  /**
+   * Tracks content interaction.
+   * @contentName name of the content
+   * @options search tracking options (piece, target, customDimensions, visitCustomVariables)
+   */
+  trackInteraction(
+    contentName: string,
+    options?: TrackInteractionOptions
   ): Promise<void>;
 
   /**
@@ -294,6 +304,11 @@ type TrackSearchOptions = CommonEventOptions & {
 };
 
 type TrackImpressionOptions = CommonEventOptions & {
+  piece?: string;
+  target?: string;
+};
+
+type TrackInteractionOptions = CommonEventOptions & {
   piece?: string;
   target?: string;
 };

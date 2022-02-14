@@ -15,6 +15,7 @@ jest.mock('react-native', () => ({
       trackOutlink: jest.fn(),
       trackSearch: jest.fn(),
       trackImpression: jest.fn(),
+      trackInteraction: jest.fn(),
       trackGoal: jest.fn(),
       trackEcommerce: jest.fn(),
       trackCampaign: jest.fn(),
@@ -40,6 +41,7 @@ jest.mock('react-native', () => ({
       setOptOut: jest.fn(),
       getOptOut: jest.fn(),
       setDryRun: jest.fn(),
+      getDryRun: jest.fn(),
       setPrefixing: jest.fn(),
       isPrefixingOn: jest.fn(),
     },
@@ -300,6 +302,24 @@ describe('PiwikProSdk', () => {
       expect(NativeModules.PiwikProSdk.trackImpression).toHaveBeenCalledWith(
         contentName,
         undefined
+      );
+    });
+  });
+
+  describe('#trackInteraction', () => {
+    it('should call trackInteraction from native SDK', async () => {
+      const contentName = 'Some content interaction';
+      const options: TrackInteractionOptions = {
+        ...commonEventOptions,
+        piece: 'banner',
+        target: 'https://www.dn.se/',
+      };
+
+      await PiwikProSdk.trackInteraction(contentName, options);
+
+      expect(NativeModules.PiwikProSdk.trackInteraction).toHaveBeenCalledWith(
+        contentName,
+        options
       );
     });
   });
@@ -653,6 +673,16 @@ describe('PiwikProSdk', () => {
       await PiwikProSdk.setDryRun(dryRun);
 
       expect(NativeModules.PiwikProSdk.setDryRun).toHaveBeenCalledWith(dryRun);
+    });
+  });
+
+  describe('#getDryRun', () => {
+    it('should call getDryRun from native SDK', async () => {
+      const dryRun = true;
+      NativeModules.PiwikProSdk.getDryRun.mockResolvedValue(dryRun);
+      const result = await PiwikProSdk.getDryRun();
+
+      expect(result).toStrictEqual(dryRun);
     });
   });
 

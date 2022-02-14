@@ -13,7 +13,7 @@ import pro.piwik.sdk.extra.DownloadTracker.Extra.Custom
 import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
 import java.net.URL
-import java.util.ArrayList
+import java.util.*
 
 const val TRAFFIC_SOURCE_NAME = "react_native"
 
@@ -189,6 +189,20 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
       applyOptionalParameters(trackHelper, options)
       trackHelper.impression(contentName).piece(options?.getString("piece"))
+        .target(options?.getString("target")).with(getTracker())
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun trackInteraction(contentName: String, options: ReadableMap?, promise: Promise) {
+    try {
+      val trackHelper = TrackHelper.track()
+
+      applyOptionalParameters(trackHelper, options)
+      trackHelper.interaction(contentName, "click").piece(options?.getString("piece"))
         .target(options?.getString("target")).with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -480,9 +494,9 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun setDryRun(dryRun: Boolean, promise: Promise) {
     try {
-      if(dryRun) {
+      if (dryRun) {
         getTracker().dryRunTarget = ArrayList()
-      } else{
+      } else {
         getTracker().dryRunTarget = null
       }
 
@@ -498,7 +512,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val dryRunTarget = getTracker().dryRunTarget
       var dryRun = false
 
-      if(dryRunTarget != null) {
+      if (dryRunTarget != null) {
         dryRun = true
       }
 
