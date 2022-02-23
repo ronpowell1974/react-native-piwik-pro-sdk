@@ -752,7 +752,7 @@ RCT_REMAP_METHOD(isPrefixingOn,
     }
     
     for (NSString* key in customDimensions) {
-        [[PiwikTracker sharedInstance] setCustomDimensionForIndex:[key intValue] value:customDimensions[key] scope:CustomDimensionScopeAction];
+        [[PiwikTracker sharedInstance] setCustomDimensionForID:[key intValue] value:customDimensions[key]];
     }
 }
 

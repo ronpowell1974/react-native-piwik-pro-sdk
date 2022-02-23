@@ -13,7 +13,7 @@
     "@react-navigation/native-stack": "^6.2.5",
     "@reduxjs/toolkit": "^1.6.2",
     "react": "16.13.1",
-    "react-native": "0.63.4",
+    "react-native": "0.64.3",
     "react-native-elements": "^3.4.2",
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
