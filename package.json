@@ -1,5 +1,5 @@
 {
-  "name": "react-native-piwik-pro-sdk",
+  "name": "@piwikpro/react-native-piwik-pro-sdk",
   "version": "0.1.0",
   "description": "Piwik Pro SDK for React Native",
   "main": "lib/commonjs/index",
