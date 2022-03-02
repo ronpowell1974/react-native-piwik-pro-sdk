@@ -47,6 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Release
+      - uses: actions/setup-node@v1
       - run: npm run release-ci
 #       - run: npm --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
 #       - run: npm run prepare && bob build
