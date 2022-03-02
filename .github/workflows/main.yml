@@ -26,14 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 'Prepare'
-#         uses: actions/cache@v1
-#         with:
-#           path: ~.npm
-#           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-#           restore-keys: |
-#             ${{ runner.os }}-node-
-#       - run: npm ci --ignore-scripts
-      - run: npm run prepare
+        run: npm run prepare
 
 #   release:
 #     needs: bump-and-build
