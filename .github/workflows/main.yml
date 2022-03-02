@@ -25,14 +25,14 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
+#       - name: Get the version
+#         id: get_version
+#         run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+#       - uses: actions/checkout@v2
+#       - uses: actions/setup-node@v1
+#         with:
+#           node-version: 16
+#           registry-url: https://registry.npmjs.org/
       - name: 'Cache node Modules'
         uses: actions/cache@v1
         with:
@@ -41,7 +41,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci --ignore-scripts
-      - run: npm --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
-      - run: npm --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
-        working-directory: projects/ngx-piwik-pro
-      - run: npm run prepare && bob build
+      - run: npm run prepare
+  release:
+    needs: bump-and-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Release
+      - run: npm run release-ci
+#       - run: npm --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
+#       - run: npm run prepare && bob build
