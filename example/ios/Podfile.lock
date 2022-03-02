@@ -204,7 +204,7 @@ PODS:
     - React-jsi (= 0.64.3)
     - React-perflogger (= 0.64.3)
   - React-jsinspector (0.64.3)
-  - react-native-piwik-pro-sdk (0.1.0):
+  - react-native-piwik-pro-sdk (0.2.0):
     - PiwikPROSDK (~> 1.1.1)
     - React-Core
   - react-native-safe-area-context (3.3.2):
@@ -389,10 +389,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  DoubleConversion: cde416483dac037923206447da6e1454df403714
+  DoubleConversion: cf9b38bf0b2d048436d9a82ad2abe1404f11e7de
   FBLazyVector: c71c5917ec0ad2de41d5d06a5855f6d5eda06971
-  FBReactNativeSpec: bdc423f8969af9eb930b022bc3196be31c124a83
-  glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
+  FBReactNativeSpec: bfc7d76757b4b6f025f0e38e6e552b28382af9a6
+  glog: 73c2498ac6884b13ede40eda8228cb1eee9d9d62
   PiwikPROSDK: b54fc9d94f9294a5de1139db4444a1f7ffd4eefa
   RCT-Folly: ec7a233ccc97cc556cf7237f0db1ff65b986f27c
   RCTRequired: d34bf57e17cb6e3b2681f4809b13843c021feb6c
@@ -405,7 +405,7 @@ SPEC CHECKSUMS:
   React-jsi: a8b09c29521c798f1783348b37b511ba7b3dbeb3
   React-jsiexecutor: df6abc9fafbecb8e5b7a5fbc5e6d4bd017d594d5
   React-jsinspector: 34e23860273a23695342f58eed3ffd3ba10c31e0
-  react-native-piwik-pro-sdk: df8c6eb32c9e442728dccd1c6c8215f004fb33b2
+  react-native-piwik-pro-sdk: c294a7a70754724691d471577d0a8a393377ed52
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   React-perflogger: cc76a4254d19640f1d8ad1c66fdee800414b805c
   React-RCTActionSheet: 7448f049318d8d7e8a9a1ebb742ada721757eea8
