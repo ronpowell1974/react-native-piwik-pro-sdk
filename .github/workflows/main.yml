@@ -25,8 +25,19 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-      - name: 'Prepare'
-        run: npm run prepare
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16
+      
+      - name: 'Cache node Modules'
+        uses: actions/cache@v1
+        with:
+          path: ~.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - run: npm run prepare
 
 #   release:
 #     needs: bump-and-build
