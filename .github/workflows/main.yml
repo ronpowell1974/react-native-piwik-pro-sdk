@@ -38,13 +38,4 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci --ignore-scripts
-      - run: npm run prepare
-      - run: npm run release-ci
-
-#   release:
-#     needs: bump-and-build
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Release
-#       - uses: actions/setup-node@v1
-#       - run: npm run release-ci
+      - run: npm run prepare && npm run release-ci
