@@ -42,7 +42,7 @@ jobs:
       - name: 'Install Dependencies'
         run: npm ci --ignore-scripts
       - name: 'Set version'
-        run: npm version --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
+        run: npm --no-git-tag-version --allow-same-version version ${{ steps.get_version.outputs.VERSION }}
       - name: 'Prepare build'
         run: npm run prepare
       - name: 'Commit Bump to ${{ steps.get_version.outputs.VERSION }}'
