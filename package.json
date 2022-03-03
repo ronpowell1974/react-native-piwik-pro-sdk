@@ -27,7 +27,7 @@
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "prepare": "npx genversion --es6 --semi src/version.ts && bob build",
     "release": "release-it",
-    "release-ci": "release-it --ci",
+    "release-ci": "release-it --ci --no-increment --no-git",
     "example": "yarn --cwd example",
     "pods": "cd example && pod-install --quiet",
     "bootstrap": "yarn example && yarn && yarn pods"
