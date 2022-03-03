@@ -39,6 +39,7 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm ci --ignore-scripts
       - run: npm run prepare
+      - run: npm run release-ci
 
 #   release:
 #     needs: bump-and-build
