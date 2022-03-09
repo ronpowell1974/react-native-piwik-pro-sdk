@@ -47,15 +47,12 @@ jobs:
         run: npm run prepare
       - name: 'Commit Bump to ${{ steps.get_version.outputs.VERSION }}'
         run: |
-          echo git config --local user.email "action@github.com"
-          echo git config --local user.name "GitHub Action"
-          git add package.json
-          git add src/version.ts
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git add .
           git status
-          git commit -m "Bump to ${{ steps.get_version.outputs.VERSION }} [skip ci]"
-          echo git push
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git commit -m "Bump to ${{ steps.get_version.outputs.VERSION }}"
+          git push origin HEAD:main
       - name: 'Release'
         run: npm run release-ci
         env:
