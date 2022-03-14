@@ -22,6 +22,7 @@
     "!**/__mocks__"
   ],
   "scripts": {
+    "build": "bob build",
     "test": "jest",
     "typescript": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
