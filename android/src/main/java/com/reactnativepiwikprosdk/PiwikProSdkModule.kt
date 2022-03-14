@@ -7,9 +7,6 @@ import pro.piwik.sdk.Tracker
 import pro.piwik.sdk.Tracker.OnCheckAudienceMembership
 import pro.piwik.sdk.Tracker.OnGetProfileAttributes
 import pro.piwik.sdk.TrackerConfig
-import pro.piwik.sdk.extra.DownloadTracker
-import pro.piwik.sdk.extra.DownloadTracker.Extra
-import pro.piwik.sdk.extra.DownloadTracker.Extra.Custom
 import pro.piwik.sdk.extra.EcommerceItems
 import pro.piwik.sdk.extra.TrackHelper
 import java.net.URL
@@ -93,13 +90,10 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     promise: Promise
   ) {
     try {
-      val tracker = getTracker()
       val trackHelper = TrackHelper.track()
-      val exceptionTracker =
-        trackHelper.exception(Exception(description)).description(description).fatal(isFatal)
 
       applyOptionalParameters(trackHelper, options)
-      exceptionTracker.with(tracker)
+      trackHelper.exception().description(description).fatal(isFatal).with(getTracker())
 
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -131,20 +125,21 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   @ReactMethod
   fun trackDownload(url: String, options: ReadableMap?, promise: Promise) {
     try {
-      val tracker = getTracker()
       val trackHelper = TrackHelper.track()
-      val extra: Extra = object : Custom() {
-        override fun isIntensiveWork(): Boolean {
-          return false
-        }
-
-        override fun buildExtraIdentifier(): String? {
-          return url
-        }
-      }
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.download(DownloadTracker(tracker)).identifier(extra).force().with(tracker)
+      trackHelper.sendDownload(url).with(getTracker())
+
+      promise.resolve(null)
+    } catch (exception: Exception) {
+      promise.reject(exception)
+    }
+  }
+
+  @ReactMethod
+  fun trackApplicationInstall(promise: Promise) {
+    try {
+      TrackHelper.track().sendApplicationDownload().with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
       promise.reject(exception)
@@ -197,12 +192,17 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   }
 
   @ReactMethod
-  fun trackInteraction(contentName: String, options: ReadableMap?, promise: Promise) {
+  fun trackInteraction(
+    contentName: String,
+    interaction: String,
+    options: ReadableMap?,
+    promise: Promise
+  ) {
     try {
       val trackHelper = TrackHelper.track()
 
       applyOptionalParameters(trackHelper, options)
-      trackHelper.interaction(contentName, "click").piece(options?.getString("piece"))
+      trackHelper.interaction(contentName, interaction).piece(options?.getString("piece"))
         .target(options?.getString("target")).with(getTracker())
       promise.resolve(null)
     } catch (exception: Exception) {
@@ -262,14 +262,14 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
   fun trackProfileAttributes(profileAttributes: ReadableArray, promise: Promise) {
     try {
       val trackHelper = TrackHelper.track()
-      val firstAttribute = profileAttributes.getMap(0) as ReadableMap
+      val firstAttribute = profileAttributes.getMap(0)
       val profileAttributesEvent = trackHelper.audienceManagerSetProfileAttribute(
         firstAttribute.getString("name").toString(),
         firstAttribute.getString("value").toString()
       )
 
       for (i in 1 until profileAttributes.size()) {
-        val attribute = profileAttributes.getMap(i) as ReadableMap
+        val attribute = profileAttributes.getMap(i)
 
         profileAttributesEvent.add(
           attribute.getString("name").toString(),
@@ -611,7 +611,7 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     }
 
     for (i in 0 until itemsArray.size()) {
-      val itemValues = itemsArray.getMap(i) as ReadableMap
+      val itemValues = itemsArray.getMap(i)
       items.addItem(
         EcommerceItems.Item(itemValues.getString("sku")).name(itemValues.getString("name"))
           .category(itemValues.getString("category"))

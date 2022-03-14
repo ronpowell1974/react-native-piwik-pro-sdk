@@ -1,5 +1,5 @@
 import React from 'react';
-import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import PiwikProSdk from '@piwikpro/react-native-piwik-pro-sdk';
 import { Button, ScrollViewContainer } from '../components';
 import { eventNumSelector, setError, setEventMessage } from '../store/appSlice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
@@ -189,6 +189,7 @@ export default function TrackingActions() {
     try {
       await PiwikProSdk.trackInteraction(
         `Some content interaction ${eventNum}`,
+        'click',
         options
       );
       successMessage('Track content interaction');

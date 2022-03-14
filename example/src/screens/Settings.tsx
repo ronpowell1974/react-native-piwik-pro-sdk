@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import PiwikProSdk from '@piwikpro/react-native-piwik-pro-sdk';
 import {
   dispatchIntervalSelector,
   sdkInitializedSelector,

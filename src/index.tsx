@@ -74,6 +74,10 @@ async function trackDownload(
   return await PiwikProNativeSdk.trackDownload(url, options);
 }
 
+async function trackApplicationInstall(): Promise<void> {
+  return await PiwikProNativeSdk.trackApplicationInstall();
+}
+
 async function trackOutlink(
   url: string,
   options?: CommonEventOptions
@@ -100,10 +104,15 @@ async function trackImpression(
 
 async function trackInteraction(
   contentName: string,
+  interaction: string,
   options?: TrackInteractionOptions
 ): Promise<void> {
   validateCustomKeyValues(options);
-  return await PiwikProNativeSdk.trackInteraction(contentName, options);
+  return await PiwikProNativeSdk.trackInteraction(
+    contentName,
+    interaction,
+    options
+  );
 }
 
 async function trackGoal(
@@ -261,6 +270,7 @@ const PiwikProSdk: PiwikProSdkType = {
   trackException,
   trackSocialInteraction,
   trackDownload,
+  trackApplicationInstall,
   trackOutlink,
   trackSearch,
   trackImpression,

@@ -5,7 +5,7 @@ Piwik PRO SDK for React Native
 ### Installation
 
 ```sh
-npm install react-native-piwik-pro-sdk
+npm install @piwikpro/react-native-piwik-pro-sdk
 ```
 
 ### Configuration
@@ -13,11 +13,11 @@ npm install react-native-piwik-pro-sdk
 In order to set up the Piwik PRO tracker you have to call `init` method passing a server address and website ID (you can find it in `Administration` -> `Sites & apps`):
 
 ```js
-import PiwikProSdk from "react-native-piwik-pro-sdk";
+import PiwikProSdk from "@piwikpro/react-native-piwik-pro-sdk";
 
 // ...
 
-await PiwikProSdk.init('https://your.piwik.pro.server.com', '01234567-89ab-cdef-0123-456789abcdef')
+await PiwikProSdk.init('https://your.piwik.pro.server.com', '01234567-89ab-cdef-0123-456789abcdef');
 ```
 Parameters:
 - `serverAddress: string` *(required)* – URL of your Piwik PRO server.
@@ -111,9 +111,7 @@ For more resources, please visit [documentation](https://help.piwik.pro/support/
 
 *Requires Analytics*
 
-Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` [prefix](#prefixing), and additionally the `'exception'` prefix if `isPrefixingOn()` option is enabled (`true`).
-
-Measure a caught exception by setting the exception field values on the tracker and sending the hit, as with this example:
+Caught exceptions are errors in your app for which you’ve defined an exception handling code, such as the occasional timeout of a network connection during a request for data. Exceptions are tracked on the server in a similar way as screen views, however, action internally generated for exceptions always uses the `'fatal'` or `'caught'` [prefix](#prefixing), and additionally the `'exception'` prefix if `isPrefixingOn()` option is enabled (`true`):
 
 ```js
 const options = {
@@ -177,7 +175,19 @@ Parameters:
 
 All downloads can be viewed in the corresponding section in the analytics panel.
 
-***Note:*** Generated URLs may differ between Android and iOS.
+
+
+### Tracking application installs
+
+*Requires Analytics*
+
+You can also track installations of your application. This event is sent to the server only once per application version therefore if you wish to track installs, then you can add it in your application code immediately after configuring the tracker.
+```js
+await PiwikProSdk.init('https://your.piwik.pro.server.com', '01234567-89ab-cdef-0123-456789abcdef');
+await PiwikProSdk.trackApplicationInstall();
+}
+```
+Application installation is only tracked during the first launch. In the case of the application being installed but not run, the app installation will not be tracked.
 
 
 
@@ -250,11 +260,12 @@ const options = {
   visitCustomVariables: 4: { name: 'food', value: 'pizza' },
   customDimensions: { 1: 'beta', 2: 'gamma', },
 };
-await PiwikProSdk.trackInteraction('Some content interaction', options);
+await PiwikProSdk.trackInteraction('Some content interaction', 'click', options);
 ```
 
 Parameters:
 - `contentName: string` *(required)* – name of the content, e.g. 'Ad Foo Bar'.
+- `interaction: string` *(required)* – type of the interaction, e.g. 'click'.
 - `options` – impression tracking options, object containing four properties (all of them are optional):
   - `piece: string` – actual content. For instance, path to the image, video, audio or any text.
   - `target: string` – the target of the content. For instance the URL of a landing page.

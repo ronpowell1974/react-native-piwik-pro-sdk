@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import PiwikProSdk from '@piwikpro/react-native-piwik-pro-sdk';
 import { Button, Input, ScrollViewContainer } from '../components';
 import { setError, setMessage } from '../store/appSlice';
 import { useAppDispatch } from '../store/hooks';

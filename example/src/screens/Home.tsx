@@ -1,6 +1,6 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React from 'react';
-import PiwikProSdk from 'react-native-piwik-pro-sdk';
+import PiwikProSdk from '@piwikpro/react-native-piwik-pro-sdk';
 import { Button, ScrollViewContainer } from '../components';
 import {
   setDispatchInterval,
@@ -24,6 +24,7 @@ export default function Home({ navigation }: Props) {
     )
       .then(() => dispatch(setMessage('Success')))
       .catch((error) => dispatch(setError(error.message)));
+    await PiwikProSdk.trackApplicationInstall();
 
     const dispatchInterval = await PiwikProSdk.getDispatchInterval();
     dispatch(setDispatchInterval(dispatchInterval));
