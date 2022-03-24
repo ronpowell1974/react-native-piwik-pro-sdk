@@ -54,7 +54,7 @@ jobs:
           git add .
           git status
           git commit -m "Bump to ${{ steps.get_version.outputs.VERSION }}"
-          git push origin HEAD:main
+          git push origin HEAD:master
       - name: 'Release'
         run: npm run release-ci
         env:
