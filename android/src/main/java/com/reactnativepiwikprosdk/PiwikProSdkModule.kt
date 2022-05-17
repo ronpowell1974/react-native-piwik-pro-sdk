@@ -264,16 +264,16 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
       val trackHelper = TrackHelper.track()
       val firstAttribute = profileAttributes.getMap(0)
       val profileAttributesEvent = trackHelper.audienceManagerSetProfileAttribute(
-        firstAttribute.getString("name").toString(),
-        firstAttribute.getString("value").toString()
+        firstAttribute?.getString("name").toString(),
+        firstAttribute?.getString("value").toString()
       )
 
       for (i in 1 until profileAttributes.size()) {
         val attribute = profileAttributes.getMap(i)
 
         profileAttributesEvent.add(
-          attribute.getString("name").toString(),
-          attribute.getString("value").toString()
+          attribute?.getString("name").toString(),
+          attribute?.getString("value").toString()
         )
       }
 
@@ -612,11 +612,13 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
 
     for (i in 0 until itemsArray.size()) {
       val itemValues = itemsArray.getMap(i)
-      items.addItem(
-        EcommerceItems.Item(itemValues.getString("sku")).name(itemValues.getString("name"))
-          .category(itemValues.getString("category"))
-          .price(itemValues.getInt("price")).quantity(itemValues.getInt("quantity"))
-      )
+      if (itemValues != null) {
+        items.addItem(
+          EcommerceItems.Item(itemValues.getString("sku")).name(itemValues.getString("name"))
+            .category(itemValues.getString("category"))
+            .price(itemValues.getInt("price")).quantity(itemValues.getInt("quantity"))
+        )
+      }
     }
 
     return items
