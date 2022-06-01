@@ -68,10 +68,19 @@ class PiwikProSdkModule(reactContext: ReactApplicationContext) :
     try {
       val tracker = getTracker()
       val trackHelper = TrackHelper.track()
-      val customEventTracker = trackHelper.event(category, action).path(options?.getString("path"))
-        .name(options?.getString("name")).value(
-          options?.getDouble("value")?.toFloat()
-        )
+      val customEventTracker = trackHelper.event(category, action)
+
+      if (options?.hasKey("path") == true) {
+        customEventTracker.path(options.getString("path"))
+      }
+
+      if (options?.hasKey("name") == true) {
+        customEventTracker.name(options.getString("name"))
+      }
+
+      if (options?.hasKey("value") == true) {
+        customEventTracker.value(options.getDouble("value").toFloat())
+      }
 
       applyOptionalParameters(trackHelper, options)
       customEventTracker.with(tracker)
