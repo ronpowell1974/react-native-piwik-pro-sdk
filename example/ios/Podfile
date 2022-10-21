@@ -6,7 +6,7 @@ platform :ios, '11.0'
 target 'PiwikProSdkExample' do
   config = use_native_modules!
 
-  use_react_native!(:path => config["reactNativePath"])
+  use_react_native!(:path => config['reactNativePath'])
 
   pod 'react-native-piwik-pro-sdk', :path => '../..'
 end
