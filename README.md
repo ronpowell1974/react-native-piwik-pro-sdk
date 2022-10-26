@@ -99,7 +99,7 @@ Parameters:
 - `options` – custom event options, object containing five properties (all of them are optional):
   - `name: string` – label associated with the event. For example, if you have multiple button controls on a screen, you may use the label to specify the specific view control identifier that was clicked.
   - `value: number` – float, numerical value associated with the event. For example, if you were tracking 'Buy' button clicks, you may log the number of items being purchased or their total cost.
-  - `path: string` – the path under which this event occurred (it will be omitted in iOS application).
+  - `path: string` – the path under which this event occurred.
   - `customDimensions` – the object specifying [custom dimensions](#tracking-custom-dimensions).
   - `visitCustomVariables` – the object specifying [visit custom variables](#tracking-custom-variables).
 
